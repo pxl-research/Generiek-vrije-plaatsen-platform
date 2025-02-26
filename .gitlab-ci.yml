@@ -1,0 +1,53 @@
+stages:
+    - prep
+    - test
+
+image: yappabe/php-ci:7.4-pcov
+
+prep:composer:
+    stage: prep
+    script:
+        - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts -o
+    cache:
+        key: "$CI_COMMIT_REF_SLUG"
+        paths:
+            - vendor/
+        policy: pull-push
+    artifacts:
+        paths:
+            - vendor/
+        expire_in: 1 days
+        when: always
+
+symfony_checks:
+    stage: test
+    script:
+        - bin/console lint:yaml config --parse-tags
+        - bin/console lint:twig templates
+        - bin/console lint:container
+    dependencies:
+        - prep:composer
+
+style:
+    stage: test
+    script:
+        - vendor/bin/php-cs-fixer --version
+        - vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --using-cache=no
+    dependencies:
+        - prep:composer
+
+phpstan:
+    stage: test
+    script:
+        - vendor/bin/phpstan.phar --version
+        - vendor/bin/phpstan.phar analyze -c phpstan.neon --level=7 --no-progress src/
+    dependencies:
+        - prep:composer
+
+psalm:
+    stage: test
+    script:
+        - vendor/bin/psalm -v
+        - vendor/bin/psalm --output-format=compact --show-info=false
+    dependencies:
+        - prep:composer

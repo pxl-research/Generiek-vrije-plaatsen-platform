@@ -8,7 +8,32 @@ const router = createRouter({
       name: 'home',
       component: () => import('../views/HomeView.vue'),
     },
-
+    {
+      path: '/filter',
+      name: 'filter',
+      component: () => import('../views/FilterView.vue'),
+    },
+    {
+      path: '/list',
+      name: 'list',
+      component: () => import('../views/ListView.vue'),
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/MapView.vue'),
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/PrivacyView.vue'),
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/AboutUsView.vue'),
+    },
+    
   ],
 })
 

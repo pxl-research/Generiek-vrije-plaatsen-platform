@@ -1,4 +1,5 @@
 <template>
+    <!-- Homepage - mobile op Figma-->
     <h1>hallo</h1>
     <ButtonComponent text="texts"/>
 </template>

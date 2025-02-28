@@ -34,11 +34,11 @@ const router = createRouter({
       component: () => import('../views/AboutUsView.vue'),
     },
     {
-      path: 'onboarding',
+      path: '/onboarding',
       name: 'onboarding',
-      component: () => import('../views/OnboardingView.vue');
+      component: () => import('../views/OnboardingView.vue'),
     },
-    
+
   ],
 })
 

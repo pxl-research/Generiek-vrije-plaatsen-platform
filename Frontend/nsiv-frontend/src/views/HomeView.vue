@@ -1,7 +1,10 @@
 <template>
-  <HeaderComponent />
-  <div class="relative min-h-screen flex flex-col px-6 pt-12 bg-gradient-to-tl from-slate-500 via-slate-200 to-slate-200">
-
+  <div class="min-h-screen flex flex-col px-6 pt-12 bg-gradient-to-tl from-slate-500 via-slate-200 to-slate-200">
+    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-20">
+      <div class="flex items-center mt-4">
+        <img src="/assets/nsiv_logo_v1.png" alt="Logo" class="h-18 w-auto" />
+      </div>
+    </header>
 
     <div class="mx-auto text-center mt-24 space-y-2 ">
 
@@ -33,6 +36,5 @@
 </template>
 
 <script setup lang="ts">
-import HeaderComponent from '@/components/HeaderComponent.vue'
 import ButtonComponent from '@/components/ButtonComponent.vue'
 </script>

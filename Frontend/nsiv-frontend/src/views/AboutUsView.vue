@@ -3,11 +3,10 @@
     
     
     <main class="mx-5 my-4 flex flex-col gap-3"><!--margin naar app.vue zetten-->
-        <nav class="flex justify-between items-center">
+        <nav class="flex items-center">
             <h1 class="text-2xl font-bold">
                 Over ons
             </h1>
-            <p>burger</p>
         </nav>
         <h2 class="text-lg font-bold">
             Missie en visie

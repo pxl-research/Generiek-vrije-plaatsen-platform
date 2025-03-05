@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col px-6 pt-12 bg-gradient-to-tl from-slate-500 via-slate-200 to-slate-200">
-    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-20">
+    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 ">
       <div class="flex items-center mt-4">
         <img src="/assets/nsiv_logo_v1.png" alt="Logo" class="h-18 w-auto" />
       </div>
@@ -20,7 +20,10 @@
         <b>Start your search</b> today to find the <b>perfect school</b> for your child.
       </p>
 
-      <img src="/assets/NSIV_header.png">
+      <router-link to="/admin-selection">
+        <img src="/assets/NSIV_header.png" alt="Admin of School" class="cursor-pointer hover:opacity-80 transition duration-300">
+      </router-link>
+
 
     </div>
 

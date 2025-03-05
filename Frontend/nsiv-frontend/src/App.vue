@@ -35,7 +35,7 @@ onUnmounted(() => {
                 </h1>
                 -->
                 <button @click.stop="isOpen = !isOpen" 
-                    class="focus:outline-none fixed top-8 right-10 z-30 h-18"
+                    class="focus:outline-none fixed top-14 right-10 z-30 h-6 w-6 bg-white rounded"
                 >
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -66,15 +66,16 @@ onUnmounted(() => {
                             class="w-full mb-6"
                         >
                             <img src="/assets/nsiv_logo_v1.png" alt="Logo" 
-                            class="h-18 w-auto"
+                                class="h-18 w-auto"
                             >
                         </RouterLink>
-                        <RouterLink 
-                            v-for="route in navLinks" 
-                            :key="route.path" 
+                        <RouterLink
+                            v-for="route in navLinks"
+                            :key="route.path"
                             :to="route.path"
                             @click="isOpen = false"
-                            class="font-bold text-xl">
+                            class="font-bold text-xl"
+                        >
                             {{ route.meta?.showInNav }}
                         </RouterLink>
                     </div>

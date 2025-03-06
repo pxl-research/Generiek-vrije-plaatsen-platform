@@ -9,6 +9,7 @@ use App\Service\Auth0\UserRepository;
 use App\Model\Request\CreateUserRequest;
 use App\Model\User;
 use App\Service\Transformer\UserTransformer;
+use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {

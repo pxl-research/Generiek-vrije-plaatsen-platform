@@ -11,7 +11,6 @@ use App\Repository\SchoolGradeRepository;
 use App\Repository\SchoolPhaseRepository;
 use App\Repository\SchoolLevelRepository;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 class SchoolInfoController extends AbstractController

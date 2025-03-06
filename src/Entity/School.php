@@ -366,4 +366,24 @@ class School
 
         throw new \RuntimeException('Could not get educations for year');
     }
+    public function toArray(): array
+    {
+        // Return the entity's properties as an array
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'address' => $this->getAddress(),
+            'postalCode' => $this->getPostalCode(),
+            'region' => $this->getRegion(),
+            'city' => $this->getCity(),
+            'website' => $this->getWebsite(),
+            'email' => $this->getEmail(),
+            'phoneNumber' => $this->getPhoneNumber(),
+            'institutionNumber' => $this->getInstitutionNumber(),
+            'establishmentNumbers' => $this->getEstablishmentNumbers(),
+            'type' => $this->getType(),
+            'level' => $this->getLevel(),
+            'educations' => $this->getEducations()->toArray(), 
+        ];
+    }
 }

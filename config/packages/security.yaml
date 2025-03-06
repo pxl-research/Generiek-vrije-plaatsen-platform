@@ -41,9 +41,12 @@ security:
             stateless: true
             anonymous: ~
             provider: api_user_provider
-            guard:
-                authenticators:
-                    - App\Security\Api\TokenAuthenticator
+            # guard needs to be out of comment for the actual project if not testing in postman
+            # guard:
+            #     authenticators:
+            #         - App\Security\Api\TokenAuthenticator
+            # secruity false is so that we can test on postman easily
+            security: false
         main:
             anonymous: ~
             provider: oauth_hwi

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\SchoolYear;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\Transformer\UserTransformer;
 
 class SchoolNumbersController extends AbstractController {
 
@@ -27,6 +28,7 @@ class SchoolNumbersController extends AbstractController {
     private EducationsFormDataTransformer $dataTransformer;
     private ApiViewTransformer $apiViewTransformer;
     private PostSchoolNumbersService $postSchoolNumbersService;
+    private UserTransformer $transformer;
 
     public function __construct(
         SerializerInterface $serializer,
@@ -35,7 +37,8 @@ class SchoolNumbersController extends AbstractController {
         SchoolYearRepository $schoolYearRepository,
         EducationsFormDataTransformer $dataTransformer,
         ApiViewTransformer $apiViewTransformer,        
-        PostSchoolNumbersService $postSchoolNumbersService
+        PostSchoolNumbersService $postSchoolNumbersService,
+        UserTransformer $transformer
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
@@ -44,27 +47,29 @@ class SchoolNumbersController extends AbstractController {
         $this->dataTransformer = $dataTransformer;
         $this->apiViewTransformer = $apiViewTransformer;
         $this->postSchoolNumbersService = $postSchoolNumbersService;
+        $this->transformer = $transformer;
     }
 
     /**
-     * @Route("/api/v2/schools", name="api_get_school_numbers", methods={"GET"})
+     * @Route("/api/v2/schools", name="api_get_school_numbers_acs", methods={"GET"})
      */
     public function getAllSchools() {
-        return new JsonResponse($this->schoolRepository->findAll());
+        $schools = $this->schoolRepository->findAll();
+        $allschools = [];
+
+        foreach ($schools as $school) {
+            $allschools[] = $this->transformer->transformModelToArray($school);
+        }
+
+        return new JsonResponse($allschools);
     }
 
     /**
      * @Route("/api/v2/schools/{schoolId}", name="api_get_school_by_id", methods={"GET"})
      */
     public function getSchoolById(int $schoolId) {
-        return new JsonResponse($this->schoolRepository->find($schoolId));
-    }
-
-    /**
-     * @Route("/api/v2/schools/{establishmentNumber}", name="api_get_school_by_EstablishmentNumber", methods={"GET"})
-     */
-    public function getSchoolByEstablishmentNumber(string $establishmentNumber) {
-        return new JsonResponse( $this->schoolRepository->findByEstablishmentNumber($establishmentNumber));
+        $school = $this->schoolRepository->find($schoolId);
+        return new JsonResponse($this->transformer->transformModelToArray($school));
     }
 
       /**
@@ -90,17 +95,6 @@ class SchoolNumbersController extends AbstractController {
         }
 
         return new JsonResponse($data);
-    }
-
-    /**
-     * @Route("/api/v2/schools", name="api_create_school", methods={"POST"})
-     */
-    public function createSchool(School $school) {
-
-        
-        $this->schoolRepository->save($school);
-
-        return new JsonResponse($school);
     }
     
     /**

@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import ButtonComponent from '@/components/ButtonComponent.vue'
+</script>
+
 <template>
   <div class="min-h-screen flex flex-col px-6 pt-12 bg-gradient-to-tl from-slate-500 via-slate-200 to-slate-200">
     <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-20">
@@ -35,6 +39,4 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import ButtonComponent from '@/components/ButtonComponent.vue'
-</script>
+

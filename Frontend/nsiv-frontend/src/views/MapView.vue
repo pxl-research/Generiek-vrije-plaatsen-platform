@@ -1,66 +1,195 @@
 <template>
-<!-- Map view - mobile op Figma-->
-    <iframe 
-            class="absolute inset-0 w-full h-full"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80478.5673049272!2d5.231144139688511!3d50.9245452049915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c12183ded75db7%3A0xf7cb7b027e7e2181!2sHasselt!5e0!3m2!1sen!2sbe!4v1741168303625!5m2!1sen!2sbe"
-            loading="lazy"
-    ></iframe>    
-    <main class="absolute flex flex-col pt-30 top-0 left-0 w-full h-full p-5 border-1"><!--margin naar app.vue zetten-->
-        <nav class="flex items-center">
-            <input type="text" 
-                class="w-full p-1 bg-white rounded-lg"
-            >
-            <button
-                class="h-8 w-8 flex justify-center items-center ml-3 bg-red-200 text-red-900 rounded-lg border-2 border-white"
-            >
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        stroke-linecap="round" stroke-linejoin="round"
-                        d="M6 6l12 12M6 18L18 6">
-                    >
-                    </path>
-                </svg>
-            </button>
-        </nav>
-        <section
-            class="w-full p-4 bg-white flex flex-col gap-2 justify-center items-center mt-auto"
-        >
-            <p class="text-gray-500 flex justify-start w-full">
-                Your Location
-            </p>
-            <div class="flex justify-between w-full">
-                <div>
-                    <h1 class="text-xl font-black">
-                        3500 Hasselt
-                    </h1>
-                    <p class="text-sm font-semibold text-gray-500">
-                        + deelgemeenten
-                    </p>
-                </div>
-                <button class="mt-2 px-10 py-2 bg-blue-700 text-white rounded">Use</button>
+    <div class="flex justify-center">
+        <div class="fixed top-25 flex flex-col items-start z-10">
+          <div class="flex items-center">
+            <input 
+              type="text" v-model="userInput"
+              @input="showSchoolList = true"
+              @keydown.enter="updateLocation"
+              class="bg-white border-2 h-15 w-75 text-xl p-3 focus:outline-none" 
+              placeholder="Enter text here" 
+            />
+            <svg class="w-10 h-10 ml-2 bg-red-300 text-red-900 rounded-lg cursor-pointer hover:bg-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg" @click="removeUserinput">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6"></path>
+            </svg>
+          </div>
+          <div v-if="showSchoolList && userInput" class="z-11 w-75 border-2 border-t-0">
+            <div v-for="(school, index) in filteredAddresses" :key="index" @click="selectSchool(school)"
+            class="bg-white hover:bg-pink-200 p-1">
+              <p>{{ school.title }}</p>
             </div>
-            <hr class="border-t-1 border-gray-500 w-full my-4">
+          </div>
 
-            <p class="w-full text-sm text-gray-500">
-                Nearby locations
-            </p>
-            <div class="flex w-full gap-3 items-center">
-                <div class="rounded-full p-6 bg-gray-500"></div>
-                <div class="w-full h-full">
-                    <h2>
-                        Kermt
-                    </h2>
-                    <p class="text-sm text-gray-500">
-                        3500, Hasselt (Limburg)
-                    </p>
-                </div>
-            </div>
-        </section>
-    </main>
+        </div> 
+        
+
+        <div class="flex justify-center items-center w-screen bg-[#D0E0EF] pb-10">
+            <button class="bg-purple-900 text-white" @click="updateLocation">Select</button>
+        </div> 
+
+        <div ref="mapDiv" class="absolute top-0 z-1 h-screen w-full"></div>
+    </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, computed, watch } from "vue";
+import { Loader } from "@googlemaps/js-api-loader";
+import schoolData from "@/assets/schools.json";
 
+const userInput = ref("");
+const showSchoolList = ref(false);
+
+const removeUserinput = () => {
+  userInput.value = "";
+}
+
+interface Location {
+  address: string;
+  title: string;
+  website: string;
+  phoneNumber: string;
+}
+
+const apiKey = import.meta.env.VITE_MAPS_API_KEY;
+
+const addresses: Location[] = schoolData.schools.map((school) => ({
+  address: `${school.address}, ${school.city}, ${school.postalCode}`, // Full address
+  title: school.name,
+  website: school.website,
+  phoneNumber: school.phoneNumber,
+}));
+console.log(addresses);
+
+const filteredAddresses = computed(() => {
+  return addresses.filter((school) => {
+    return school.title.toLowerCase().includes(userInput.value.toLowerCase());
+  });
+});
+
+const selectSchool = (school: Location) => {
+  console.log("Selected school:", school.title);
+  showSchoolList.value = false;
+  userInput.value = school.title;
+  // center map to school later maybe
+  geocodeAddresses(school);
+};
+
+const mapDiv = ref<HTMLDivElement | null>(null);
+let map: google.maps.Map | null = null;
+let geocoder: google.maps.Geocoder | null = null;
+
+const initMap = async () => {
+  if (!mapDiv.value) return;
+
+  const loader = new Loader({
+    apiKey: apiKey,
+    version: "weekly",
+  });
+
+  loader.load().then(() => {
+    if (!mapDiv.value) return;
+
+    map = new google.maps.Map(mapDiv.value, {
+      center: { lat: 50.93106, lng: 5.33781 }, // Default to NYC
+      zoom: 13,
+    });
+
+    geocoder = new google.maps.Geocoder();
+    geocodeAddresses();
+  });
+};
+
+function geocodeAddresses(school?: Location) {
+  if (!map || !geocoder) return;
+
+  const infoWindow = new google.maps.InfoWindow();
+
+  if (school) {
+    // Geocode a specific school address
+    geocoder.geocode({ address: school.address }, (results, status) => {
+      if (status === "OK" && results[0]) {
+        const position = results[0].geometry.location;
+        map.setCenter(position); 
+      } else {
+        console.error(`Geocoding failed for ${school.address}: ${status}`);
+      }
+    });
+  } else {
+    addresses.forEach((location) => {
+      geocoder.geocode({ address: location.address }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          const position = results[0].geometry.location;
+          const marker = new google.maps.Marker({
+            position,
+            map,
+            title: location.title || location.address,
+          });
+
+          // Add a click event to show the InfoWindow when the marker is clicked
+          marker.addListener("click", () => {
+            console.log("Marker clicked", location.title);
+            infoWindow.setContent(`
+            <div>
+              <p>${location.title}</p>
+              <p>${location.address}</p>
+              <a href="${location.website}" target="_blank" class="text-blue-700 underline">${location.website}</a>
+              <br>
+              <a href="tel:${location.phoneNumber}">Call us</a>
+            </div>
+            `);
+            infoWindow.open(map, marker); // Open the InfoWindow on the marker
+          });
+
+        } else {
+          console.error(`Geocoding failed for ${location.address}: ${status}`);
+        }
+      });
+    });
+  }
+};
+
+function updateLocation() {
+  if (!map || !geocoder || !userInput.value) return;
+
+  // Use the geocoder to search for the location
+  geocoder.geocode({ address: userInput.value }, (results, status) => {
+    if (status === "OK" && results[0]) {
+      const position = results[0].geometry.location;
+
+      // Center the map on the new location
+      map.setCenter(position);
+
+      // Place a marker at the location
+      new google.maps.Marker({
+        position,
+        map,
+        title: userInput.value, // Set the marker title to the input location
+      });
+    } else {
+      console.error(`Geocoding failed for ${userInput.value}: ${status}`);
+    }
+  });
+}
+
+watch(() => addresses, () => geocodeAddresses(), { deep: true });
+
+onMounted(initMap);
+
+
+
+// const userInput = ref("");
+// const googleMapsUrl = ref(`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=callback=initMap`);
+
+// const updateLocation = () => {
+
+//     if (userInput.value.trim()) {
+//         googleMapsUrl.value = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${userInput.value}`;
+//     }
+// };
+
+// const removeUserinput = () => {
+//     userInput.value = "";
+
+// }
 </script>

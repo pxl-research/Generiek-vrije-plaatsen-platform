@@ -17,12 +17,20 @@ use App\Service\Exports\KiesjeschoolDataTransformer;
 use App\Repository\SchoolRepository;
 use App\Service\Transformer\UserTransformer;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 class ExportController extends AbstractController
 {
     private SchoolYearRepository $schoolYearRepository;
     private UserTransformer $transformer;
     public const YEAR_ID = 'yearId';
 
+     /**
+     * @ORM\OneToMany(targetEntity=SchoolYear::class, mappedBy="institution")
+     */
+    private Collection $schoolYears;
     public function __construct(
         SchoolYearRepository $schoolYearRepository,
         UserTransformer $transformer
@@ -30,13 +38,25 @@ class ExportController extends AbstractController
     {
         $this->schoolYearRepository = $schoolYearRepository;
         $this->transformer = $transformer;
+        $this->schoolYears = new ArrayCollection();
     }
     
-     /**
+       /**
      * @Route("/api/v2/schoolyears", name="export_v2_schoolyears", methods={"GET"})
      */
-    public function GetActiveSchoolYears(){
-        return new JsonResponse($this->schoolYearRepository->findAll());
+    public function getActiveSchoolYears(): JsonResponse
+    {
+        $schoolYears = $this->schoolYearRepository->findAll();
+        $data = [];
+
+        foreach ($schoolYears as $year) {
+            $data[] = [
+                'startyear' => $year->getStartYear(),
+                'endyear' => $year->getEndYear()
+            ];
+        }
+
+        return new JsonResponse($data);
     }
 
      /**

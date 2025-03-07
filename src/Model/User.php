@@ -166,4 +166,18 @@ class User extends OAuthUser implements EquatableInterface, LoggableUserInterfac
     {
         return $this->email;
     }
+
+    public function toArray() : array {
+        return [
+            'id' => $this->getId(),
+            'firstName' => $this->getFirstName(),
+            'lastName' => $this->getLastName(),
+            'email' => $this->getEmail(),
+            'password' => $this->getPassword(),
+            'externalRole' => $this->getExternalRole(),
+            'createdAt' => $this->getCreatedAt(),
+            'roles' => $this->getRoles(),
+            'schools' => $this->getSchools()
+        ];
+    }
 }

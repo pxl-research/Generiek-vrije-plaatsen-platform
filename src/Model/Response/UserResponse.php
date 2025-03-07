@@ -136,4 +136,20 @@ class UserResponse implements ResponseInterface
     {
         $this->userMetadata = $userMetadata;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'createdAt' => $this->getCreatedAt(),
+            'email' => $this->getEmail(),
+            'emailVerified' => $this->isEmailVerified(),
+            'nickname' => $this->getNickname(),
+            'name' => $this->getName(),
+            'userId' => $this->getUserId(),
+            'givenName' => $this->getGivenName(),
+            'familyName' => $this->getFamilyName(),
+            'identities' => $this->getIdentities(),
+            'userMetadata' => $this->getUserMetadata(),
+        ];
+    }
 }

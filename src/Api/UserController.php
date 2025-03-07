@@ -10,21 +10,25 @@ use App\Service\Auth0\UserRepository;
 use App\Model\Request\CreateUserRequest;
 use App\Model\User;
 use App\Service\Transformer\UserTransformer;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
     private UserRepository $userRepository;
     private UserTransformer $transformer;
-
+    private SerializerInterface $serializer;
 
     public function __construct(
         UserRepository $userRepository,
-        UserTransformer $transformer
+        UserTransformer $transformer,
+        SerializerInterface $serializer
     )
     {
         $this->userRepository = $userRepository;
         $this->transformer = $transformer;
+        $this->serializer = $serializer;
     }
 
   /**
@@ -51,13 +55,29 @@ class UserController extends AbstractController
     {
         $user = $this->userRepository->findById($userId);
         return new JsonResponse($this->transformer->transformModelToArray($user));
+        // TEST USER ID VOOR IN POSTMAN: auth0|67caff3bacd0dcd6433d90d2
     }
 
     /**
      * @Route("/api/v2/users/create", name="api_create_user", methods={"POST"})
      */
-    public function CreateUser(User $newUser)
+    public function CreateUser(Request $request)
     {
+
+        $data = json_decode($request->getContent(), true);
+
+        // Ensure required fields exist
+        if (!isset($data['firstName'], $data['lastName'], $data['email'])) {
+            return new JsonResponse(['error' => 'Missing required fields'], 400);
+        }
+
+        // Manually create a User instance
+        $newUser = new User($data['email']); // Use email as username
+        $newUser->setFirstName($data['firstName']);
+        $newUser->setLastName($data['lastName']);
+        $newUser->setEmail($data['email']);
+        $newUser->setPassword($data['password'] ?? uniqid());
+        $newUser->setExternalRole($data['externalRole'] ?? null);
 
         $createUserRequest = $this->transformer->transformModelToCreateRequest($newUser);
 
@@ -65,11 +85,38 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/v2/users/update", name="api_update_users", methods={"UPDATE"})
+     * @Route("/api/v2/users/{userId}/update", name="api_update_users", methods={"PUT"})
      */
-    public function UpdateUser(string $userId, User $updatedUser)
+    public function UpdateUser(string $userId, Request $request)
     {
-        $updateUserRequest = $this->transformer->transformModelToUpdateRequest($updatedUser);
+        // Decode request body
+        $data = json_decode($request->getContent(), true);
+
+        // Fetch the existing user
+        $existingUser = $this->userRepository->findById($userId);
+        if (!$existingUser) {
+            return new JsonResponse(['error' => 'User not found'], 404);
+        }
+
+        // Update only the provided fields
+        if (isset($data['firstName'])) {
+            $existingUser->setFirstName($data['firstName']);
+        }
+        if (isset($data['lastName'])) {
+            $existingUser->setLastName($data['lastName']);
+        }
+        if (isset($data['email'])) {
+            $existingUser->setEmail($data['email']);
+        }
+        if (isset($data['password'])) {
+            $existingUser->setPassword($data['password']);
+        }
+        if (isset($data['externalRole'])) {
+            $existingUser->setExternalRole($data['externalRole']);
+        }
+
+        // Transform and update user
+        $updateUserRequest = $this->transformer->transformModelToUpdateRequest($existingUser);
 
         return new JsonResponse($this->userRepository->updateUser($userId, $updateUserRequest));
     }

@@ -368,7 +368,6 @@ class School
     }
     public function toArray(): array
     {
-        // Return the entity's properties as an array
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),

@@ -10,9 +10,9 @@ use App\Model\Api\Grades\Grades;
 use App\Repository\SchoolGradeRepository;
 use App\Repository\SchoolPhaseRepository;
 use App\Repository\SchoolLevelRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 class SchoolInfoController extends AbstractController
 {
     private SchoolGradeRepository $schoolGradeRepository;

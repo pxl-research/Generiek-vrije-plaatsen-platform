@@ -54,24 +54,25 @@ interface Location {
 const apiKey = import.meta.env.VITE_MAPS_API_KEY;
 
 const addresses: Location[] = schoolData.schools.map((school) => ({
-  address: `${school.address}, ${school.city}, ${school.postalCode}`, // Full address
+  address: `${school.address}, ${school.city}, ${school.postalCode}`,
   title: school.name,
   website: school.website,
   phoneNumber: school.phoneNumber,
 }));
 console.log(addresses);
 
+// Show possible schools under search bar
 const filteredAddresses = computed(() => {
   return addresses.filter((school) => {
     return school.title.toLowerCase().includes(userInput.value.toLowerCase());
   });
 });
 
+// Select school from search
 const selectSchool = (school: Location) => {
   console.log("Selected school:", school.title);
   showSchoolList.value = false;
   userInput.value = school.title;
-  // center map to school later maybe
   geocodeAddresses(school);
 };
 
@@ -79,6 +80,7 @@ const mapDiv = ref<HTMLDivElement | null>(null);
 let map: google.maps.Map | null = null;
 let geocoder: google.maps.Geocoder | null = null;
 
+// Initialize the map
 const initMap = async () => {
   if (!mapDiv.value) return;
 
@@ -100,13 +102,13 @@ const initMap = async () => {
   });
 };
 
+// Function for creating markers and searching for schools
 function geocodeAddresses(school?: Location) {
   if (!map || !geocoder) return;
-
   const infoWindow = new google.maps.InfoWindow();
 
   if (school) {
-    // Geocode a specific school address
+    // Go to adress of specific school
     geocoder.geocode({ address: school.address }, (results, status) => {
       if (status === "OK" && results[0]) {
         const position = results[0].geometry.location;
@@ -116,6 +118,7 @@ function geocodeAddresses(school?: Location) {
       }
     });
   } else {
+    // Create markers for all schools on the map
     addresses.forEach((location) => {
       geocoder.geocode({ address: location.address }, (results, status) => {
         if (status === "OK" && results[0]) {
@@ -149,23 +152,15 @@ function geocodeAddresses(school?: Location) {
   }
 };
 
+// Function for searching general locations instead of schools
 function updateLocation() {
   if (!map || !geocoder || !userInput.value) return;
 
-  // Use the geocoder to search for the location
   geocoder.geocode({ address: userInput.value }, (results, status) => {
     if (status === "OK" && results[0]) {
       const position = results[0].geometry.location;
 
-      // Center the map on the new location
       map.setCenter(position);
-
-      // Place a marker at the location
-      new google.maps.Marker({
-        position,
-        map,
-        title: userInput.value, // Set the marker title to the input location
-      });
     } else {
       console.error(`Geocoding failed for ${userInput.value}: ${status}`);
     }
@@ -175,21 +170,4 @@ function updateLocation() {
 watch(() => addresses, () => geocodeAddresses(), { deep: true });
 
 onMounted(initMap);
-
-
-
-// const userInput = ref("");
-// const googleMapsUrl = ref(`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=callback=initMap`);
-
-// const updateLocation = () => {
-
-//     if (userInput.value.trim()) {
-//         googleMapsUrl.value = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${userInput.value}`;
-//     }
-// };
-
-// const removeUserinput = () => {
-//     userInput.value = "";
-
-// }
 </script>

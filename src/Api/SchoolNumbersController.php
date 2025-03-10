@@ -36,7 +36,7 @@ class SchoolNumbersController extends AbstractController {
         SchoolRepository $schoolRepository,
         SchoolYearRepository $schoolYearRepository,
         EducationsFormDataTransformer $dataTransformer,
-        ApiViewTransformer $apiViewTransformer,        
+        ApiViewTransformer $apiViewTransformer,
         PostSchoolNumbersService $postSchoolNumbersService,
         UserTransformer $transformer
     ) {
@@ -76,7 +76,7 @@ class SchoolNumbersController extends AbstractController {
      * @Route("/api/v2/schools/{establishmentNumber}/{startYear}/{endYear}", name="api_get_school_by_EstablishmentNumber_and_StartAndEndYear", methods={"GET"})
      */
     public function getSchoolByEstablishmentNumberAndStartAndEndYear(string $establishmentNumber, int $startYear, int $endYear) {
-       
+
         $schools = $this->schoolRepository->findByEstablishmentNumber($establishmentNumber);
         $year = $this->schoolYearRepository->findYearByStartAndEndYear($startYear, $endYear);
 
@@ -96,7 +96,7 @@ class SchoolNumbersController extends AbstractController {
 
         return new JsonResponse($data);
     }
-    
+
     /**
     * @Route("/api/v2/schools", name="api_create_school", methods={"POST"})
     */

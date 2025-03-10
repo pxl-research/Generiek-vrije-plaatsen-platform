@@ -382,7 +382,7 @@ class School
             'establishmentNumbers' => $this->getEstablishmentNumbers(),
             'type' => $this->getType(),
             'level' => $this->getLevel(),
-            'educations' => $this->getEducations()->toArray(), 
+            'educations' => array_map(fn ($education) => $education->toArray(), $this->getEducations()->toArray())
         ];
     }
 }

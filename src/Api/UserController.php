@@ -53,7 +53,7 @@ class UserController extends AbstractController
      */
     public function GetUserById(string $userId)
     {
-        $user = $this->userRepository->findById($userId);
+        $user = $this->userRepository->findById($userId, true);
         return new JsonResponse($this->transformer->transformModelToArray($user));
         // TEST USER ID VOOR IN POSTMAN: auth0|67caff3bacd0dcd6433d90d2
     }
@@ -66,13 +66,11 @@ class UserController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        // Ensure required fields exist
         if (!isset($data['firstName'], $data['lastName'], $data['email'])) {
             return new JsonResponse(['error' => 'Missing required fields'], 400);
         }
 
-        // Manually create a User instance
-        $newUser = new User($data['email']); // Use email as username
+        $newUser = new User($data['email']);
         $newUser->setFirstName($data['firstName']);
         $newUser->setLastName($data['lastName']);
         $newUser->setEmail($data['email']);
@@ -85,7 +83,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/v2/users/{userId}/update", name="api_update_users", methods={"PUT"})
+     * @Route("/api/v2/users/{userId}/update", name="api_update_users", methods={"PATCH"})
      */
     public function UpdateUser(string $userId, Request $request)
     {
@@ -93,12 +91,13 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         // Fetch the existing user
-        $existingUser = $this->userRepository->findById($userId);
-        if (!$existingUser) {
+        $existingUserResponse = $this->userRepository->findById($userId);
+        if (!$existingUserResponse) {
             return new JsonResponse(['error' => 'User not found'], 404);
         }
 
-        // Update only the provided fields
+        $existingUser = $this->transformer->transformResponseToModel($existingUserResponse);
+
         if (isset($data['firstName'])) {
             $existingUser->setFirstName($data['firstName']);
         }
@@ -108,21 +107,14 @@ class UserController extends AbstractController
         if (isset($data['email'])) {
             $existingUser->setEmail($data['email']);
         }
-        if (isset($data['password'])) {
-            $existingUser->setPassword($data['password']);
-        }
-        if (isset($data['externalRole'])) {
-            $existingUser->setExternalRole($data['externalRole']);
-        }
 
-        // Transform and update user
         $updateUserRequest = $this->transformer->transformModelToUpdateRequest($existingUser);
 
         return new JsonResponse($this->userRepository->updateUser($userId, $updateUserRequest));
     }
 
     /**
-    * @Route("/api/v2/users", name="api_delete_users_by_id", methods={"DELETE"})
+    * @Route("/api/v2/users/{userId}", name="api_delete_users_by_id", methods={"DELETE"})
     */
    public function DeleteUser(string $userId)
    {
@@ -130,11 +122,18 @@ class UserController extends AbstractController
    }
 
       /**
-     * @Route("/api/v2/users/reset-password", name="api_users_reset_password", methods={"PUT"})
+     * @Route("/api/v2/users/{userId}/reset-password", name="api_users_reset_password", methods={"PUT"})
      */
-    public function ResetPasswordUser(string $email)
+    public function ResetPasswordUser(string $userId, Request $request)
     {
-        return new JsonResponse($this->userRepository->resetPassword($email));
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['email'])) {
+            return new JsonResponse(['error' => 'Email is required'], 400);
+        }
+
+        $this->userRepository->resetPassword($data['email']);
+        return new JsonResponse(['message' => 'Password reset email sent'], 200);
     }
 
 }

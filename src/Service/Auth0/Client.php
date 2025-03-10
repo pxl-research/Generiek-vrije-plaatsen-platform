@@ -83,7 +83,7 @@ class Client
 
         $options['body'] = $serializer->serialize($options['body'], 'json');
 
-        $this->client->request('post', $uri, $options);
+        $this->client->request('POST', $uri, $options);
     }
 
     /**
@@ -116,7 +116,7 @@ class Client
 
         $options['body'] = $serializer->serialize($options['body'], 'json');
 
-        $this->client->request('patch', $uri, $options);
+        $this->client->request('PATCH', $uri, $options);
     }
 
     /**
@@ -135,7 +135,7 @@ class Client
             $options['headers'] = $headers;
         }
 
-        $this->client->request('delete', $uri, $options);
+        $this->client->request('DELETE', $uri, $options);
     }
 
     private function getAccessToken(): string

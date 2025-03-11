@@ -8,15 +8,15 @@ const router = createRouter({
       name: 'home',
       component: () => import('../views/HomeView.vue'),
       meta: {
-        showInNav: true
+        
       },
     },
     {
       path: '/filter',
-      name: 'filter',
+      name: 'zoek',
       component: () => import('../views/FilterView.vue'),
       meta: {
-        showInNav: true
+        showInNav: "Zoek vrije plaatsen"
       },
     },
     {
@@ -24,7 +24,7 @@ const router = createRouter({
       name: 'list',
       component: () => import('../views/ListView.vue'),
       meta: {
-        showInNav: true
+        
       },
     },
     {
@@ -32,7 +32,7 @@ const router = createRouter({
       name: 'map',
       component: () => import('../views/MapView.vue'),
       meta: {
-        showInNav: true
+        
       },
     },
     {
@@ -40,7 +40,7 @@ const router = createRouter({
       name: 'privacy',
       component: () => import('../views/PrivacyView.vue'),
       meta: {
-        showInNav: true
+        showInNav: "Privacy en beleid"
       },
     },
     {
@@ -48,7 +48,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutUsView.vue'),
       meta: {
-        showInNav: true
+        showInNav: "Over ons"
       },
     },
     {
@@ -56,7 +56,7 @@ const router = createRouter({
       name: 'onboarding',
       component: () => import('../views/OnboardingView.vue'),
       meta: {
-        showInNav: true
+        
       },
     },
     {

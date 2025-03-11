@@ -4,7 +4,7 @@ import ButtonComponent from '@/components/ButtonComponent.vue'
 
 <template>
   <div class="min-h-screen flex flex-col px-6 pt-12 bg-gradient-to-tl from-slate-500 via-slate-200 to-slate-200">
-    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-20">
+    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-200">
       <div class="flex items-center mt-4">
         <img src="/assets/nsiv_logo_v1.png" alt="Logo" class="h-18 w-auto" />
       </div>
@@ -33,7 +33,7 @@ import ButtonComponent from '@/components/ButtonComponent.vue'
     <div class="flex items-center justify-center pt-10">
       <ButtonComponent text="Zoek vrije plaatsen" class="w-full" />
     </div>
-    <router-link to="/onboarding" class="text-right text-lg mt-4 text-white">
+    <router-link to="/onboarding" class="text-right text-lg mb-4 mt-4 text-white">
       onboarding →
     </router-link>
   </div>

@@ -22,9 +22,9 @@ class ApiLogEventListener
         $request = $event->getRequest();
         $route = $request->get('_route');
 
-        if (!str_starts_with($request->get('_route'), 'api_')) {
-            return;
-        }
+//        if (!str_starts_with($request->get('_route'), 'api_')) {
+//            return;
+//        }
 
         $response = $event->getResponse();
 

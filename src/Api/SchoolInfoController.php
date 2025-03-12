@@ -6,12 +6,13 @@ use App\Entity\School;
 use App\Model\Api\Details;
 use App\Model\Api\Phases\Phases;
 use App\Model\Api\Levels\Levels;
+use App\Model\Api\Grades\Grades;
 use App\Repository\SchoolGradeRepository;
 use App\Repository\SchoolPhaseRepository;
 use App\Repository\SchoolLevelRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 class SchoolInfoController extends AbstractController
 {
     private SchoolGradeRepository $schoolGradeRepository;
@@ -25,11 +26,25 @@ class SchoolInfoController extends AbstractController
         $this->phaseRepository = $phaseRepository;
     }
     /**
-     * @Route("/api/v2/grades", name="api_get_grades", methods={"GET"})
+     * @Route("/api/v2/grades", name="api_get_grades_v2", methods={"GET"})
      */
-    public function getGrades(string $internalName)
+    public function getGrades()
     {
-        return new JsonResponse($this->schoolGradeRepository->findOneByInternalName($internalName));
+        $grades = $this->schoolGradeRepository->findAll();
+
+        $data = [];
+        foreach ($grades as $grade) {
+            $details = new Details();
+            $details->id = $grade->getId();
+            $details->label = $grade->getName();
+
+            $data[] = $details;
+        }
+
+        $gradesResponse = new Grades();
+        $gradesResponse->grades = $data;
+
+        return new JsonResponse($gradesResponse);
     }
 
     /**

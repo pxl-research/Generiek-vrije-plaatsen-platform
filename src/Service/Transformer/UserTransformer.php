@@ -13,6 +13,7 @@ use App\Model\User;
 use App\Repository\SchoolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Service\Transformer\Post;
 
 class UserTransformer
 {
@@ -23,6 +24,14 @@ class UserTransformer
     public function __construct(SchoolRepository $schoolRepository)
     {
         $this->schoolRepository = $schoolRepository;
+    }
+
+
+    public function transformModelToArray($model): array
+    {
+        $result = $model->toArray();  
+    
+        return $result;
     }
 
     public function transformModelToCreateRequest(User $user): CreateUserRequest

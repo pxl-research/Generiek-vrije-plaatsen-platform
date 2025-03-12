@@ -572,4 +572,38 @@ class SchoolEducation
         $this->underrepresentedGroups->removeElement($underrepresentedGroup);
         $underrepresentedGroup->setSchoolEducation(null);
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'administrativeGroups' => $this->getAdministrativeGroups(),
+            'school' => $this->getSchool() ? $this->getSchool()->getId() : null,
+            'formType' => $this->getFormType() ? $this->getFormType()->getId() : null,
+            'type' => $this->getType() ? $this->getType()->getId() : null,
+            'level' => $this->getLevel() ? $this->getLevel()->getId() : null,
+            'grade' => $this->getGrade() ? $this->getGrade()->getId() : null,
+            'phase' => $this->getPhase() ? $this->getPhase()->getId() : null,
+            'position' => $this->getPosition(),
+            'year' => $this->getYear() ? $this->getYear()->getId() : null,
+            'capacity' => $this->getCapacity(),
+            'indicatorStudentSeatsPercentage' => $this->getIndicatorStudentSeatsPercentage(),
+            'indicatorStudentSeatsPercentageVisible' => $this->isIndicatorStudentSeatsPercentageVisible(),
+            'indicatorStudentSeatsTaken' => $this->getIndicatorStudentSeatsTaken(),
+            'studentSeatsTaken' => $this->getStudentSeatsTaken(),
+            'capacityReached' => $this->isCapacityReached(),
+            'capacityReachedAt' => $this->getCapacityReachedAt() ? $this->getCapacityReachedAt()->format('Y-m-d H:i:s') : null,
+            'formTypeVisibleOnFrontend' => $this->isFormTypeVisibleOnFrontend(),
+            'finalityVisibleOnFrontend' => $this->isFinalityVisibleOnFrontend(),
+            'capacityUpdatedAt' => $this->getCapacityUpdatedAt() ? $this->getCapacityUpdatedAt()->format('Y-m-d H:i:s') : null,
+            'default' => $this->isDefault(),
+            'finality' => $this->getFinality() ? $this->getFinality()->getId() : null,
+            'underrepresentedGroups' => array_map(
+                fn($group) => $group->getId(),
+                $this->underrepresentedGroups->toArray()
+            ),
+        ];
+    }
+
 }

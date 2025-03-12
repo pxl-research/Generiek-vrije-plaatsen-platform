@@ -24,7 +24,10 @@ import ButtonComponent from '@/components/ButtonComponent.vue'
         <b>Start your search</b> today to find the <b>perfect school</b> for your child.
       </p>
 
-      <img src="/assets/NSIV_header.png">
+      <router-link to="/admin-selection">
+        <img src="/assets/NSIV_header.png" alt="Admin of School" class="cursor-pointer hover:opacity-80 transition duration-300">
+      </router-link>
+
 
     </div>
 

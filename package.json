@@ -4,6 +4,7 @@
         "@nobleclem/jquery-multiselect": "nobleclem/jQuery-MultiSelect",
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.0.0",
+        "@types/google.maps": "^3.58.1",
         "bootstrap": "4.2.1",
         "core-js": "^3.0.0",
         "file-loader": "^6.0.0",
@@ -24,6 +25,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@googlemaps/js-api-loader": "^1.16.8",
         "@popperjs/core": "^2.9.2",
         "jquery-sortablejs": "^1.0.1",
         "sortablejs": "1.9"

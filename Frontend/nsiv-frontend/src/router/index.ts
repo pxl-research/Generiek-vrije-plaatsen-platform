@@ -32,7 +32,7 @@ const router = createRouter({
       name: 'map',
       component: () => import('../views/MapView.vue'),
       meta: {
-        
+        showInNav: "Zoek op de kaart"
       },
     },
     {

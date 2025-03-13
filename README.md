@@ -1,1 +1,0 @@
-# Generiek-vrije-plaatsen-platform

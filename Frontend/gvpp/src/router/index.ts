@@ -20,14 +20,6 @@ const router = createRouter({
       },
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import ('../views/SearchByName.vue'),
-      meta: {
-        showInNav: "Search by name"
-      },
-    },
-    {
       path: '/map',
       name: 'map',
       component: () => import ('../views/MapView.vue'),

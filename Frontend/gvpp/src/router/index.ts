@@ -27,6 +27,22 @@ const router = createRouter({
         showInNav: "Search by name"
       },
     },
+    {
+      path: '/map',
+      name: 'map',
+      component: () => import ('../views/MapView.vue'),
+      meta: {
+        showInNav: "Search by location"
+      },
+    },
+    {
+      path: '/filter',
+      name: 'zoek',
+      component: () => import('../views/FilterView.vue'),
+      meta: {
+        showInNav: "Zoek vrije plaatsen"
+      },
+    },
 
 
 

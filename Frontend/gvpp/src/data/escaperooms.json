@@ -1,0 +1,352 @@
+[
+    {
+      "id": 1,
+      "name": "Trapped In",
+      "address": "Kiezelweg 2",
+      "postalcode": "3530",
+      "city": "Houthalen",
+      "email": "naomi@escapegoat.be",
+      "phone-number": "+3211368751",
+      "website": "https://trappedinhouthalen.be/",
+      "different-rooms": [
+        {
+          "name": "Rescue Roger",
+          "age": "8+",
+          "price": "100",
+          "duration": "60 min",
+          "players": "3-6"
+        },
+        {
+          "name": "Sleepover",
+          "age-range": "10+",
+          "price": "120",
+          "duration": "60 min",
+          "players": "3-6"
+        },
+        {
+          "name": "Abduction",
+          "age-range": "18+",
+          "price": "125",
+          "duration": "60 min",
+          "players": "3-6"
+        },
+        {
+          "name": "Whirling Waters",
+          "age-range": "18+",
+          "price": "125",
+          "duration": "60 min",
+          "players": "3-6"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "ExitRoom",
+      "address": "Ladeuzeplein 11",
+      "postalcode": "3000",
+      "city": "Leuven",
+      "email": "info@escaperoom.be",
+      "phone-number": "+32468007757",
+      "website": "https://escaperoom.be/",
+      "different-rooms": [
+        {
+          "name": "Prison Break",
+          "age": "16+",
+          "price": "90",
+          "duration": "60 min",
+          "players": "3-6"
+        },
+        {
+          "name": "Jumanji",
+          "age-range": "10+",
+          "price": "90",
+          "duration": "60 min",
+          "players": "3-7"
+        },
+        {
+          "name": "Saving Ryan",
+          "age-range": "18+",
+          "price": "78",
+          "duration": "60 min",
+          "players": "4-6"
+        },
+        {
+          "name": "The Radio's",
+          "age-range": "18+",
+          "price": "160",
+          "duration": "70 min",
+          "players": "6-16"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Escape 3910 Seconds",
+      "address": "Heerstraat 4",
+      "postalcode": "3910",
+      "city": "Neerpelt",
+      "email": "kristof@scapegoat.be",
+      "phone-number": "+3211368751",
+      "website": "https://3910seconds.be",
+      "different-rooms": [
+        {
+          "name": "Too Cool for Gangster School",
+          "age": "12+",
+          "price": "120",
+          "duration": "65 min",
+          "players": "4-6"
+        },
+        {
+          "name": "Maffiagoud",
+          "age-range": "18+",
+          "price": "125",
+          "duration": "65 min",
+          "players": "3-6"
+        },
+        {
+          "name": "De Bom",
+          "age-range": "18+",
+          "price": "75",
+          "duration": "65 min",
+          "players": "2-6"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "TheStart EscapeRooms",
+      "address": "Liersesteenweg 172",
+      "postalcode": "2520",
+      "city": "Ranst",
+      "email": "info@thestart.be",
+      "phone-number": "+3233440047",
+      "website": "https://thestart.be",
+      "different-rooms": [
+        {
+          "name": "Harbor Hotel",
+          "age": "14+",
+          "price": "219",
+          "duration": "90 min",
+          "players": "2-7"
+        },
+        {
+          "name": "Undercover Skill Facility",
+          "age-range": "12+",
+          "price": "179",
+          "duration": "69 min",
+          "players": "2-6"
+        },
+        {
+          "name": "Chernobyl",
+          "age-range": "14+",
+          "price": "249",
+          "duration": "75 min",
+          "players": "2-7"
+        },
+        {
+          "name": "Escape the Lost Pyramid",
+          "age-range": "12+",
+          "price": "100",
+          "duration": "75 min",
+          "players": "2-4"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "De Gouden Kooi",
+      "address": "Haverwerf 7",
+      "postalcode": "2800",
+      "city": "Mechelen",
+      "email": "info@degoudenkooi.be",
+      "phone-number": "015676886",
+      "website": "https://degoudenkooi.be",
+      "different-rooms": [
+        {
+          "name": "De Nekker",
+          "age": "8+",
+          "price": "219",
+          "duration": "150 min",
+          "players": "2-6"
+        },
+        {
+          "name": "De schat van Kalakmul",
+          "age-range": "12+",
+          "price": "90",
+          "duration": "60 min",
+          "players": "2-6"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "The Missing Link",
+      "address": "Antwerpseweg 79A",
+      "postalcode": "2440",
+      "city": "Geel",
+      "email": "info@themissinglinkescape.be",
+      "phone-number": "32475408090",
+      "website": "https://themissinglinkescape.be",
+      "different-rooms": [
+        {
+          "name": "Henry's Birthday",
+          "age": "14+",
+          "price": "175",
+          "duration": "90 min",
+          "players": "2-5"
+        },
+        {
+          "name": "Till Death Do Us Part",
+          "age-range": "14+",
+          "price": "150",
+          "duration": "75 min",
+          "players": "2-6"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Lockfree",
+      "address": "Den Diel 44",
+      "postalcode": "2400",
+      "city": "Mol",
+      "email": "info@lockfree.be",
+      "phone-number": "3249523702",
+      "website": "https://www.lockfree.be",
+      "different-rooms": [
+        {
+          "name": "The Traveler",
+          "age": "14+",
+          "price": "112",
+          "duration": "75 min",
+          "players": "2-5"
+        },
+        {
+          "name": "Pharma Edderkoppen",
+          "age-range": "14+",
+          "price": "120",
+          "duration": "65 min",
+          "players": "2-6"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "ANT Escape Rooms",
+      "address": "Eskimofabriek, Wiedauwkaai 23P",
+      "postalcode": "9000",
+      "city": "Gent",
+      "email": "hello@antescaperooms.be",
+      "phone-number": "32093981557",
+      "website": "https://www.antescaperooms.be",
+      "different-rooms": [
+        {
+          "name": "De Kelder",
+          "age": "16+",
+          "price": "90",
+          "duration": "60 min",
+          "players": "3-7"
+        },
+        {
+          "name": "Ice Crime",
+          "age-range": "9+",
+          "price": "105",
+          "duration": "50 min",
+          "players": "4-6"
+        },
+        {
+          "name": "De Heksen",
+          "age-range": "8+",
+          "price": "105",
+          "duration": "50 min",
+          "players": "4-6"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Tales of Torchdale",
+      "address": "Herentalsebaan 47",
+      "postalcode": "2980",
+      "city": "Zoersel",
+      "email": "info@torchdale.be",
+      "phone-number": "32468067557",
+      "website": "https://torchdale.be",
+      "different-rooms": [
+        {
+          "name": "Monster Mashers",
+          "age": "16+",
+          "price": "250",
+          "duration": "120 min",
+          "players": "2-6"
+        },
+        {
+          "name": "The Toy Factory",
+          "age-range": "16+",
+          "price": "169",
+          "duration": "60 min",
+          "players": "2-6"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "EscapeRush",
+      "address": "Herfststraat 30",
+      "postalcode": "1050",
+      "city": "Brussel",
+      "email": "info@escaperush.com",
+      "phone-number": "+3222193420",
+      "website": "https://escaperush.com",
+      "different-rooms": [
+        {
+          "name": "Botanist Manor",
+          "age": "16+",
+          "price": "200",
+          "duration": "80 min",
+          "players": "3-6"
+        },
+        {
+          "name": "Tokyo Lab",
+          "age-range": "16+",
+          "price": "169",
+          "duration": "70 min",
+          "players": "3-6"
+        },
+        {
+          "name": "The White House",
+          "age-range": "16+",
+          "price": "160",
+          "duration": "60 min",
+          "players": "3-6"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "The Suspect",
+      "address": "Boekenberglei 270",
+      "postalcode": "2100",
+      "city": "Antwerpen",
+      "email": "info@thesuspect.be",
+      "phone-number": "32456376967",
+      "website": "https://www.thesuspect.be",
+      "different-rooms": [
+        {
+          "name": "Missie Damplein",
+          "age": "14+",
+          "price": "200",
+          "duration": "80 min",
+          "players": "3-7"
+        },
+        {
+          "name": "Het Examen",
+          "age-range": "16+",
+          "price": "160",
+          "duration": "80 min",
+          "players": "2-6"
+        }
+      ]
+    }
+  ]
+  

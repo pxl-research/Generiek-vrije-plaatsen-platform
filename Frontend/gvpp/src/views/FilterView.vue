@@ -1,210 +1,125 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import HeaderComponent from '../components/HeaderComponent.vue';
+import { ref, onMounted, computed } from 'vue';
+import escapeRooms from '../data/escaperooms.json';
 
+const escapeRoomsData = ref(escapeRooms);
+const searchQuery = ref('');
+const maxPrice = ref<number>(200); // Single price slider value
+const players = ref<number | null>(null);
+const filteredEscapeRooms = ref([...escapeRoomsData.value]);
+const expandedCards = ref<{ [key: string]: boolean }>({});
+const showSuggestions = ref(false);
 
-interface School {
-  id: number;
-  name: string;
-  address: string;
-  postalCode: string;
-  region: string;
-  city: string;
-  website: string;
-  email: string;
-  phoneNumber: string;
-  institutionNumber: string;
-  establishmentNumbers: string[];
-  niveau: string;
-  level: string;
-  type: string;
-  leerjaar: number;
-}
-
-const optionschool = ref<{ schools: School[] }>(schoolsData);
-const input = ref("");
-const showCityList = ref(true);
-const schooljaar = ref("");
-const niveau = ref("");
-const schooltype = ref("");
-const showResults = ref(false);
-
-
-const setSchooljaar = (value: string) => {
-  schooljaar.value = schooljaar.value === value ? "" : value;
+const search = () => {
+  filteredEscapeRooms.value = escapeRoomsData.value.filter(room => {
+    const matchesCity = room.city.toLowerCase().includes(searchQuery.value.toLowerCase());
+    const matchesRoom = room["different-rooms"].some(r => {
+      const matchesPrice = parseInt(r.price) <= maxPrice.value;
+      
+      const matchesPlayers = players.value ? (() => {
+        const [min, max] = r.players.split('-').map(p => parseInt(p));
+        return players.value! >= min && players.value! <= max;
+      })() : true;
+      
+      return matchesPrice && matchesPlayers;
+    });
+    return matchesCity && matchesRoom;
+  });
 };
 
-
-const setNiveau = (value: string) => {
-  niveau.value = niveau.value === value ? "" : value;
-}
-
-
-const setSchooltype = (value: string) => {
-  schooltype.value = schooltype.value === value ? "" : value;
-}
-
-
-const toggleResults = () => {
-  showResults.value = true;
-}
-
-const uniqueCities = computed(() => {
-  const cities = optionschool.value.schools.map((option: School) => option.city);
-  return Array.from(new Set(cities));
-});
-
-
-const filteredCities = computed(() => {
-  return uniqueCities.value.filter((city) =>
-    city.toLowerCase().includes(input.value.toLowerCase())
-  );
-});
-
-
-const selectCity = (city: string) => {
-  input.value = city;
-  showCityList.value = false;
+const toggleExpand = (name: string) => {
+  expandedCards.value[name] = !expandedCards.value[name];
 };
 
+const suggestedLocations = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  if (!query) return [];
+  return [...new Set(escapeRoomsData.value.map(room => room.city))]
+    .filter(city => city.toLowerCase().includes(query));
+});
 
-const removeCity = () => {
-  input.value = "";
-}
+const selectLocation = (city: string) => {
+  searchQuery.value = city;
+  showSuggestions.value = false;
+  search();
+};
 
-
-const filteredSchools = computed(() => {
-  return optionschool.value.schools.filter(
-    (school) =>
-      (school.city === input.value) &&
-      (school.niveau === niveau.value || niveau.value === '') &&
-      (school.type === schooltype.value || schooltype.value === '')
-  );
+onMounted(() => {
+  filteredEscapeRooms.value = escapeRoomsData.value;
 });
 </script>
 
-
-
-
 <template>
-  <div class="min-h-screen flex flex-col px-6 pt-12 bg-slate-200 ">
-    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-200">
-      <div class="flex items-center mt-3">
-        <router-link to="/">
-          <img src="/assets/nsiv_logo_v1.png" alt="Logo" class="h-18 w-auto" />
-        </router-link>
+  <HeaderComponent />
+
+  <div class="bg-slate-200 min-h-screen flex flex-col px-6 pt-8">
+    <h1 class="text-2xl font-bold w-full text-left mt-2">
+      Search for an Escape Room by location.
+    </h1>
+
+
+    <div class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
+
+      <div class="relative">
+        <input v-model="searchQuery" @input="showSuggestions = true; search()" type="text" placeholder="City"
+          class="w-full p-3.5 border border-gray-400 rounded-lg bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <ul v-if="showSuggestions && suggestedLocations.length" class="absolute bg-white border border-gray-300 w-full mt-1 rounded-lg shadow-md z-10">
+          <li v-for="(city, index) in suggestedLocations" :key="index" @click="selectLocation(city)"
+            class="p-2 hover:bg-blue-100 cursor-pointer">
+            {{ city }}
+          </li>
+        </ul>
       </div>
-    </header>
-
-    <p class="text-3xl text-gray-800 text-bold ml-3 mt-20">Zoek vrije plaatsen</p>
-    <p class="ml-3 text-gray-700 w-75 mt-5 mb-5">Selecteer de steden/gemeenten waar je je kinderen graag naar school
-      laat gaan.</p>
-
-    <div class="relative w-full h-90 overflow-hidden ">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d80478.5673049272!2d5.231144139688511!3d50.9245452049915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c12183ded75db7%3A0xf7cb7b027e7e2181!2sHasselt!5e0!3m2!1sen!2sbe!4v1741168303625!5m2!1sen!2sbe"
-        class="w-screen h-75" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      
+      <div>
+        <p class="font-bold">Max Price: €{{ maxPrice }}</p>
+        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search" 
+          class="w-full mt-2" />
+      </div>
+      
+      <div>
+        <p class="font-bold">Players</p>
+        <select v-model="players" @change="search" class="w-full p-2 border border-gray-400 rounded-lg">
+          <option :value="null">Any</option>
+          <option v-for="num in [2, 3, 4, 5, 6, 7, 8]" :key="num" :value="num">{{ num }} Players</option>
+        </select>
+      </div>
     </div>
 
-
-    <div class="filters-container flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg mb-10 ">
-      <p class="text-lg text-gray-800 font-bold">Selecteer een gemeente</p>
-      <div class="cityinput-container flex items-center">
-        <input class="border p-2 flex-1 rounded-sm" type="text" v-model="input" placeholder="Search cities"
-          @input="showCityList = true" />
-        <p @click="removeCity"
-          class="bg-slate-900 text-white text-2xl w-10 h-10 flex items-center justify-center cursor-pointer rounded-sm">
-          X
-        </p>
-      </div>
-
-      <div v-if="showCityList && input" class="cities-list">
-        <div v-for="(city, index) in filteredCities" :key="index" class="city-item" @click="selectCity(city)">
-          <p>{{ city }}</p>
+    <div class="w-full mt-10 mb-5 grid gap-6">
+      <div v-for="room in filteredEscapeRooms" :key="room.id"
+        class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="text-xl font-bold">{{ room.name }}</h2>
+            <p class="pt-2">{{ room.address }}, {{ room.postalcode }} {{ room.city }}</p>
+          </div>
+          <a :href="room.website" target="_blank" class="text-blue-500 underline text-sm">
+            Visit Website
+          </a>
         </div>
-      </div>
 
-      <p class="text-lg text-gray-800 font-bold">Selecteer een schooljaar</p>
-      <div class="flex gap-3 flex-wrap">
-        <button @click="setSchooljaar('2024-2025')"
-          :class="schooljaar === '2024-2025' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          2024-2025
-        </button>
-        <button @click="setSchooljaar('2025-2026')"
-          :class="schooljaar === '2025-2026' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          2025-2026
-        </button>
-      </div>
-
-      <p class="text-lg text-gray-800 font-bold">Selecteer een niveau</p>
-      <div class="flex gap-3 flex-wrap">
-        <button @click="setNiveau('kleuter onderwijs')"
-          :class="niveau === 'kleuter onderwijs' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Kleuteronderwijs
-        </button>
-        <button @click="setNiveau('lager onderwijs')"
-          :class="niveau === 'lager onderwijs' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Lager onderwijs
-        </button>
-        <button @click="setNiveau('secundair onderwijs')"
-          :class="niveau === 'secundair onderwijs' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class="py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Middelbaar onderwijs
-        </button>
-      </div>
-
-      <p class="text-lg text-gray-800 font-bold">Selecteer een type</p>
-      <div class="flex gap-3 flex-wrap">
-        <button @click="setSchooltype('gewoon')"
-          :class="schooltype === 'gewoon' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Gewoon
-        </button>
-        <button @click="setSchooltype('buitengewoon')"
-          :class="schooltype === 'buitengewoon' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Buitengewoon
-        </button>
-        <button @click="setSchooltype('onthaalonderwijs')"
-          :class="schooltype === 'onthaalonderwijs' ? 'bg-slate-200 border-2 border-blue-500 scale-105' : 'bg-slate-300'"
-          class=" py-2 px-4 rounded-lg w-full sm:w-auto transition-all duration-300">
-          Onthaalonderwijs
-        </button>
-      </div>
-
-      <button @click="toggleResults" class="mt-5 bg-green-700 text-white text-xl py-4 px-4 rounded-lg w-full">
-        Bekijk resultaten
-      </button>
-    </div>
-
-
-
-    <div v-if="showResults" class="results max-w-full bg-white shadow-lg rounded-xl p-5 overflow-auto mb-10">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Beschikbare scholen</h2>
-
-      <div v-if="filteredSchools.length > 0">
-        <div v-for="school in filteredSchools" :key="school.name"
-          class="p-5 bg-slate-200 rounded-lg shadow-sm mb-4 border border-gray-200 hover:shadow-md transition-all duration-300">
-          <p class="text-lg mb-2 font-semibold text-gray-900">{{ school.name }}</p>
-          <p class="text-gray-600 mb-1"><strong>📍 Locatie:</strong> {{ school.address }}</p>
-          <p class="text-gray-600">
-            <strong>Website:</strong>
-            <a :href="school.website" target="_blank"
-              class="text-blue-600 font-medium underline hover:text-blue-800 transition break-words">
-              {{ school.website }}
-            </a>
-          </p>
+        <div v-if="expandedCards[room.name]" class="mt-4">
+          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)" 
+               :key="index"
+               class="flex justify-between items-center p-3 bg-blue-100 border-b">
+            <div>
+              <h3 class="font-bold">{{ game.name }}</h3>
+              <p class="text-sm text-gray-600">Players: {{ game.players }}</p>
+              <p class="text-sm text-gray-600">Duration: {{ game.duration }}</p>
+            </div>
+            <span class="bg-green-500 text-white px-4 py-2 rounded-md">
+              €{{ game.price }}
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div v-else class="flex flex-col items-center justify-center text-center py-10">
-        <p class="text-red-500 text-lg font-semibold">❌ Geen scholen gevonden.</p>
-        <p class="text-gray-500 mt-2">Probeer je filters aan te passen.</p>
+        <button @click="toggleExpand(room.name)"
+          class="bg-[#2473BA] text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4">
+          {{ expandedCards[room.name] ? "Less Info" : "More Info" }}
+        </button>
       </div>
     </div>
-
   </div>
 </template>

@@ -35,6 +35,14 @@ const router = createRouter({
         showInNav: "Zoek vrije plaatsen"
       },
     },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/PrivacyPolicy.vue'),
+      meta: {
+        showInNav: "Privacy Policy"
+      },
+    },
 
 
 

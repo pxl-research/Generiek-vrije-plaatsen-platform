@@ -43,6 +43,16 @@ const router = createRouter({
         showInNav: "Privacy Policy"
       },
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+    },
+    {
+      path: '/adminfilter',
+      name: 'adminfilter',
+      component: () => import('../views/AdminFilterView.vue'),
+    },
 
 
 

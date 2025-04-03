@@ -8,7 +8,7 @@
           @input="showEscapeRoomList = true"
           @keydown.enter="updateLocation"
           class="bg-white border-2 h-15 w-75 text-xl p-3 focus:outline-none"
-          placeholder="Enter escape room here"
+          placeholder="Enter location here"
         />
         <svg
           class="w-10 h-10 ml-2 bg-red-300 text-red-900 rounded-lg cursor-pointer hover:bg-red-400"
@@ -55,40 +55,33 @@ let geocoder: google.maps.Geocoder | null = null;
 
 const apiKey = import.meta.env.VITE_MAPS_API_KEY;
 
-const removeUserinput = () => {
-  userInput.value = "";
-}
-
 interface EscapeRoom {
   address: string;
   title: string;
+  city: string;
   website: string;
   phoneNumber: string;
 }
 
-// Extract escape room locations from JSON
 const escapeRooms: EscapeRoom[] = escapeRoomData.map((escaperoom) => ({
   address: `${escaperoom.address}, ${escaperoom.city}, ${escaperoom.postalcode}`,
   title: escaperoom.name,
+  city: escaperoom.city.toLowerCase(),
   website: escaperoom.website,
   phoneNumber: escaperoom["phone-number"],
 }));
 
-
-// Filter escape rooms based on user input
 const filteredEscapeRooms = computed(() =>
-  escapeRooms.filter((escaperoom) => escaperoom.title.toLowerCase().includes(userInput.value.toLowerCase()))
+  escapeRooms.filter((escaperoom) => escaperoom.city.includes(userInput.value.toLowerCase()))
 );
 
-// Select an escape room from the search results
 const selectEscapeRoom = (escaperoom: EscapeRoom) => {
   console.log("Selected:", escaperoom.title);
   showEscapeRoomList.value = false;
-  userInput.value = escaperoom.title;
+  userInput.value = escaperoom.city;
   geocodeAddresses(escaperoom);
 };
 
-// Initialize Google Maps
 const initMap = async () => {
   if (!mapDiv.value) return;
 
@@ -110,23 +103,22 @@ const initMap = async () => {
   });
 };
 
-// Geocode addresses and add markers
 function geocodeAddresses(escaperoom: EscapeRoom | null = null) {
   if (!map || !geocoder) return;
   const infoWindow = new google.maps.InfoWindow();
 
   if (escaperoom) {
-    geocoder.geocode({ address: escaperoom.address }, (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+    geocoder.geocode({ address: escaperoom.city }, (results, status) => {
       if (status === "OK" && results && results[0]) {
         const position = results[0].geometry.location;
         map.setCenter(position);
       } else {
-        console.error(`Geocoding failed for ${escaperoom.address}: ${status}`);
+        console.error(`Geocoding failed for ${escaperoom.city}: ${status}`);
       }
     });
   } else {
     escapeRooms.forEach((escapeRoom) => {
-      geocoder.geocode({ address: escapeRoom.address }, (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+      geocoder.geocode({ address: escapeRoom.city }, (results, status) => {
         if (status === "OK" && results && results[0]) {
           const position = results[0].geometry.location;
           const marker = new google.maps.Marker({
@@ -148,16 +140,13 @@ function geocodeAddresses(escaperoom: EscapeRoom | null = null) {
             infoWindow.open(map, marker);
           });
         } else {
-          console.error(`Geocoding failed for ${escapeRoom.address}: ${status}`);
+          console.error(`Geocoding failed for ${escapeRoom.city}: ${status}`);
         }
       });
     });
   }
 }
 
-
-
-// Update location based on search input
 function updateLocation() {
   if (!map || !geocoder || !userInput.value) return;
 

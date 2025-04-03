@@ -1,73 +1,76 @@
 <template>
   <HeaderComponent/>
-  <div class="flex top-25 justify-center">
-    <div class="fixed top-50 flex flex-col items-start z-10">
-      <div class="flex items-center">
-        <input
-          type="text"
-          v-model="userInput"
-          @input="showEscapeRoomList = true"
-          @keydown.enter="updateLocation"
-          class="bg-white border-2 h-15 w-75 text-xl p-3 focus:outline-none"
-          placeholder="Enter location here"
-        />
-        <svg
-          class="w-10 h-10 ml-2 bg-red-300 text-red-900 rounded-lg cursor-pointer hover:bg-red-400"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          @click="removeUserInput"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6"></path>
-        </svg>
-      </div>
-      <div v-if="showEscapeRoomList && userInput" class="z-11 w-75 border-2 border-t-0">
-        <div
-          v-for="(escapeRoom, index) in filteredEscapeRooms"
-          :key="index"
-          @click="selectEscapeRoom(escapeRoom)"
-          class="bg-white hover:bg-pink-200 p-1"
-        >
-          <p>{{ escapeRoom.city }}</p>
+  <div class="bg-slate-200 min-h-screen "> 
+    <div class="flex top-25 justify-center">
+      <div class="fixed flex flex-col items-start z-10">
+        <div class="flex items-center">
+          <input
+            type="text"
+            v-model="userInput"
+            @input="showEscapeRoomList = true"
+            @keydown.enter="updateLocation"
+            class="bg-white border-2 h-15 w-75 text-xl p-3 focus:outline-none"
+            placeholder="Enter location here"
+          />
+          <svg
+            class="w-10 h-10 ml-2 bg-red-300 text-red-900 rounded-lg cursor-pointer hover:bg-red-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            @click="removeUserInput"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6"></path>
+          </svg>
+        </div>
+        <div v-if="showEscapeRoomList && userInput" class="z-11 w-75 border-2 border-t-0">
+          <div
+            v-for="(escapeRoom, index) in filteredEscapeRooms"
+            :key="index"
+            @click="selectEscapeRoom(escapeRoom)"
+            class="bg-white hover:bg-pink-200 p-1"
+          >
+            <p>{{ escapeRoom.city }}</p>
+          </div>
         </div>
       </div>
-    </div>
+      
 
-    <div ref="mapDiv" class="absolute bottom-0 z-1 h-200 w-full"></div>
+      <div ref="mapDiv" class="absolute bottom-0 h-170 w-full"></div>
 
-    <!-- Selected Escape Room Info Section -->
-    <div v-if="selectedEscapeRoom" class="fixed bottom-25 w-90 bg-white shadow-lg p-4 border border-black z-90 rounded-3xl">
-      <button @click="selectedEscapeRoom = null" class="absolute right-4 top-2 text-gray-500">✕</button>
-      <p class="text-lg font-bold text-gray-800">{{ selectedEscapeRoom.title }}</p>
-      <p class="text-sm text-gray-600">{{ selectedEscapeRoom.address }}</p>
-      <a :href="selectedEscapeRoom.website" target="_blank" class="text-blue-900 underline block mt-2">
-        {{ selectedEscapeRoom.website }}
-      </a>
-      <a :href="'tel:' + selectedEscapeRoom.phoneNumber" class="block mt-2">
-        Call us: {{ selectedEscapeRoom.phoneNumber }}
-      </a>
 
-      <!-- More Info Section -->
-      <div v-if="expanded" class="mt-4">
-        <p><strong>Available Rooms:</strong></p>
-        <div v-for="(room, index) in selectedEscapeRoom['different-rooms']" :key="index" class="bg-gray-100 p-3 rounded-md mt-2">
-          <h4 class="font-bold text-lg">{{ room.name }}</h4>
-          <p>Price: €{{ room.price }}</p>
-          <p>Duration: {{ room.duration }}</p>
-          <p>Players: {{ room.players }}</p>
+      <div v-if="selectedEscapeRoom" class="fixed bottom-25 bg-white w-90 shadow-lg p-4 border border-black z-90 rounded-3xl">
+        <button @click="selectedEscapeRoom = null" class="absolute right-4 top-2 text-gray-500">✕</button>
+        <p class="text-lg font-bold text-gray-800">{{ selectedEscapeRoom.title }}</p>
+        <p class="text-sm text-gray-600">{{ selectedEscapeRoom.address }}</p>
+        <a :href="selectedEscapeRoom.website" target="_blank" class="text-blue-900 underline block mt-2">
+          {{ selectedEscapeRoom.website }}
+        </a>
+        <a :href="'tel:' + selectedEscapeRoom.phoneNumber" class="block mt-2">
+          Call us: {{ selectedEscapeRoom.phoneNumber }}
+        </a>
+
+  
+        <div v-if="expanded" class="mt-4">
+          <p><strong>Available Rooms:</strong></p>
+          <div v-for="(room, index) in selectedEscapeRoom['different-rooms']" :key="index" class="bg-gray-100 p-3 rounded-md mt-2">
+            <h4 class="font-bold text-lg">{{ room.name }}</h4>
+            <p>Price: €{{ room.price }}</p>
+            <p>Duration: {{ room.duration }}</p>
+            <p>Players: {{ room.players }}</p>
+          </div>
         </div>
-      </div>
 
-      <!-- More Info Button -->
-      <div class="flex justify-center mt-4">
-        <button
-          @click="toggleExpand"
-          class="bg-green-500 text-white rounded-l p-1"
-        >
-          {{ expanded ? "Less Info" : "More Info" }}
-        </button>
+
+        <div class="flex justify-center mt-4">
+          <button
+            @click="toggleExpand"
+            class="bg-green-500 text-white rounded-l p-1"
+          >
+            {{ expanded ? "Less Info" : "More Info" }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

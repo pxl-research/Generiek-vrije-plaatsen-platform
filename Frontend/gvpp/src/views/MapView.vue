@@ -29,7 +29,7 @@
           @click="selectEscapeRoom(escapeRoom)"
           class="bg-white hover:bg-pink-200 p-1"
         >
-          <p>{{ escapeRoom.title }}</p>
+          <p>{{ escapeRoom.city }}</p>
         </div>
       </div>
     </div>

@@ -3,10 +3,13 @@ package be.PXLResearch.code4belgium;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 /**
  * Unit test for simple App.
  */
+@ExtendWith(MockitoExtension.class)
 public class AppTest 
     extends TestCase
 {

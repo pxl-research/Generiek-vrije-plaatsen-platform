@@ -34,7 +34,7 @@ onUnmounted(() => {
                    {{ page-title }}
                 </h1>
                 -->
-                <button @click.stop="isOpen = !isOpen" 
+                <button @click.stop="isOpen = !isOpen"
                     class="focus:outline-none fixed top-14 right-10 z-30 h-6 w-6 bg-white rounded"
                 >
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
@@ -53,21 +53,21 @@ onUnmounted(() => {
                     </svg>
                 </button>
                 <nav id="navigation-menu"
-                    :class="isOpen ? 'block' : 'hidden'" 
+                    :class="isOpen ? 'block' : 'hidden'"
                     class="absolute px-10 py-8 top-0 left-0 w-full h-full bg-gray-100 z-20"
                     @click.stop
-                >   
-                    <div 
+                >
+                    <div
                         class="flex flex-col gap-6 justify-start items-center h-full"
                     >
-                        <RouterLink 
+                        <RouterLink
                             :to="{name: 'home'}"
                             @click="isOpen = false"
-                            class="w-full mb-6"
+                            class="w-full mb-5"
                         >
-                            <img src="/assets/placeholder-logo.png" alt="Logo" 
-                                class="h-18 w-auto"
-                            >
+
+                              <h1 class="text-2xl mt-6  font-bold">ESCAPEROOMS</h1>
+
                         </RouterLink>
                         <RouterLink
                             v-for="route in navLinks"
@@ -79,9 +79,9 @@ onUnmounted(() => {
                             {{ route.meta?.showInNav }}
                         </RouterLink>
                     </div>
-                    
+
                 </nav>
-            </div>    
+            </div>
         </header>
         <RouterView/>
     </body>

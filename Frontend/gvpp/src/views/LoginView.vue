@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent/>
   <div class="flex items-center justify-center">
-    <div class="w-80 max-w-md p-8 bg-gray-100 rounded-xl border-2 shadow-md rounded-lg mt-20">
+    <div class="w-80 max-w-md p-8 bg-gray-100  border-2 shadow-md rounded-lg mt-20">
       <h2 class="text-2xl font-semibold text-center mb-6">Login</h2>
 
       <form @submit.prevent="login">

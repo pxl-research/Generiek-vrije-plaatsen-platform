@@ -26,6 +26,6 @@ public class EscapeRoom {
     private String phoneNumber;
     private String website;
 
-    @OneToMany(mappedBy = "escaperoom")
+    @OneToMany(mappedBy = "escapeRoom")
     private List<Room> rooms;
 }

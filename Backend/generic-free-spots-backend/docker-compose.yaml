@@ -1,0 +1,11 @@
+name: generic_free_spots
+services:
+  postgresql:
+    container_name: freespots_db
+    image: postgres:latest
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: pxl
+      POSTGRES_DB: freespots_db

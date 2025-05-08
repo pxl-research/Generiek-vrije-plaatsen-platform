@@ -7,6 +7,7 @@ import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EscapeRoomService implements IEscapeRoomService {
     private final EscapeRoomRepository escapeRoomRepository;
+    private final ObjectMapper objectMapper;
 
 
     @Override

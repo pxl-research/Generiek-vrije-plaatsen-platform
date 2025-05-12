@@ -29,7 +29,7 @@ public class EscapeRoom {
 
     @ManyToOne
     @JoinColumn(name = "organization_id", nullable = false)
-    private Organization organization;
+    private EscapeRoomOrganization organization;
     private String name;
     private String description;
     private LocalDateTime createdAt;

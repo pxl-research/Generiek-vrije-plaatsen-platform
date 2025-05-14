@@ -27,9 +27,6 @@ public class EscapeRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id", nullable = false)
-    private EscapeRoomOrganization organization;
     private String name;
     private String description;
     private LocalDateTime createdAt;

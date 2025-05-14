@@ -12,5 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomRequest {
-    private JsonNode properties;
+    private String name;
+    private int minimumAge;
+    private int duration;
+    private int minPlayers;
+    private int maxPlayers;
+    private EscapeRoom escapeRoom;
 }

@@ -1,7 +1,7 @@
-package be.PXLResearch.code4belgium.general;
+package be.PXLResearch.code4belgium.general.DTO.Filter;
 
 import be.PXLResearch.code4belgium.enums.DataType;
-import jakarta.persistence.*;
+import be.PXLResearch.code4belgium.general.Sector;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,20 +9,15 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "filters")
-public class Filter {
-    @Id
-    @GeneratedValue
+public class FilterResponse {
     private Long id;
     private String name;
     private DataType datatype;
     private String value;
-    @ManyToMany(mappedBy = "filters")
     private List<Sector> sectors;
     private boolean filterable;
 }

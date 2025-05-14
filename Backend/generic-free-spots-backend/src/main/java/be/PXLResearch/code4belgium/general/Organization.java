@@ -1,21 +1,29 @@
 package be.PXLResearch.code4belgium.general;
 
-import be.PXLResearch.code4belgium.general.interfaces.IOrganization;
-import be.PXLResearch.code4belgium.general.interfaces.ISector;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Organization<T> implements IOrganization {
+public abstract class Organization<T> {
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @OneToMany(mappedBy = "organization")
     private List<T> freeSpots;
-    private ISector sector;
+
+    @ManyToOne
+    @JoinColumn(table = "sector_id")
+    private Sector sector;
     private String name;
     private String type;
 }

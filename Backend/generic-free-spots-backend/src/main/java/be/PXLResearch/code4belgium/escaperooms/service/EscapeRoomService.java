@@ -28,7 +28,7 @@ public class EscapeRoomService implements IEscapeRoomService {
         List<EscapeRoom> escapeRooms = escapeRoomRepository.findAll();
 
         if (escapeRooms.isEmpty()) {
-            throw new ResourceNotFoundException("No escape rooms found");
+            return List.of();
         }
 
         return escapeRooms.stream()

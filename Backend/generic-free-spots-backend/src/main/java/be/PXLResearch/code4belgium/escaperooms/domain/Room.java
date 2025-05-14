@@ -19,16 +19,12 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    private String name;
-//    private int minimumAge;
-//    private int duration;
-//    private int minPlayers;
-//    private int maxPlayers;
-//    @ManyToOne
-//    @JoinColumn(name = "escaperoom_id", nullable = false)
-//    private EscapeRoom escapeRoom;
-
-    @Type(JsonBinaryType.class)
-    @Column(columnDefinition = "jsonb")
-    private JsonNode properties;
+    private String name;
+    private int minimumAge;
+    private int duration;
+    private int minPlayers;
+    private int maxPlayers;
+    @ManyToOne
+    @JoinColumn(name = "escaperoom_id", nullable = false)
+    private EscapeRoom escapeRoom;
 }

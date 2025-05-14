@@ -1,7 +1,5 @@
 package be.PXLResearch.code4belgium.general;
 
-import be.PXLResearch.code4belgium.general.interfaces.IOrganization;
-import be.PXLResearch.code4belgium.general.interfaces.ISector;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,16 +14,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sectors")
-public class Sector<T extends IOrganization, U> implements ISector {
+public class Sector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    
-    @OneToMany
-    private List<T> organizations;
+    private String image;
 
     @OneToMany
-    private List<U> filters;
+    private List<Organization<?>> organizations;
+
+    @ManyToMany
+    @JoinTable(
+            name = "sector_filters",
+            joinColumns = @JoinColumn(name = "sector_id"),
+            inverseJoinColumns = @JoinColumn(name = "filter_id")
+    )
+    private List<Filter> filters;
 
 }

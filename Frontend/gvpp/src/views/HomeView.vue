@@ -18,18 +18,24 @@ const switchSector = (sectorKey: string) => {
   <div class="bg-slate-200 min-h-screen">
     <HeaderComponent />
 
-    <!-- 🔘 Sector Switcher -->
-    <div class="flex flex-wrap justify-center gap-4 p-4">
-      <button
-        v-for="(sector, key) in sectorOptions"
-        :key="key"
-        @click="switchSector(key)"
-        class="px-4 py-2 rounded text-black font-semibold transition duration-200 shadow"
-        :class="sector.bgColor"
-      >
-        {{ sector.title }}
-      </button>
-    </div>
+    <!-- 🔽 Sector Dropdown -->
+<div class="flex justify-center p-4">
+  <select
+    @change="switchSector(($event.target as HTMLSelectElement).value)"
+    class="p-2 rounded border border-gray-400"
+    :value="route.query.sector || ''"
+  >
+    <option disabled value="">Select a sector</option>
+    <option
+      v-for="(sector, key) in sectorOptions"
+      :key="key"
+      :value="key"
+    >
+      {{ sector.title }}
+    </option>
+  </select>
+</div>
+
 
     <!-- 🔍 Main Title -->
     <h1 class="text-xl font-bold w-auto m-5 text-center">

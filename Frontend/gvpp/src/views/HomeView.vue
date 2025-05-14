@@ -12,7 +12,7 @@ const sectorOptions = sectorConfig
 const switchSector = (sectorKey: string) => {
   router.push({ query: { ...route.query, sector: sectorKey } })
 }
-</script>
+</script> 
 
 <template>
   <div class="bg-slate-200 min-h-screen">

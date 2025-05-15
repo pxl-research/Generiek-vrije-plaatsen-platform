@@ -45,7 +45,7 @@ import HeaderComponent from '@/components/HeaderComponent.vue';
 
       <section class="flex flex-col items-center gap-6 ">
         <h2 class="text-4xl mb-10 mt-20 font-bold">Powered By</h2>
-        <img src="/assets/logo-codeforbelgium 2.png" alt="Mission image" class="rounded-lg  w-full max-w-md">
+        <img src="/assets/logo-codeforbelgium.png" alt="Mission image" class="rounded-lg  w-full max-w-md">
         <p class="mt-10 text-xl text-gray-700 max-w-2xl">
           CodeForBelgium is a passionate community of volunteers dedicated to creating impactful projects. By combining teamwork, expertise, and a commitment to quality, we deliver solutions that are highly maintainable yet cost-effective. Whether you're looking to bring an idea to life or support meaningful projects, CodeForBelgium is here to make it happen.<br><br> Together, we code for a better tomorrow!
         </p>

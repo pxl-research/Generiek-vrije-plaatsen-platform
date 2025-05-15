@@ -1,15 +1,9 @@
 <template>
 
   <div class="min-h-screen flex flex-col bg-slate-200">
-    <header class="flex justify-between items-center p-4 fixed top-0 left-0 right-0 z-10 bg-slate-200">
-      <div class="flex items-center mt-2">
-        <RouterLink to="/">
-          <img src="/assets/placeholder-logo.png" alt="Logo" class="h-18 w-auto cursor-pointer" />
-        </RouterLink>
-      </div>
-    </header>
+    <HeaderComponent/>
 
-  <main class="mx-5 my-20 flex flex-col gap-6">
+  <main class="mx-15 my-5 flex flex-col gap-6">
 
 
 
@@ -35,7 +29,7 @@
                 Collected data is used to communicate updates, improve services, and ensure security. We do not share personal information with third parties unless legally required.
               </p>
           </div>
-          <div>
+          <div class="mb-10">
               <h3 class="font-black">Your Rights</h3>
               <p>
                   You have the right to request access to your personal information, correct inaccuracies, or request deletion. For inquiries, please reach out to us.
@@ -43,7 +37,7 @@
           </div>
       </section>
 
-      <h2 class="text-lg font-bold">Terms of Use</h2>
+      <h2 class="text-xl font-black">Terms of Use</h2>
       <section class="flex flex-col gap-3 text-m">
           <div>
               <h3 class="font-black">Introduction</h3>
@@ -65,7 +59,7 @@
           </div>
       </section>
 
-      <h2 class="text-lg font-bold">Cookie Policy</h2>
+      <h2 class="text-xl font-black">Cookie Policy</h2>
       <section class="flex flex-col gap-3 text-m">
           <div>
               <h3 class="font-black">Introduction</h3>
@@ -91,4 +85,5 @@
 </template>
 
 <script setup lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue';
 </script>

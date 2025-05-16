@@ -4,17 +4,16 @@ import be.PXLResearch.code4belgium.general.Organization;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "escape_room_organizations")
 public class EscapeRoomOrganization extends Organization<EscapeRoom> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
 }

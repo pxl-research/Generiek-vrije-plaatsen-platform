@@ -1,5 +1,6 @@
 package be.PXLResearch.code4belgium.general;
 
+import be.PXLResearch.code4belgium.enums.City;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +23,10 @@ public abstract class Organization<T> {
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "parent_id")
-    private Organization<?> parentOrganization;
+    private Organization<T> parentOrganization;
 
     @OneToMany(mappedBy = "parentOrganization")
-    private List<Organization<?>> childOrganizations;
+    private List<Organization<T>> childOrganizations;
 
     @OneToMany(mappedBy = "organization")
     private List<T> freeSpots;
@@ -34,5 +35,10 @@ public abstract class Organization<T> {
     @JoinColumn(name = "sector_id")
     private Sector sector;
     private String name;
-    private String type;
+    private String type; //VZW, NV, BVBA, ...
+    private String address;
+
+    @Enumerated(EnumType.STRING)
+    private City city;
+    private int postalCode;
 }

@@ -20,12 +20,38 @@ const router = createRouter({
       },
     },
     {
-      path: '/search',
-      name: 'search',
-      component: () => import ('../views/SearchByName.vue'),
+      path: '/map',
+      name: 'map',
+      component: () => import ('../views/MapView.vue'),
       meta: {
-        showInNav: "Search by name"
+        showInNav: "Search by location"
       },
+    },
+    {
+      path: '/filter',
+      name: 'zoek',
+      component: () => import('../views/FilterView.vue'),
+      meta: {
+        showInNav: "Zoek vrije plaatsen"
+      },
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/PrivacyPolicy.vue'),
+      meta: {
+        showInNav: "Privacy Policy"
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+    },
+    {
+      path: '/adminfilter',
+      name: 'adminfilter',
+      component: () => import('../views/AdminFilterView.vue'),
     },
 
 

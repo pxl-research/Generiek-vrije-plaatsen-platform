@@ -14,28 +14,92 @@
           "age": "8+",
           "price": "100",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "full" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "open" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
+          
         },
         {
           "name": "Sleepover",
           "age-range": "10+",
           "price": "120",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
+          
         },
         {
           "name": "Abduction",
           "age-range": "18+",
           "price": "125",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "full" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "full" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
+          
         },
         {
           "name": "Whirling Waters",
           "age-range": "18+",
           "price": "125",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "full" },
+            { "time": "16:00", "status": "full" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
+          
         }
       ]
     },
@@ -54,28 +118,88 @@
           "age": "16+",
           "price": "90",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "full" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Jumanji",
           "age-range": "10+",
           "price": "90",
           "duration": "60 min",
-          "players": "3-7"
+          "players": "3-7",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Saving Ryan",
           "age-range": "18+",
           "price": "78",
           "duration": "60 min",
-          "players": "4-6"
+          "players": "4-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "open" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "The Radio's",
           "age-range": "18+",
           "price": "160",
           "duration": "70 min",
-          "players": "6-16"
+          "players": "6-16",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "full" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     },
@@ -94,21 +218,66 @@
           "age": "12+",
           "price": "120",
           "duration": "65 min",
-          "players": "4-6"
+          "players": "4-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "open" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "full" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Maffiagoud",
           "age-range": "18+",
           "price": "125",
           "duration": "65 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "full" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "De Bom",
           "age-range": "18+",
           "price": "75",
           "duration": "65 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     },
@@ -127,28 +296,88 @@
           "age": "14+",
           "price": "219",
           "duration": "90 min",
-          "players": "2-7"
+          "players": "2-7",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "Undercover Skill Facility",
           "age-range": "12+",
           "price": "179",
           "duration": "69 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "full" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Chernobyl",
           "age-range": "14+",
           "price": "249",
           "duration": "75 min",
-          "players": "2-7"
+          "players": "2-7",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "Escape the Lost Pyramid",
           "age-range": "12+",
           "price": "100",
           "duration": "75 min",
-          "players": "2-4"
+          "players": "2-4",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "open" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     },
@@ -167,14 +396,44 @@
           "age": "8+",
           "price": "219",
           "duration": "150 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "full" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "full" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "De schat van Kalakmul",
           "age-range": "12+",
           "price": "90",
           "duration": "60 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         }
       ]
     },
@@ -193,14 +452,44 @@
           "age": "14+",
           "price": "175",
           "duration": "90 min",
-          "players": "2-5"
+          "players": "2-5",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "Till Death Do Us Part",
           "age-range": "14+",
           "price": "150",
           "duration": "75 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "full" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         }
       ]
     },
@@ -219,14 +508,44 @@
           "age": "14+",
           "price": "112",
           "duration": "75 min",
-          "players": "2-5"
+          "players": "2-5",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "Pharma Edderkoppen",
           "age-range": "14+",
           "price": "120",
           "duration": "65 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         }
       ]
     },
@@ -245,21 +564,66 @@
           "age": "16+",
           "price": "90",
           "duration": "60 min",
-          "players": "3-7"
+          "players": "3-7",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "full" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Ice Crime",
           "age-range": "9+",
           "price": "105",
           "duration": "50 min",
-          "players": "4-6"
+          "players": "4-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "full" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "De Heksen",
           "age-range": "8+",
           "price": "105",
           "duration": "50 min",
-          "players": "4-6"
+          "players": "4-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     },
@@ -278,14 +642,44 @@
           "age": "16+",
           "price": "250",
           "duration": "120 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "The Toy Factory",
           "age-range": "16+",
           "price": "169",
           "duration": "60 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "full" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         }
       ]
     },
@@ -304,21 +698,66 @@
           "age": "16+",
           "price": "200",
           "duration": "80 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "full" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "full" }
+          ]
         },
         {
           "name": "Tokyo Lab",
           "age-range": "16+",
           "price": "169",
           "duration": "70 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "open" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "The White House",
           "age-range": "16+",
           "price": "160",
           "duration": "60 min",
-          "players": "3-6"
+          "players": "3-6",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "full" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     },
@@ -337,17 +776,46 @@
           "age": "14+",
           "price": "200",
           "duration": "80 min",
-          "players": "3-7"
+          "players": "3-7",
+          "timeslots": [
+            { "time": "10:00", "status": "full" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "open" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "open" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         },
         {
           "name": "Het Examen",
           "age-range": "16+",
           "price": "160",
           "duration": "80 min",
-          "players": "2-6"
+          "players": "2-6",
+          "timeslots": [
+            { "time": "10:00", "status": "open" },
+            { "time": "11:00", "status": "open" },
+            { "time": "12:00", "status": "full" },
+            { "time": "13:00", "status": "full" },
+            { "time": "14:00", "status": "full" },
+            { "time": "15:00", "status": "open" },
+            { "time": "16:00", "status": "open" },
+            { "time": "17:00", "status": "open" },
+            { "time": "18:00", "status": "open" },
+            { "time": "19:00", "status": "open" },
+            { "time": "20:00", "status": "full" },
+            { "time": "21:00", "status": "open" },
+            { "time": "22:00", "status": "open" }
+          ]
         }
       ]
     }
   ]
-  
-  
+

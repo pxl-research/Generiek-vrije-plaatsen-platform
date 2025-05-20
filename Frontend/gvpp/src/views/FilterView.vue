@@ -16,12 +16,12 @@ const search = () => {
     const matchesCity = room.city.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesRoom = room["different-rooms"].some(r => {
       const matchesPrice = parseInt(r.price) <= maxPrice.value;
-
+      
       const matchesPlayers = players.value ? (() => {
         const [min, max] = r.players.split('-').map(p => parseInt(p));
         return players.value! >= min && players.value! <= max;
       })() : true;
-
+      
       return matchesPrice && matchesPlayers;
     });
     return matchesCity && matchesRoom;
@@ -71,13 +71,13 @@ onMounted(() => {
           </li>
         </ul>
       </div>
-
+      
       <div>
         <p class="font-bold">Max Price: €{{ maxPrice }}</p>
-        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search"
+        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search" 
           class="w-full mt-2" />
       </div>
-
+      
       <div>
         <p class="font-bold">Players</p>
         <select v-model="players" @change="search" class="w-full p-2 border border-gray-400 rounded-lg">
@@ -101,7 +101,7 @@ onMounted(() => {
         </div>
 
         <div v-if="expandedCards[room.name]" class="mt-4">
-          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)"
+          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)" 
                :key="index"
                class="flex justify-between items-center p-3 bg-blue-100 border-b">
             <div>

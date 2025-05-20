@@ -13,7 +13,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "sectors")
+@Table(name = "sectors", indexes = {
+        @Index(name = "idx_sector_name", columnList = "name"),
+        @Index(name = "idx_sector_image", columnList = "image")
+})
 public class Sector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -20,6 +20,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private float price;
     private int minimumAge;
     private int duration;
     private int minPlayers;

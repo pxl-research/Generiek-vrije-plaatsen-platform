@@ -1,5 +1,6 @@
 package be.PXLResearch.code4belgium.escaperooms.service;
 
+import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
@@ -7,11 +8,14 @@ import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,18 +68,23 @@ public class EscapeRoomService implements IEscapeRoomService {
     }
 
     @Override
-    public EscapeRoom createEscapeRoom(EscapeRoomRequest request) {
+    public EscapeRoom createEscapeRoom(EscapeRoomRequest request) throws IOException {
         List<Room> rooms = new ArrayList<>();
+        JsonNode node = objectMapper.readTree(request.getFilterableProperties().traverse());
 
         EscapeRoom escapeRoom = EscapeRoom.builder()
                 .name(request.getName())
+                .description("Test")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .address(request.getAddress())
                 .postalCode(request.getPostalCode())
-                .city(request.getCity())
+                .city(City.fromString(request.getCity()))
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .website(request.getWebsite())
                 .rooms(rooms)
+                .filterableProperties(node)
                 .build();
 
         return escapeRoomRepository.save(escapeRoom);

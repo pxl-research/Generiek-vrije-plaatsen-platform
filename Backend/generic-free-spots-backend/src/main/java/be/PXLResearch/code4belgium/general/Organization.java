@@ -31,7 +31,7 @@ public abstract class Organization<T> {
     private List<T> freeSpots;
 
     @ManyToOne
-    @JoinColumn(table = "sector_id")
+    @JoinColumn(name = "sector_id")
     private Sector sector;
     private String name;
     private String type;

@@ -21,7 +21,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "escape_rooms")
+@Table(name = "escape_rooms", indexes = {
+        @Index(name = "idx_escaperoom_name", columnList = "name"),
+        @Index(name = "idx_escaperoom_createdat", columnList = "createdAt"),
+        @Index(name = "idx_escaperoom_city_postalcode", columnList = "city, postalCode"),
+        @Index(name = "idx_escaperoom_maxcapacity", columnList = "maxCapacity")
+})
 public class EscapeRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,10 +38,19 @@ public class EscapeRoom {
     private LocalDateTime updatedAt;
     private String address;
     private int postalCode;
+
+    @Enumerated(EnumType.STRING)
     private City city;
+
     private String email;
     private String phoneNumber;
     private String website;
+    private int currentCapacity;
+    private int maxCapacity;
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private EscapeRoomOrganization organization;
+
     @OneToMany(mappedBy = "escapeRoom")
     private List<Room> rooms;
 

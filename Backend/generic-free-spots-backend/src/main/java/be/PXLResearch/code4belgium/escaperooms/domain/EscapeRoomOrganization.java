@@ -6,14 +6,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "escape_room_organizations")
 public class EscapeRoomOrganization extends Organization<EscapeRoom> {
-
+    // Empty Constructor needed for proper compilation
+    public EscapeRoomOrganization() {}
 }

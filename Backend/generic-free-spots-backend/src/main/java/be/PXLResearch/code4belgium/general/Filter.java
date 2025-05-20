@@ -14,7 +14,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "filters")
+@Table(name = "filters", indexes = {
+        @Index(name = "idx_filter_name", columnList = "name"),
+        @Index(name = "idx_filter_datatype", columnList = "datatype"),
+        @Index(name = "idx_filter_value", columnList = "value"),
+        @Index(name = "idx_filter_active", columnList = "active")
+})
 public class Filter {
     @Id
     @GeneratedValue
@@ -24,5 +29,5 @@ public class Filter {
     private String value;
     @ManyToMany(mappedBy = "filters")
     private List<Sector> sectors;
-    private boolean filterable;
+    private boolean active;
 }

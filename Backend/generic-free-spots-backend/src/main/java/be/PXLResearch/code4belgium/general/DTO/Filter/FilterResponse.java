@@ -19,5 +19,5 @@ public class FilterResponse {
     private DataType datatype;
     private String value;
     private List<Sector> sectors;
-    private boolean filterable;
+    private boolean active;
 }

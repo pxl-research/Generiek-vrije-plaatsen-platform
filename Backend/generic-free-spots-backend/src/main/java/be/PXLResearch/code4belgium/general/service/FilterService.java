@@ -34,7 +34,7 @@ public class FilterService implements IFilterService {
                         f.getDatatype(),
                         f.getValue(),
                         f.getSectors(),
-                        f.isFilterable()
+                        f.isActive()
                 ))
                 .collect(Collectors.toList());
 
@@ -50,7 +50,7 @@ public class FilterService implements IFilterService {
                 .datatype(filter.getDatatype())
                 .value(filter.getValue())
                 .sectors(filter.getSectors())
-                .filterable(filter.isFilterable())
+                .active(filter.isActive())
                 .build();
     }
 
@@ -63,7 +63,7 @@ public class FilterService implements IFilterService {
                 .datatype(filterRequest.getDatatype())
                 .value(filterRequest.getValue())
                 .sectors(sectors)
-                .filterable(filterRequest.isFilterable())
+                .active(filterRequest.isActive())
                 .build();
 
         return filterRepository.save(filter);

@@ -15,7 +15,7 @@ public class EscapeRoomRequest {
     private String name;
     private String address;
     private int postalCode;
-    private City city;
+    private String city;
     private String email;
     private String phoneNumber;
     private String website;

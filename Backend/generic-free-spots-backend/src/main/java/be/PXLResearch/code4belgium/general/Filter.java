@@ -25,6 +25,8 @@ public class Filter {
     @GeneratedValue
     private Long id;
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private DataType datatype;
     private String value;
     @ManyToMany(mappedBy = "filters")

@@ -22,5 +22,7 @@ public class EscapeRoomResponse {
     private String email;
     private String phoneNumber;
     private String website;
+    private int currentCapacity;
+    private int maxCapacity;
     private List<Room> rooms;
 }

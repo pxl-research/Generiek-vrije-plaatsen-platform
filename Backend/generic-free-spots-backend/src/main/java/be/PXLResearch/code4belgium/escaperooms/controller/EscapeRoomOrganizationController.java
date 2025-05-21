@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/escaperooms/organizations")
+@RequestMapping("/api/organizations/escaperooms")
 @RequiredArgsConstructor
 public class EscapeRoomOrganizationController {
     private final EscapeRoomOrganizationService escapeRoomOrganizationService;

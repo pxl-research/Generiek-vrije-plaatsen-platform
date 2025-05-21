@@ -4,7 +4,9 @@ import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
+import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomOrganization;
 import be.PXLResearch.code4belgium.escaperooms.domain.Room;
+import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomOrganizationRepository;
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class EscapeRoomService implements IEscapeRoomService {
     private final EscapeRoomRepository escapeRoomRepository;
     private final ObjectMapper objectMapper;
+    private final EscapeRoomOrganizationRepository escapeRoomOrganizationRepository;
 
 
     @Override
@@ -45,6 +48,8 @@ public class EscapeRoomService implements IEscapeRoomService {
                         e.getEmail(),
                         e.getPhoneNumber(),
                         e.getWebsite(),
+                        e.getCurrentCapacity(),
+                        e.getMaxCapacity(),
                         e.getRooms()
                         ))
                 .collect(Collectors.toList());
@@ -63,6 +68,8 @@ public class EscapeRoomService implements IEscapeRoomService {
                 .email(escapeRoom.getEmail())
                 .phoneNumber(escapeRoom.getPhoneNumber())
                 .website(escapeRoom.getWebsite())
+                .currentCapacity(escapeRoom.getCurrentCapacity())
+                .maxCapacity(escapeRoom.getMaxCapacity())
                 .rooms(escapeRoom.getRooms())
                 .build();
     }
@@ -70,23 +77,31 @@ public class EscapeRoomService implements IEscapeRoomService {
     @Override
     public EscapeRoom createEscapeRoom(EscapeRoomRequest request) throws IOException {
         List<Room> rooms = new ArrayList<>();
+        EscapeRoomOrganization organization = escapeRoomOrganizationRepository.findById(request.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("No organization found with id " + request.getOrganizationId()));
         JsonNode node = objectMapper.readTree(request.getFilterableProperties().traverse());
 
         EscapeRoom escapeRoom = EscapeRoom.builder()
                 .name(request.getName())
-                .description("Test")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .description(request.getDescription())
+                //.createdAt(LocalDateTime.now())
+                //.updatedAt(LocalDateTime.now())
                 .address(request.getAddress())
                 .postalCode(request.getPostalCode())
                 .city(City.fromString(request.getCity()))
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .website(request.getWebsite())
+                .currentCapacity(0)
+                .maxCapacity(request.getMaxCapacity())
                 .rooms(rooms)
                 .filterableProperties(node)
                 .build();
 
-        return escapeRoomRepository.save(escapeRoom);
+        escapeRoomRepository.save(escapeRoom);
+
+        organization.getFreeSpots().add(escapeRoom);
+        escapeRoomOrganizationRepository.save(organization);
+
+        return escapeRoom;
     }
 }

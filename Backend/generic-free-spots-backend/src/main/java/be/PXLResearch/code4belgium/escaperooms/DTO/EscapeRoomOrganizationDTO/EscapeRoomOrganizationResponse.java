@@ -20,7 +20,6 @@ public class EscapeRoomOrganizationResponse {
     private EscapeRoomOrganization parentOrganization;
     private List<EscapeRoomOrganization> childrenOrganizations;
     private List<EscapeRoom> escapeRooms;
-    private Sector sector;
     private String name;
     private String type;
     private String address;

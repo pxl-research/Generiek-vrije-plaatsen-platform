@@ -16,14 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EscapeRoomOrganizationRequest {
-    private EscapeRoomOrganization parentOrganization;
+    private Long parentOrganizationId;
     private List<EscapeRoomOrganization> childrenOrganizations;
     private List<EscapeRoom> escapeRooms;
-    private Sector sector;
+    private Long sectorId;
     private String name;
     private String type;
     private String address;
-    private City city;
+    private String city;
     private int postalCode;
 
 }

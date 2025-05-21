@@ -13,11 +13,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EscapeRoomRequest {
     private String name;
+    private String description;
+    private Long organizationId;
     private String address;
     private int postalCode;
     private String city;
     private String email;
     private String phoneNumber;
     private String website;
+    private int maxCapacity;
     private JsonNode filterableProperties;
 }

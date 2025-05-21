@@ -1,5 +1,6 @@
 package be.PXLResearch.code4belgium.general.service;
 
+import be.PXLResearch.code4belgium.enums.DataType;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import be.PXLResearch.code4belgium.general.DTO.Filter.FilterRequest;
 import be.PXLResearch.code4belgium.general.DTO.Filter.FilterResponse;
@@ -60,10 +61,10 @@ public class FilterService implements IFilterService {
 
         Filter filter = Filter.builder()
                 .name(filterRequest.getName())
-                .datatype(filterRequest.getDatatype())
-                .value(filterRequest.getValue())
+                .datatype(DataType.fromString(filterRequest.getDatatype()))
+                .value("default")
                 .sectors(sectors)
-                .active(filterRequest.isActive())
+                .active(true)
                 .build();
 
         return filterRepository.save(filter);

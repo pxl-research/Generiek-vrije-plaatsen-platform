@@ -13,7 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FilterRequest {
     private String name;
-    private DataType datatype;
-    private String value;
-    private boolean active;
+    private String datatype;
 }

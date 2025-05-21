@@ -2,6 +2,7 @@ package be.PXLResearch.code4belgium.escaperooms.domain;
 
 import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.general.Organization;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
@@ -34,14 +35,18 @@ public class EscapeRoom {
 
     private String name;
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//    private LocalDateTime createdAt;
+//
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//    private LocalDateTime updatedAt;
+
     private String address;
     private int postalCode;
 
     @Enumerated(EnumType.STRING)
     private City city;
-
     private String email;
     private String phoneNumber;
     private String website;

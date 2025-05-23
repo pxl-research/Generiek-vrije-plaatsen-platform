@@ -1,15 +1,15 @@
 package be.PXLResearch.code4belgium.escaperooms.controller;
 
+import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
+import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
 import be.PXLResearch.code4belgium.escaperooms.service.EscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +36,19 @@ public class EscapeRoomController {
         } catch (ResourceNotFoundException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<EscapeRoom> createEscapeRoom(@RequestBody @Valid EscapeRoomRequest escapeRoomRequest) {
+        try {
+            return new ResponseEntity<>(escapeRoomService.createEscapeRoom(escapeRoomRequest), HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

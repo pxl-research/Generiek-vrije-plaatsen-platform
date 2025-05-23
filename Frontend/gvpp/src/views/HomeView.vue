@@ -12,30 +12,46 @@ const sectorOptions = sectorConfig
 const switchSector = (sectorKey: string) => {
   router.push({ query: { ...route.query, sector: sectorKey } })
 }
-</script> 
+
+const currentSector = route.query.sector as string
+</script>
 
 <template>
   <div class="bg-slate-200 min-h-screen">
     <HeaderComponent />
 
-    <!-- 🔽 Sector Dropdown -->
-<div class="flex justify-center p-4">
-  <select
-    @change="switchSector(($event.target as HTMLSelectElement).value)"
-    class="p-2 rounded border border-gray-400"
-    :value="route.query.sector || ''"
-  >
-    <option disabled value="">Select a sector</option>
-    <option
-      v-for="(sector, key) in sectorOptions"
-      :key="key"
-      :value="key"
-    >
-      {{ sector.title }}
-    </option>
-  </select>
-</div>
+    <!-- 🏷️ Section Title -->
+    <h2 class="text-2xl font-bold text-center pt-6 mb-4 text-gray-800">
+      Choose your sector
+    </h2>
 
+    <!-- 🟦 Sector Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 max-w-5xl mx-auto">
+      <div
+        v-for="(sector, key) in sectorOptions"
+        :key="key"
+        :class="[
+          'rounded-lg shadow-md p-6 flex flex-col items-center justify-between space-y-4 transition-transform hover:scale-105 cursor-pointer',
+          sector.bgColor,
+          currentSector === key ? 'ring-4 ring-yellow-400' : ''
+        ]"
+      >
+        <img
+          :src="sector.logo"
+          alt="sector logo"
+          class="w-16 h-16 rounded-full object-cover"
+        />
+        <h2 class="text-lg font-semibold text-white text-center">
+          {{ sector.title }}
+        </h2>
+        <button
+          @click="switchSector(key)"
+          class="px-4 py-2 bg-slate-100 text-gray-800 font-semibold rounded-md hover:bg-white transition"
+        >
+          Select
+        </button>
+      </div>
+    </div>
 
     <!-- 🔍 Main Title -->
     <h1 class="text-xl font-bold w-auto m-5 text-center">

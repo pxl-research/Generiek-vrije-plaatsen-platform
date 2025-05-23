@@ -70,20 +70,31 @@ function deleteEscapeRoom(roomId: number) {
 
 
 onMounted(async () => {
-  const res = await fetch('/api/escaperooms');
-  const data: EscapeRoom[] = await res.json();
-  data.sort((a, b) => a.name.localeCompare(b.name));
-  escapeRooms.value = data;
+  try {
+    const res = await fetch('/api/escaperooms');
+    if (!res.ok) throw new Error(`Failed to fetch escape rooms: ${res.status}`);
 
-  data.forEach(room => {
-    localCapacities.value[room.id] = room.currentCapacity;
-    isEditing.value[room.id] = false;
-  });
+    const data: EscapeRoom[] = await res.json();
+    data.sort((a, b) => a.name.localeCompare(b.name));
+    escapeRooms.value = data;
 
-  const filterRes = await fetch('/api/filters');
-  const filterData: Filter[] = await filterRes.json();
-  filters.value = filterData;
+    data.forEach(room => {
+      localCapacities.value[room.id] = room.currentCapacity;
+      isEditing.value[room.id] = false;
+    });
+
+    const filterRes = await fetch('/api/filters');
+    if (!filterRes.ok) throw new Error(`Failed to fetch filters: ${filterRes.status}`);
+
+    const filterData: Filter[] = await filterRes.json();
+    filters.value = filterData;
+
+  } catch (error) {
+    console.error('Error during mounted hook:', error);
+    // Optionally show user feedback, e.g., error message in UI
+  }
 });
+
 
 function toggleEdit(roomId: number) {
   isEditing.value[roomId] = !isEditing.value[roomId];
@@ -188,7 +199,7 @@ function saveCapacity(roomId: number) {
     <!-- Modal -->
     <div
       v-if="showAddModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-slate-500 bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
         <div class="flex justify-between items-start mb-7">

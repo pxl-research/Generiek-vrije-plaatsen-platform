@@ -28,11 +28,21 @@
   >
     Save
   </button>
+
+  <RouterLink to="/freespotsdashboard">
+    <button class="bg-blue-600 text-white px-4 py-2 rounded-xl p-3 flex mx-auto mt-10 hover:bg-blue-700 ">
+      Ga naar Vrije Plaatsen Dashboard
+    </button>
+  </RouterLink>
+
+
+
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue';
 import HeaderComponent from '@/components/HeaderComponent.vue';
+import FreeSpotsTable from '@/views/FreeSpotsTable.vue';
 
 interface Filter {
   id: string;

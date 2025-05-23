@@ -53,6 +53,11 @@ const router = createRouter({
       name: 'adminfilter',
       component: () => import('../views/AdminFilterView.vue'),
     },
+    {
+      path: '/freespotsdashboard',
+      name: 'freespotsdashboard',
+      component: () => import('../views/FreeSpotsTable.vue'),
+    }
 
 
 

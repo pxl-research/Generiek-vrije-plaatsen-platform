@@ -36,6 +36,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/filter-dashboard',
+      name: 'filterdashboard',
+      component: () => import('../views/FilterDashboardView.vue'),
+      meta: {
+        showInNav: "Filter dashboard"
+      }
+    },
+    {
       path: '/privacy',
       name: 'privacy',
       component: () => import('../views/PrivacyPolicy.vue'),

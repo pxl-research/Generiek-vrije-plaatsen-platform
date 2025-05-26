@@ -20,4 +20,5 @@ public class FilterResponse {
     private String value;
     private List<Sector> sectors;
     private boolean active;
+    private String inputType;
 }

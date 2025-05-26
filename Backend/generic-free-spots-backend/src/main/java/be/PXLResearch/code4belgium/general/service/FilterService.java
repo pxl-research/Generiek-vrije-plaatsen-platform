@@ -35,7 +35,8 @@ public class FilterService implements IFilterService {
                         f.getDatatype(),
                         f.getValue(),
                         f.getSectors(),
-                        f.isActive()
+                        f.isActive(),
+                        f.getInputType()
                 ))
                 .collect(Collectors.toList());
 
@@ -52,6 +53,7 @@ public class FilterService implements IFilterService {
                 .value(filter.getValue())
                 .sectors(filter.getSectors())
                 .active(filter.isActive())
+                .inputType(filter.getInputType())
                 .build();
     }
 
@@ -65,7 +67,19 @@ public class FilterService implements IFilterService {
                 .value("default")
                 .sectors(sectors)
                 .active(true)
+                .inputType("Textbox")
                 .build();
+
+        return filterRepository.save(filter);
+    }
+
+    @Override
+    public Filter editFilter(Long filterId, FilterRequest filterRequest) {
+        Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new ResourceNotFoundException("Could not find filter with ID " + filterId));
+
+        filter.setValue(filterRequest.getValue());
+        filter.setActive(filterRequest.isActive());
+        filter.setInputType(filterRequest.getInputType());
 
         return filterRepository.save(filter);
     }

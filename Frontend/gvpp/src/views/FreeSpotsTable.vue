@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import type {Filter} from "@/models/filter.ts";
 
 interface EscapeRoom {
   id: number;
@@ -15,10 +16,10 @@ interface EscapeRoom {
   maxCapacity: number;
 }
 // filter interface voor option value
-interface Filter {
-  id: number;
-  name: string;
-}
+// interface Filter {
+//   id: number;
+//   name: string;
+// }
 const escapeRooms = ref<EscapeRoom[]>([]);
 const localCapacities = ref<Record<number, number>>({});
 const isEditing = ref<Record<number, boolean>>({});
@@ -105,6 +106,20 @@ function saveCapacity(roomId: number) {
   <div class="bg-slate-200 min-h-screen p-4">
     <HeaderComponent />
 
+    <div class="w-full border border-gray-300 bg-white mt-10">
+      <p>Filters</p>
+      <div class="flex flex-wrap gap-4">
+        <div v-for="filter in filters" :key="filter.id" class="flex flex-col">
+          <label class="block text-sm font-medium mb-1">{{ filter.name }}</label>
+          <select class="border rounded px-3 py-2">
+            <option value="">Kies een optie</option>
+            <!-- Placeholder options - you can customize this per filter -->
+            <option>Optie 1</option>
+            <option>Optie 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
     <table class="w-full border border-gray-300 bg-white mt-10">
       <thead class="bg-white">

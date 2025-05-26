@@ -52,5 +52,15 @@ public class FilterController {
         }
     }
 
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Filter> updateFilter(@PathVariable Long id, @RequestBody @Valid FilterRequest filterRequest) {
+        try {
+            return new ResponseEntity<>(filterService.editFilter(id, filterRequest), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

@@ -10,4 +10,5 @@ public interface IFilterService {
     List<FilterResponse> getAllFilters();
     FilterResponse getFilterById(Long filterId);
     Filter createFilter(FilterRequest filterRequest);
+    Filter editFilter(Long filterId, FilterRequest filterRequest);
 }

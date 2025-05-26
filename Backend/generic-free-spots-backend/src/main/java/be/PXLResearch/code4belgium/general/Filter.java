@@ -32,4 +32,5 @@ public class Filter {
     @ManyToMany(mappedBy = "filters")
     private List<Sector> sectors;
     private boolean active;
+    private String inputType;
 }

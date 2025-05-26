@@ -25,7 +25,7 @@ public class RoomService implements IRoomService {
     public List<RoomResponse> getRooms() {
         List<Room> rooms = roomRepository.findAll();
         if (rooms.isEmpty()) {
-            throw new ResourceNotFoundException("No rooms found");
+            return List.of();
         }
 
         return rooms.stream()

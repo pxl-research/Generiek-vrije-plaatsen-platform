@@ -1,5 +1,6 @@
 package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto;
 
+import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +18,11 @@ public class EscapeRoomResponse {
     private String name;
     private String address;
     private int postalCode;
-    private String city;
+    private City city;
     private String email;
     private String phoneNumber;
     private String website;
+    private int currentCapacity;
+    private int maxCapacity;
     private List<Room> rooms;
 }

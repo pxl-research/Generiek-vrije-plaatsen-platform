@@ -2,19 +2,22 @@
 import { ref, onMounted } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import type {Filter} from "@/models/filter.ts";
+import {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
+import type {EscapeRoom} from "@/models/escapeRoom.ts";
+import {useEscapeRoomStore} from "@/store/EscapeRoomStore.ts";
 
-interface EscapeRoom {
-  id: number;
-  name: string;
-  address: string;
-  postalCode: number;
-  city: string;
-  email: string;
-  phoneNumber: string;
-  website: string;
-  currentCapacity: number;
-  maxCapacity: number;
-}
+// interface EscapeRoom {
+//   id: number;
+//   name: string;
+//   address: string;
+//   postalCode: number;
+//   city: string;
+//   email: string;
+//   phoneNumber: string;
+//   website: string;
+//   currentCapacity: number;
+//   maxCapacity: number;
+// }
 // filter interface voor option value
 // interface Filter {
 //   id: number;
@@ -26,12 +29,24 @@ const isEditing = ref<Record<number, boolean>>({});
 const showAddModal = ref(false);
 const filters = ref<Filter[]>([]);
 
-const newEscapeRoom = ref({
+const escapeRoomStore = useEscapeRoomStore();
+
+const newEscapeRoom = ref<EscapeRoom>();
+
+newEscapeRoom.value = {
   name: '',
   description: '',
-  freeSpots: 1,
-  filter: '',
-});
+  address: "",
+  city: "",
+  currentCapacity: 0,
+  email: "",
+  id: 0,
+  organizationId: 0,
+  phoneNumber: "",
+  postalCode: 0,
+  website: "",
+  maxCapacity: 0
+};
 
 function openAddModal() {
   showAddModal.value = true;
@@ -39,28 +54,29 @@ function openAddModal() {
 
 function closeAddModal() {
   showAddModal.value = false;
-  newEscapeRoom.value = { name: '', description: '', freeSpots: 1, filter: '' };
 }
 
 function addEscapeRoom() {
-  const newId = escapeRooms.value.length ? Math.max(...escapeRooms.value.map(r => r.id)) + 1 : 1;
 
-  const newRoom: EscapeRoom = {
-    id: newId,
-    name: newEscapeRoom.value.name,
-    address: '',
-    postalCode: 0,
-    city: '',
-    email: '',
-    phoneNumber: '',
-    website: '',
-    currentCapacity: 0,
-    maxCapacity: Math.max(newEscapeRoom.value.freeSpots, 1),
+  const roomToAdd: EscapeRoomRequest = {
+    name: newEscapeRoom.value!.name,
+    description: newEscapeRoom.value!.description,
+    organizationId: newEscapeRoom.value!.organizationId,
+    address: newEscapeRoom.value!.address,
+    postalCode: newEscapeRoom.value!.postalCode,
+    city: newEscapeRoom.value!.city,
+    email: newEscapeRoom.value!.email,
+    phoneNumber: newEscapeRoom.value!.phoneNumber,
+    website: newEscapeRoom.value!.website,
+    maxCapacity: newEscapeRoom.value!.maxCapacity,
   };
 
-  escapeRooms.value.push(newRoom);
-  escapeRooms.value.sort((a, b) => a.name.localeCompare(b.name));
-  closeAddModal();
+  try {
+    escapeRoomStore.addEscapeRoom(roomToAdd);
+  }
+  catch (error) {
+    console.error("Error: " + error);
+  }
 }
 
 function deleteEscapeRoom(roomId: number) {
@@ -83,7 +99,7 @@ onMounted(async () => {
 
   const filterRes = await fetch('/api/filters');
   const filterData: Filter[] = await filterRes.json();
-  filters.value = filterData;
+  filters.value = filterData.sort((a : Filter, b : Filter) => a.id - b.id);
 });
 
 function toggleEdit(roomId: number) {
@@ -107,17 +123,24 @@ function saveCapacity(roomId: number) {
     <HeaderComponent />
 
     <div class="w-full border border-gray-300 bg-white mt-10">
-      <p>Filters</p>
-      <div class="flex flex-wrap gap-4">
-        <div v-for="filter in filters" :key="filter.id" class="flex flex-col">
-          <label class="block text-sm font-medium mb-1">{{ filter.name }}</label>
-          <select class="border rounded px-3 py-2">
-            <option value="">Kies een optie</option>
-            <!-- Placeholder options - you can customize this per filter -->
-            <option>Optie 1</option>
-            <option>Optie 2</option>
-          </select>
+      <div class="px-4 py-2">
+        <p>Filters</p>
+        <div class="flex flex-wrap gap-4">
+          <div v-for="filter in filters" :key="filter.id" class="flex flex-col">
+            <div v-if="filter.active === true" class="py-2">
+              <label class="block text-sm font-medium mb-1">{{ filter.name }}</label>
+              <select v-if="filter.inputType === 'dropdown'" class="border rounded px-3 py-2">
+                <option value="">Kies een optie</option>
+                <!-- Placeholder options - you can customize this per filter -->
+                <option>Optie 1</option>
+                <option>Optie 2</option>
+              </select>
+              <input v-else-if="filter.inputType === 'textbox'" type="text" placeholder="Value" class="border-2"/>
+              <input v-else-if="filter.inputType === 'checkbox'" type="checkbox"/>
+            </div>
+          </div>
         </div>
+        <button>Apply filters</button>
       </div>
     </div>
 
@@ -203,9 +226,9 @@ function saveCapacity(roomId: number) {
     <!-- Modal -->
     <div
       v-if="showAddModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto"
     >
-      <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md my-10 max-h-[90vh] shadow-lg overflow-y-auto">
         <div class="flex justify-between items-start mb-7">
           <h2 class="text-lg font-bold">Nieuwe groep toevoegen</h2>
           <button
@@ -219,51 +242,88 @@ function saveCapacity(roomId: number) {
 
 
         <div class="mb-4">
-          <label class="block font-semibold mb-1">Titel</label>
+          <label class="block font-semibold mb-1">Name</label>
           <input
             type="text"
-            v-model="newEscapeRoom.name"
+            v-model="newEscapeRoom!.name"
             class="w-full border rounded px-3 py-2"
-            placeholder="Organisatie xx - organisatie"
           />
         </div>
 
         <div class="mb-4">
-          <label class="block font-semibold mb-1">Beschrijving</label>
+          <label class="block font-semibold mb-1">Description</label>
           <textarea
             type="text"
-            v-model="newEscapeRoom.description"
+            v-model="newEscapeRoom!.description"
             class="w-full border rounded px-3 py-2 h-30"
-            placeholder="Voer een beschrijving in"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Organisation-Id</label>
+          <input
+            type="number"
+            v-model.number="newEscapeRoom!.organizationId"
+            min="1"
+            class="w-20 border rounded px-3 py-2"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Address</label>
+          <textarea
+            type="text"
+            v-model="newEscapeRoom!.address"
+            class="w-full border rounded px-3 py-2 h-30"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Postal Code</label>
+          <input
+            type="number"
+            v-model.number="newEscapeRoom!.postalCode"
+            min="1"
+            class="w-20 border rounded px-3 py-2"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">City</label>
+          <textarea
+            type="text"
+            v-model="newEscapeRoom!.city"
+            class="w-full border rounded px-3 py-2 h-30"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Website</label>
+          <textarea
+            type="text"
+            v-model="newEscapeRoom!.website"
+            class="w-full border rounded px-3 py-2 h-30"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block font-semibold mb-1">Phone number</label>
+          <textarea
+            type="text"
+            v-model="newEscapeRoom!.phoneNumber"
+            class="w-full border rounded px-3 py-2 h-30"
           />
         </div>
 
         <div class="mb-4 flex gap-6 justify-between">
           <div>
-            <label class="block font-semibold mb-1">Aantal</label>
+            <label class="block font-semibold mb-1">Maximum capacity</label>
             <input
               type="number"
-              v-model.number="newEscapeRoom.freeSpots"
+              v-model.number="newEscapeRoom!.maxCapacity"
               min="1"
               class="w-20 border rounded px-3 py-2"
             />
-          </div>
-
-          <div>
-            <label class=" block font-semibold mb-1">&nbsp;</label>
-            <select
-              v-model="newEscapeRoom.filter"
-              class="w-60  border rounded px-3 py-2"
-            >
-              <option disabled value="">Kies filter</option>
-              <option
-                v-for="filter in filters"
-                :key="filter.id"
-                :value="filter.name"
-              >
-                {{ filter.name }}
-              </option>
-            </select>
           </div>
         </div>
 

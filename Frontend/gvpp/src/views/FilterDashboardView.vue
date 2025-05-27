@@ -17,6 +17,7 @@ onMounted(async () => {
     }
     const data = await response.json();
     filters.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    console.log(filters.value)
   } catch (error) {
     console.error(error)
   }
@@ -74,6 +75,7 @@ function switchInputType(event : Event, filter : Filter) {
             <option value="textbox">Textbox</option>
             <option value="dropdown">Dropdown</option>
             <option value="checkbox">Checkbox</option>
+            <option value="slider">Slider</option>
           </select>
         </td>
       </tr>

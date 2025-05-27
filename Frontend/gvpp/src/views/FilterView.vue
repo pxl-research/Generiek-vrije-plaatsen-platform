@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import HeaderComponent from '../components/HeaderComponent.vue';
 import { ref, onMounted, computed } from 'vue';
-import escapeRooms from '../data/escaperooms.json';
+import type {Filter} from "@/models/filter.ts";
+import {EscapeRoom} from "@/models/escapeRoom.ts";
 
-const escapeRoomsData = ref(escapeRooms);
+const escapeRoomsData = ref<EscapeRoom[]>([]);
+const filters = ref<Filter[]>([]);
 const searchQuery = ref('');
 const maxPrice = ref<number>(200); // Single price slider value
 const players = ref<number | null>(null);
@@ -16,12 +18,12 @@ const search = () => {
     const matchesCity = room.city.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesRoom = room["different-rooms"].some(r => {
       const matchesPrice = parseInt(r.price) <= maxPrice.value;
-      
+
       const matchesPlayers = players.value ? (() => {
         const [min, max] = r.players.split('-').map(p => parseInt(p));
         return players.value! >= min && players.value! <= max;
       })() : true;
-      
+
       return matchesPrice && matchesPlayers;
     });
     return matchesCity && matchesRoom;
@@ -45,8 +47,32 @@ const selectLocation = (city: string) => {
   search();
 };
 
-onMounted(() => {
+onMounted(async () => {
   filteredEscapeRooms.value = escapeRoomsData.value;
+
+  try {
+    const response = await fetch('http://localhost:8080/api/escaperooms');
+    if (!response.ok) {
+      throw new Error('Failed to fetch escaperooms');
+    }
+    const data = await response.json();
+    escapeRoomsData.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    console.log(escapeRoomsData)
+  } catch (error) {
+    console.error(error)
+  }
+
+  try {
+    const response = await fetch('http://localhost:8080/api/filters');
+    if (!response.ok) {
+      throw new Error('Failed to fetch filters');
+    }
+    const data = await response.json();
+    filters.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    console.log(filters.value)
+  } catch (error) {
+    console.error(error)
+  }
 });
 </script>
 
@@ -59,49 +85,43 @@ onMounted(() => {
     </h1>
 
 
-    <div class="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 mt-4">
-
-      <div class="relative">
-        <input v-model="searchQuery" @input="showSuggestions = true; search()" type="text" placeholder="City"
-          class="w-full p-3.5 border border-gray-400 rounded-lg bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <ul v-if="showSuggestions && suggestedLocations.length" class="absolute bg-white border border-gray-300 w-full mt-1 rounded-lg shadow-md z-10">
-          <li v-for="(city, index) in suggestedLocations" :key="index" @click="selectLocation(city)"
-            class="p-2 hover:bg-blue-100 cursor-pointer">
-            {{ city }}
-          </li>
-        </ul>
-      </div>
-      
-      <div>
-        <p class="font-bold">Max Price: €{{ maxPrice }}</p>
-        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search" 
-          class="w-full mt-2" />
-      </div>
-      
-      <div>
-        <p class="font-bold">Players</p>
-        <select v-model="players" @change="search" class="w-full p-2 border border-gray-400 rounded-lg">
-          <option :value="null">Any</option>
-          <option v-for="num in [2, 3, 4, 5, 6, 7, 8]" :key="num" :value="num">{{ num }} Players</option>
-        </select>
+    <div class="w-full border border-gray-300 bg-white mt-10">
+      <div class="px-4 py-2">
+        <p>Filters</p>
+        <div class="flex flex-wrap gap-4">
+          <div v-for="filter in filters" :key="filter.id" class="flex flex-col">
+            <div v-if="filter.active === true" class="py-2">
+              <label class="block text-sm font-medium mb-1">{{ filter.name }}</label>
+              <select v-if="filter.inputType === 'dropdown'" class="border rounded px-3 py-2">
+                <option value="">Kies een optie</option>
+                <!-- Placeholder options - you can customize this per filter -->
+                <option>Optie 1</option>
+                <option>Optie 2</option>
+              </select>
+              <input v-else-if="filter.inputType === 'textbox'" type="text" placeholder="Value" class="border-2"/>
+              <input v-else-if="filter.inputType === 'checkbox'" type="checkbox"/>
+            </div>
+          </div>
+        </div>
+        <button>Apply filters</button>
       </div>
     </div>
 
     <div class="w-full mt-10 mb-5 grid gap-6">
-      <div v-for="room in filteredEscapeRooms" :key="room.id"
+      <div v-for="escaperoom in escapeRoomsData" :key="escaperoom.id"
         class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
         <div class="flex justify-between items-start">
           <div>
-            <h2 class="text-xl font-bold">{{ room.name }}</h2>
-            <p class="pt-2">{{ room.address }}, {{ room.postalcode }} {{ room.city }}</p>
+            <h2 class="text-xl font-bold">{{ escaperoom.name }}</h2>
+            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalcode }} {{ escaperoom.city }}</p>
           </div>
-          <a :href="room.website" target="_blank" class="text-blue-500 underline text-sm">
+          <a :href="escaperoom.website" target="_blank" class="text-blue-500 underline text-sm">
             Visit Website
           </a>
         </div>
 
-        <div v-if="expandedCards[room.name]" class="mt-4">
-          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)" 
+        <div v-if="expandedCards[escaperoom.name]" class="mt-4">
+          <div v-for="(game, index) in escaperoom['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)"
                :key="index"
                class="flex justify-between items-center p-3 bg-blue-100 border-b">
             <div>
@@ -115,9 +135,9 @@ onMounted(() => {
           </div>
         </div>
 
-        <button @click="toggleExpand(room.name)"
+        <button @click="toggleExpand(escaperoom.name)"
           class="bg-[#2473BA] text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4">
-          {{ expandedCards[room.name] ? "Less Info" : "More Info" }}
+          {{ expandedCards[escaperoom.name] ? "Less Info" : "More Info" }}
         </button>
       </div>
     </div>

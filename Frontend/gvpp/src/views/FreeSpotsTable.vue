@@ -39,34 +39,88 @@ function closeAddModal() {
   showAddModal.value = false;
 }
 
-function addEscapeRoom() {
+async function addEscapeRoom(): Promise<void> {
+  if (!newEscapeRoom.value) {
+    alert("New room data is missing!");
+    return;
+  }
 
   const roomToAdd: EscapeRoomRequest = {
-    name: newEscapeRoom.value!.name,
-    description: newEscapeRoom.value!.description,
-    organizationId: newEscapeRoom.value!.organizationId,
-    address: newEscapeRoom.value!.address,
-    postalCode: newEscapeRoom.value!.postalCode,
-    city: newEscapeRoom.value!.city,
-    email: newEscapeRoom.value!.email,
-    phoneNumber: newEscapeRoom.value!.phoneNumber,
-    website: newEscapeRoom.value!.website,
-    maxCapacity: newEscapeRoom.value!.maxCapacity,
+    name: newEscapeRoom.value.name,
+    description: newEscapeRoom.value.description,
+    organizationId: newEscapeRoom.value.organizationId,
+    address: newEscapeRoom.value.address,
+    postalCode: newEscapeRoom.value.postalCode,
+    city: newEscapeRoom.value.city,
+    email: newEscapeRoom.value.email,
+    phoneNumber: newEscapeRoom.value.phoneNumber,
+    website: newEscapeRoom.value.website,
+    maxCapacity: newEscapeRoom.value.maxCapacity,
   };
 
   try {
-    escapeRoomStore.addEscapeRoom(roomToAdd);
-  }
-  catch (error) {
-    console.error("Error: " + error);
+    const res = await fetch('/api/escaperooms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(roomToAdd),
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to add escape room');
+    }
+
+    const createdRoom: EscapeRoom = await res.json();
+
+    escapeRooms.value.push(createdRoom);
+    localCapacities.value[createdRoom.id] = createdRoom.currentCapacity ?? 0;
+    isEditing.value[createdRoom.id] = false;
+
+    closeAddModal();
+
+    // Reset form
+    newEscapeRoom.value = {
+      id: 0,
+      name: '',
+      description: '',
+      address: '',
+      city: '',
+      currentCapacity: 0,
+      email: '',
+      organizationId: 0,
+      phoneNumber: '',
+      postalCode: 0,
+      website: '',
+      maxCapacity: 0,
+    };
+  } catch (error: unknown) {
+    console.error("Add room error:", error);
+    alert("Could not add room. Please try again.");
   }
 }
 
-function deleteEscapeRoom(roomId: number) {
-  escapeRooms.value = escapeRooms.value.filter(room => room.id !== roomId);
-  delete localCapacities.value[roomId];
-  delete isEditing.value[roomId];
+
+
+async function deleteEscapeRoom(roomId: number): Promise<void> {
+  try {
+    const res = await fetch(`/api/escaperooms/${roomId}`, {
+      method: 'DELETE',
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to delete room with id ${roomId}`);
+    }
+
+    // Update frontend state
+    escapeRooms.value = escapeRooms.value.filter(room => room.id !== roomId);
+    delete localCapacities.value[roomId];
+    delete isEditing.value[roomId];
+  } catch (error: unknown) {
+    console.error("Delete error:", error);
+    alert("Could not delete room. Please try again.");
+  }
 }
+
+
 
 
 onMounted(async () => {

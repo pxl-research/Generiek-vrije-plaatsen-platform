@@ -51,4 +51,19 @@ public class EscapeRoomController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEscapeRoom(@PathVariable Long id) {
+        try {
+            escapeRoomService.deleteEscapeRoom(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 success, no body
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

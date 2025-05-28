@@ -1,50 +1,17 @@
 <script setup lang="ts">
 import HeaderComponent from '../components/HeaderComponent.vue';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, } from 'vue';
 import type {Filter} from "@/models/filter.ts";
 import {EscapeRoom} from "@/models/escapeRoom.ts";
 
 const escapeRoomsData = ref<EscapeRoom[]>([]);
 const filters = ref<Filter[]>([]);
-const searchQuery = ref('');
 const maxPrice = ref<number>(200); // Single price slider value
-const players = ref<number | null>(null);
 const filteredEscapeRooms = ref([...escapeRoomsData.value]);
 const expandedCards = ref<{ [key: string]: boolean }>({});
-const showSuggestions = ref(false);
-
-const search = () => {
-  filteredEscapeRooms.value = escapeRoomsData.value.filter(room => {
-    const matchesCity = room.city.toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesRoom = room["different-rooms"].some(r => {
-      const matchesPrice = parseInt(r.price) <= maxPrice.value;
-
-      const matchesPlayers = players.value ? (() => {
-        const [min, max] = r.players.split('-').map(p => parseInt(p));
-        return players.value! >= min && players.value! <= max;
-      })() : true;
-
-      return matchesPrice && matchesPlayers;
-    });
-    return matchesCity && matchesRoom;
-  });
-};
 
 const toggleExpand = (name: string) => {
   expandedCards.value[name] = !expandedCards.value[name];
-};
-
-const suggestedLocations = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  if (!query) return [];
-  return [...new Set(escapeRoomsData.value.map(room => room.city))]
-    .filter(city => city.toLowerCase().includes(query));
-});
-
-const selectLocation = (city: string) => {
-  searchQuery.value = city;
-  showSuggestions.value = false;
-  search();
 };
 
 onMounted(async () => {
@@ -98,7 +65,7 @@ onMounted(async () => {
                 <option>Optie 1</option>
                 <option>Optie 2</option>
               </select>
-              <input v-else-if="filter.inputType === 'textbox'" type="text" placeholder="Value" class="border-2"/>
+              <input v-else-if="filter.inputType === 'textbox'" type="text" class="border-2"/>
               <input v-else-if="filter.inputType === 'checkbox'" type="checkbox"/>
             </div>
           </div>

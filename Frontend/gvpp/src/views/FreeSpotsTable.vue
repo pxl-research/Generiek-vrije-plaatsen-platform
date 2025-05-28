@@ -6,23 +6,6 @@ import {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
 import type {EscapeRoom} from "@/models/escapeRoom.ts";
 import {useEscapeRoomStore} from "@/store/EscapeRoomStore.ts";
 
-// interface EscapeRoom {
-//   id: number;
-//   name: string;
-//   address: string;
-//   postalCode: number;
-//   city: string;
-//   email: string;
-//   phoneNumber: string;
-//   website: string;
-//   currentCapacity: number;
-//   maxCapacity: number;
-// }
-// filter interface voor option value
-// interface Filter {
-//   id: number;
-//   name: string;
-// }
 const escapeRooms = ref<EscapeRoom[]>([]);
 const localCapacities = ref<Record<number, number>>({});
 const isEditing = ref<Record<number, boolean>>({});
@@ -135,7 +118,7 @@ function saveCapacity(roomId: number) {
                 <option>Optie 1</option>
                 <option>Optie 2</option>
               </select>
-              <input v-else-if="filter.inputType === 'textbox'" type="text" placeholder="Value" class="border-2"/>
+              <input v-else-if="filter.inputType === 'textbox'" type="text" class="border-2"/>
               <input v-else-if="filter.inputType === 'checkbox'" type="checkbox"/>
             </div>
           </div>

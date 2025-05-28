@@ -5,8 +5,10 @@ import { ref, onMounted } from 'vue';
 import {useFilterStore} from "@/store/FilterStore.ts";
 import {FilterRequest} from "@/models/filterRequest.ts";
 import type {Filter} from "@/models/filter.ts";
+import {EscapeRoom} from "@/models/escapeRoom.ts";
 
 const filters = ref<Filter[]>([]);
+const filteredObjects = ref<EscapeRoom[]>([]);
 const filterStore = useFilterStore();
 
 onMounted(async () => {
@@ -43,6 +45,11 @@ function switchInputType(event : Event, filter : Filter) {
   filterRequest.inputType = selected;
 
   filterStore.editFilterProperties(filter.id, filterRequest)
+
+}
+
+function applyFilters() {
+  const activeFilters = filters.value.filter(filter => filter.active);
 
 }
 

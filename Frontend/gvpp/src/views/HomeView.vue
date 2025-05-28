@@ -12,7 +12,7 @@ const sectorOptions = sectorConfig
 const switchSector = (sectorKey: string) => {
   router.push({ query: { ...route.query, sector: sectorKey } })
 }
-</script> 
+</script>
 
 <template>
   <div class="bg-slate-200 min-h-screen">
@@ -44,7 +44,7 @@ const switchSector = (sectorKey: string) => {
 
     <!-- 🖼️ Logo -->
     <router-link to="/login">
-      <img class="w-75 m-auto" src="../../public/assets/logo3.png" />
+      <img class="w-50 m-auto" src="/assets/Asset%201.svg" />
     </router-link>
 
     <!-- 🔘 Search Buttons -->

@@ -16,12 +16,12 @@ const search = () => {
     const matchesCity = room.city.toLowerCase().includes(searchQuery.value.toLowerCase());
     const matchesRoom = room["different-rooms"].some(r => {
       const matchesPrice = parseInt(r.price) <= maxPrice.value;
-      
+
       const matchesPlayers = players.value ? (() => {
         const [min, max] = r.players.split('-').map(p => parseInt(p));
         return players.value! >= min && players.value! <= max;
       })() : true;
-      
+
       return matchesPrice && matchesPlayers;
     });
     return matchesCity && matchesRoom;
@@ -63,7 +63,7 @@ onMounted(() => {
 
       <div class="relative">
         <input v-model="searchQuery" @input="showSuggestions = true; search()" type="text" placeholder="City"
-          class="w-full p-3.5 border border-gray-400 rounded-lg bg-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          class="w-full p-3.5 border border-gray-400 rounded-lg bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-300 hover:bg-slate-300"/>
         <ul v-if="showSuggestions && suggestedLocations.length" class="absolute bg-white border border-gray-300 w-full mt-1 rounded-lg shadow-md z-10">
           <li v-for="(city, index) in suggestedLocations" :key="index" @click="selectLocation(city)"
             class="p-2 hover:bg-blue-100 cursor-pointer">
@@ -71,18 +71,18 @@ onMounted(() => {
           </li>
         </ul>
       </div>
-      
+
       <div>
         <p class="font-bold">Max Price: €{{ maxPrice }}</p>
-        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search" 
-          class="w-full mt-2" />
+        <input type="range" min="0" max="200" step="5" v-model="maxPrice" @input="search"
+          class="w-full mt-2 cursor-pointer" />
       </div>
-      
+
       <div>
         <p class="font-bold">Players</p>
-        <select v-model="players" @change="search" class="w-full p-2 border border-gray-400 rounded-lg">
-          <option :value="null">Any</option>
-          <option v-for="num in [2, 3, 4, 5, 6, 7, 8]" :key="num" :value="num">{{ num }} Players</option>
+        <select v-model="players" @change="search" class="w-full p-2 border border-gray-400 rounded-lg hover:bg-slate-300 cursor-pointer">
+          <option :value="null" class="bg-white">Any</option>
+          <option v-for="num in [2, 3, 4, 5, 6, 7, 8]" :key="num" :value="num" class="bg-white">{{ num }} Players</option>
         </select>
       </div>
     </div>
@@ -101,7 +101,7 @@ onMounted(() => {
         </div>
 
         <div v-if="expandedCards[room.name]" class="mt-4">
-          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)" 
+          <div v-for="(game, index) in room['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)"
                :key="index"
                class="flex justify-between items-center p-3 bg-blue-100 border-b">
             <div>

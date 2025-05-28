@@ -48,7 +48,7 @@ onMounted(async () => {
 
   <div class="bg-slate-200 min-h-screen flex flex-col px-6 pt-8">
     <h1 class="text-2xl font-bold w-full text-left mt-2">
-      Search for an Escape Room by location.
+      Zoek een Escape Room met locatie.
     </h1>
 
 
@@ -70,7 +70,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <button>Apply filters</button>
+        <button>Pas filters toe</button>
       </div>
     </div>
 

@@ -111,3 +111,10 @@ public class EscapeRoomService implements IEscapeRoomService {
         return escapeRoom;
     }
 }
+
+public void deleteEscapeRoom(Long id) {
+    EscapeRoom escapeRoom = escapeRoomRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Escape room with id " + id + " not found"));
+    escapeRoomRepository.delete(escapeRoom);
+}
+

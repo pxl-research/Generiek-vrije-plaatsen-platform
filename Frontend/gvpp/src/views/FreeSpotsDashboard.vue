@@ -28,13 +28,19 @@ const newEscapeRoom = ref({
   description: '',
   freeSpots: 1,
   filter: '',
+  filterValue: ''
 });
 function openAddModal() {
   showAddModal.value = true;
 }
+function isNumericFilter(filterName: string): boolean {
+  const numericFilters = ['price', 'minimum age']; // Add any others here
+  return numericFilters.includes(filterName);
+}
+
 function closeAddModal() {
   showAddModal.value = false;
-  newEscapeRoom.value = { name: '', description: '', freeSpots: 1, filter: '' };
+  newEscapeRoom.value = { name: '', description: '', freeSpots: 1, filter: '', filterValue: '' };
 }
 function addEscapeRoom() {
   const newId = escapeRooms.value.length ? Math.max(...escapeRooms.value.map(r => r.id)) + 1 : 1;
@@ -173,7 +179,7 @@ function saveCapacity(roomId: number) {
     <!-- Modal -->
     <div
       v-if="showAddModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-slate-200 bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
         <div class="flex justify-between items-start mb-7">
@@ -187,7 +193,7 @@ function saveCapacity(roomId: number) {
           </button>
         </div>
 
-
+        <!-- Title -->
         <div class="mb-4">
           <label class="block font-semibold mb-1">Titel</label>
           <input
@@ -198,18 +204,20 @@ function saveCapacity(roomId: number) {
           />
         </div>
 
+        <!-- Description -->
         <div class="mb-4">
           <label class="block font-semibold mb-1">Beschrijving</label>
           <textarea
-            type="text"
             v-model="newEscapeRoom.description"
             class="w-full border rounded px-3 py-2 h-30"
             placeholder="Voer een beschrijving in"
           />
         </div>
 
+        <!-- Aantal + Filter + Filterwaarde -->
         <div class="mb-4 flex gap-6 justify-between">
-          <div>
+          <!-- Left column: Aantal + Filterwaarde -->
+          <div class="flex flex-col">
             <label class="block font-semibold mb-1">Aantal</label>
             <input
               type="number"
@@ -217,13 +225,35 @@ function saveCapacity(roomId: number) {
               min="1"
               class="w-20 border rounded px-3 py-2"
             />
+
+            <!-- Filterwaarde -->
+            <div v-if="newEscapeRoom.filter" class="mt-4">
+              <label class="block font-semibold mb-1">Filterwaarde</label>
+
+              <input
+                v-if="isNumericFilter(newEscapeRoom.filter)"
+                type="number"
+                v-model.number="newEscapeRoom.filterValue"
+                class="w-20 border rounded px-3 py-2"
+                :placeholder="`Waarde voor ${newEscapeRoom.filter}`"
+              />
+
+              <input
+                v-else
+                type="text"
+                v-model="newEscapeRoom.filterValue"
+                class="w-20 border rounded px-3 py-2"
+                :placeholder="`Waarde voor ${newEscapeRoom.filter}`"
+              />
+            </div>
           </div>
 
+          <!-- Right column: Filter -->
           <div>
-            <label class=" block font-semibold mb-1">&nbsp;</label>
+            <label class="block font-semibold mb-1">Filter</label>
             <select
               v-model="newEscapeRoom.filter"
-              class="w-60  border rounded px-3 py-2"
+              class="w-60 border rounded px-3 py-2"
             >
               <option disabled value="">Kies filter</option>
               <option
@@ -237,7 +267,7 @@ function saveCapacity(roomId: number) {
           </div>
         </div>
 
-
+        <!-- Actions -->
         <div class="flex justify-end gap-2">
           <button
             @click="closeAddModal"
@@ -254,5 +284,6 @@ function saveCapacity(roomId: number) {
         </div>
       </div>
     </div>
+
   </div>
 </template>

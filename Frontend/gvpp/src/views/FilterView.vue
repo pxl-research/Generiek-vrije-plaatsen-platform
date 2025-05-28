@@ -80,7 +80,7 @@ onMounted(async () => {
         <div class="flex justify-between items-start">
           <div>
             <h2 class="text-xl font-bold">{{ escaperoom.name }}</h2>
-            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalcode }} {{ escaperoom.city }}</p>
+            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalCode }} {{ escaperoom.city }}</p>
           </div>
           <a :href="escaperoom.website" target="_blank" class="text-blue-500 underline text-sm">
             Visit Website
@@ -88,9 +88,11 @@ onMounted(async () => {
         </div>
 
         <div v-if="expandedCards[escaperoom.name]" class="mt-4">
-          <div v-for="(game, index) in escaperoom['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)"
-               :key="index"
-               class="flex justify-between items-center p-3 bg-blue-100 border-b">
+          <div
+            v-for="(game, index) in (escaperoom['different-rooms'] ?? []).filter(r => parseInt(r.price) <= maxPrice)"
+            :key="index"
+            class="flex justify-between items-center p-3 bg-blue-100 border-b"
+          >
             <div>
               <h3 class="font-bold">{{ game.name }}</h3>
               <p class="text-sm text-gray-600">Players: {{ game.players }}</p>

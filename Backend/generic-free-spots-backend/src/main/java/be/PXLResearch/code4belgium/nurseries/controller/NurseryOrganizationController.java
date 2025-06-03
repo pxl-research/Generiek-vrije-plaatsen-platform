@@ -5,6 +5,7 @@ import be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO.NurseryO
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO.NurseryOrganizationResponse;
 import be.PXLResearch.code4belgium.nurseries.domain.NurseryOrganization;
 import be.PXLResearch.code4belgium.nurseries.service.NurseryOrganizationService;
+import be.PXLResearch.code4belgium.nurseries.service.interfaces.INurseryOrganizationService;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationRequest;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationResponse;
 import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/organizations/nurseries")
 @RequiredArgsConstructor
 public class NurseryOrganizationController {
-    private final NurseryOrganizationService nurseryOrganizationService;
+    private final INurseryOrganizationService nurseryOrganizationService;
 
     @GetMapping
     public ResponseEntity<List<NurseryOrganizationResponse>> getAllNurseryOrganizations() {

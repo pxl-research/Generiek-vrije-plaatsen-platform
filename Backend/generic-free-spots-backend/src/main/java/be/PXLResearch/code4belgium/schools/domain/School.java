@@ -1,6 +1,7 @@
 package be.PXLResearch.code4belgium.schools.domain;
 
 import be.PXLResearch.code4belgium.enums.City;
+import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
@@ -10,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -30,12 +33,6 @@ public class School {
     private String name;
     private String description;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private LocalDateTime createdAt;
-//
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private LocalDateTime updatedAt;
-
     private String address;
     private int postalCode;
 
@@ -49,6 +46,9 @@ public class School {
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private SchoolOrganization organization;
+
+    @OneToMany(mappedBy = "school")
+    private List<SchoolRoom> schoolRooms;
 
     @Type(JsonBinaryType.class)
     @Column(columnDefinition = "jsonb")

@@ -8,6 +8,7 @@ import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolRequest;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolResponse;
 import be.PXLResearch.code4belgium.schools.domain.School;
 import be.PXLResearch.code4belgium.schools.service.SchoolService;
+import be.PXLResearch.code4belgium.schools.service.interfaces.ISchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/schools")
 @RequiredArgsConstructor
 public class SchoolController {
-    private final SchoolService schoolService;
+    private final ISchoolService schoolService;
 
     @GetMapping
     public ResponseEntity<List<SchoolResponse>> getAllSchools() {

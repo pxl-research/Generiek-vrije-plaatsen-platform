@@ -4,6 +4,7 @@ import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomOrganizationDTO.Esc
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomOrganizationDTO.EscapeRoomOrganizationResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomOrganization;
 import be.PXLResearch.code4belgium.escaperooms.service.EscapeRoomOrganizationService;
+import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomOrganizationService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/organizations/escaperooms")
 @RequiredArgsConstructor
 public class EscapeRoomOrganizationController {
-    private final EscapeRoomOrganizationService escapeRoomOrganizationService;
+    private final IEscapeRoomOrganizationService escapeRoomOrganizationService;
 
     @GetMapping
     public ResponseEntity<List<EscapeRoomOrganizationResponse>> getAllEscapeRoomOrganizations() {

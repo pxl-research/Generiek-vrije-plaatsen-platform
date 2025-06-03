@@ -2,6 +2,7 @@ package be.PXLResearch.code4belgium.nurseries.domain;
 
 import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
+import be.PXLResearch.code4belgium.schools.domain.SchoolRoom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
@@ -11,6 +12,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -44,6 +47,10 @@ public class Nursery {
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private NurseryOrganization organization;
+
+
+    @OneToMany(mappedBy = "nursery")
+    private List<NurseryRoom> nurseryRooms;
 
     @Type(JsonBinaryType.class)
     @Column(columnDefinition = "jsonb")

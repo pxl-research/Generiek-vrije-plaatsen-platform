@@ -8,6 +8,7 @@ import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrgan
 import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationResponse;
 import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
 import be.PXLResearch.code4belgium.schools.service.SchoolOrganizationService;
+import be.PXLResearch.code4belgium.schools.service.interfaces.ISchoolOrganizationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/organizations/schools")
 @RequiredArgsConstructor
 public class SchoolOrganizationController {
-    private final SchoolOrganizationService schoolOrganizationService;
+    private final ISchoolOrganizationService schoolOrganizationService;
 
     @GetMapping
     public ResponseEntity<List<SchoolOrganizationResponse>> getAllSchoolOrganizations() {

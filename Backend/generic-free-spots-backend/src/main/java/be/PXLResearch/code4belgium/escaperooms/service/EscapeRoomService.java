@@ -89,8 +89,6 @@ public class EscapeRoomService implements IEscapeRoomService {
         EscapeRoom escapeRoom = EscapeRoom.builder()
                 .name(request.getName())
                 .description(request.getDescription())
-                //.createdAt(LocalDateTime.now())
-                //.updatedAt(LocalDateTime.now())
                 .address(request.getAddress())
                 .postalCode(request.getPostalCode())
                 .city(City.fromString(request.getCity()))
@@ -110,11 +108,13 @@ public class EscapeRoomService implements IEscapeRoomService {
 
         return escapeRoom;
     }
+
+    @Override
+    public void deleteEscapeRoom(Long id) {
+        EscapeRoom escapeRoom = escapeRoomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Escape room with id " + id + " not found"));
+        escapeRoomRepository.delete(escapeRoom);
+    }
 }
 
-public void deleteEscapeRoom(Long id) {
-    EscapeRoom escapeRoom = escapeRoomRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Escape room with id " + id + " not found"));
-    escapeRoomRepository.delete(escapeRoom);
-}
 

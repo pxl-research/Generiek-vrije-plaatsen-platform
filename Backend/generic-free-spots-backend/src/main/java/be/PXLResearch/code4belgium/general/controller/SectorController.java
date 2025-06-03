@@ -5,6 +5,7 @@ import be.PXLResearch.code4belgium.general.DTO.Sector.SectorRequest;
 import be.PXLResearch.code4belgium.general.DTO.Sector.SectorResponse;
 import be.PXLResearch.code4belgium.general.Sector;
 import be.PXLResearch.code4belgium.general.service.SectorService;
+import be.PXLResearch.code4belgium.general.service.interfaces.ISectorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping(path = "/api/sectors")
 @RequiredArgsConstructor
 public class SectorController {
-    private final SectorService sectorService;
+    private final ISectorService sectorService;
 
     @GetMapping
     public ResponseEntity<List<SectorResponse>> getAllSectors() {

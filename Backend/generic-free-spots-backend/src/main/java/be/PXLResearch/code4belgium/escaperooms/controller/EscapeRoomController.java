@@ -3,7 +3,7 @@ package be.PXLResearch.code4belgium.escaperooms.controller;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
-import be.PXLResearch.code4belgium.escaperooms.service.EscapeRoomService;
+import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/escaperooms")
 @RequiredArgsConstructor
 public class EscapeRoomController {
-    private final EscapeRoomService escapeRoomService;
+    private final IEscapeRoomService escapeRoomService;
 
     @GetMapping
     public ResponseEntity<List<EscapeRoomResponse>> getAllEscapeRooms() {
@@ -56,7 +56,7 @@ public class EscapeRoomController {
     public ResponseEntity<Void> deleteEscapeRoom(@PathVariable Long id) {
         try {
             escapeRoomService.deleteEscapeRoom(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 success, no body
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ResourceNotFoundException e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

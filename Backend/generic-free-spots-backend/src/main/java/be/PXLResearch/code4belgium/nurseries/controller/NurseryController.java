@@ -5,6 +5,7 @@ import be.PXLResearch.code4belgium.nurseries.DTO.NurseryDTO.NurseryRequest;
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryDTO.NurseryResponse;
 import be.PXLResearch.code4belgium.nurseries.domain.Nursery;
 import be.PXLResearch.code4belgium.nurseries.service.NurseryService;
+import be.PXLResearch.code4belgium.nurseries.service.interfaces.INurseryService;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolRequest;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolResponse;
 import be.PXLResearch.code4belgium.schools.domain.School;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/nurseries")
 @RequiredArgsConstructor
 public class NurseryController {
-    private final NurseryService nurseryService;
+    private final INurseryService nurseryService;
 
     @GetMapping
     public ResponseEntity<List<NurseryResponse>> getAllNurseries() {

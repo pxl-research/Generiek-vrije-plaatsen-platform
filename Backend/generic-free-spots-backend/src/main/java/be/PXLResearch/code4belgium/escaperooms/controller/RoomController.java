@@ -4,6 +4,7 @@ import be.PXLResearch.code4belgium.escaperooms.DTO.RoomDto.RoomRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.RoomDto.RoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import be.PXLResearch.code4belgium.escaperooms.service.RoomService;
+import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/escaperooms/rooms")
 @RequiredArgsConstructor
 public class RoomController {
-    private final RoomService roomService;
+    private final IRoomService roomService;
 
     @GetMapping
     public ResponseEntity<List<RoomResponse>> getRooms() {
@@ -29,7 +30,7 @@ public class RoomController {
     }
 
     @GetMapping("/escaperoom/{escapeRoomId}")
-    public ResponseEntity<List<RoomResponse>> getRoomsForEscapeRoom(@RequestParam Long escapeRoomId) {
+    public ResponseEntity<List<RoomResponse>> getRoomsForEscapeRoom(@PathVariable Long escapeRoomId) {
         try {
             return new ResponseEntity<>(roomService.getRoomsForEscapeRoom(escapeRoomId), HttpStatus.OK);
         } catch (ResourceNotFoundException e) {

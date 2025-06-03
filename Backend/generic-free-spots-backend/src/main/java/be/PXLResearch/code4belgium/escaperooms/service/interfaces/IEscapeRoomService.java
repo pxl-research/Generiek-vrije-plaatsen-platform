@@ -12,4 +12,5 @@ public interface IEscapeRoomService {
     List<EscapeRoomResponse> getAllEscapeRooms();
     EscapeRoomResponse getEscapeRoomById(Long id);
     EscapeRoom createEscapeRoom(EscapeRoomRequest request) throws IOException;
+    void deleteEscapeRoom(Long id);
 }

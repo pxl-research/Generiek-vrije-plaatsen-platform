@@ -4,7 +4,7 @@ import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import be.PXLResearch.code4belgium.general.DTO.Filter.FilterRequest;
 import be.PXLResearch.code4belgium.general.DTO.Filter.FilterResponse;
 import be.PXLResearch.code4belgium.general.Filter;
-import be.PXLResearch.code4belgium.general.service.FilterService;
+import be.PXLResearch.code4belgium.general.service.interfaces.IFilterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping(path = "/api/filters")
 @RequiredArgsConstructor
 public class FilterController {
-    private final FilterService filterService;
+    private final IFilterService filterService;
 
     @GetMapping
     public ResponseEntity<List<FilterResponse>> getAllFilters() {

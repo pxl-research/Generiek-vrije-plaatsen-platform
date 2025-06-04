@@ -1,7 +1,6 @@
 package be.PXLResearch.code4belgium.escaperooms.service;
 
 import be.PXLResearch.code4belgium.enums.City;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomOrganizationDTO.EscapeRoomOrganizationRequest;
 import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomOrganizationDTO.EscapeRoomOrganizationResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
@@ -10,7 +9,7 @@ import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomOrganization
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomOrganizationService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import be.PXLResearch.code4belgium.general.Sector;
+import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.SectorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

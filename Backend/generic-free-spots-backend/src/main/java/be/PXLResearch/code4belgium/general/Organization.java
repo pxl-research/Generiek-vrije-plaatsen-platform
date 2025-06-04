@@ -1,9 +1,9 @@
 package be.PXLResearch.code4belgium.general;
 
 import be.PXLResearch.code4belgium.enums.City;
+import be.PXLResearch.code4belgium.general.domain.Sector;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

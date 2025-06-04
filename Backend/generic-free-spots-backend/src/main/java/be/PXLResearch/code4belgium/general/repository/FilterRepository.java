@@ -1,6 +1,6 @@
 package be.PXLResearch.code4belgium.general.repository;
 
-import be.PXLResearch.code4belgium.general.Filter;
+import be.PXLResearch.code4belgium.general.domain.Filter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package be.PXLResearch.code4belgium.general.DTO.Sector;
 
-import be.PXLResearch.code4belgium.general.Filter;
+import be.PXLResearch.code4belgium.general.domain.Filter;
 import be.PXLResearch.code4belgium.general.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

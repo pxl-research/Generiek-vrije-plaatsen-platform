@@ -1,4 +1,4 @@
-package be.PXLResearch.code4belgium.general;
+package be.PXLResearch.code4belgium.general.domain;
 
 import be.PXLResearch.code4belgium.enums.DataType;
 import jakarta.persistence.*;

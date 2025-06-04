@@ -1,7 +1,7 @@
 package be.PXLResearch.code4belgium.general.DTO.Filter;
 
 import be.PXLResearch.code4belgium.enums.DataType;
-import be.PXLResearch.code4belgium.general.Sector;
+import be.PXLResearch.code4belgium.general.domain.Sector;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -2,7 +2,7 @@ package be.PXLResearch.code4belgium.nurseries.service;
 
 import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import be.PXLResearch.code4belgium.general.Sector;
+import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.SectorRepository;
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO.NurseryOrganizationRequest;
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO.NurseryOrganizationResponse;
@@ -11,10 +11,6 @@ import be.PXLResearch.code4belgium.nurseries.domain.NurseryOrganization;
 import be.PXLResearch.code4belgium.nurseries.repository.NurseryOrganizationRepository;
 import be.PXLResearch.code4belgium.nurseries.repository.NurseryRepository;
 import be.PXLResearch.code4belgium.nurseries.service.interfaces.INurseryOrganizationService;
-import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationRequest;
-import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationResponse;
-import be.PXLResearch.code4belgium.schools.domain.School;
-import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

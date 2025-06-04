@@ -75,13 +75,16 @@ public class RoomService implements IRoomService {
 
     @Override
     public Room createRoom(RoomRequest request) {
+        EscapeRoom escapeRoom = escapeRoomRepository.findById(request.getEscapeRoomId())
+                .orElseThrow(() -> new ResourceNotFoundException("No escape room found with id " + request.getEscapeRoomId()));
+
         Room room = Room.builder()
                 .name(request.getName())
                 .minimumAge(request.getMinimumAge())
                 .duration(request.getDuration())
                 .minPlayers(request.getMinPlayers())
                 .maxPlayers(request.getMaxPlayers())
-                .escapeRoom(request.getEscapeRoom())
+                .escapeRoom(escapeRoom)
                 .build();
 
         return roomRepository.save(room);

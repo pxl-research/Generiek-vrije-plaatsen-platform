@@ -60,8 +60,8 @@ const router = useRouter();
 // Login function
 const login = () => {
   const users = [
-    { username: "admin", password: "admin123", role: "admin", route: "adminfilter" },
-    { username: "user", password: "user123", role: "user", route: "/home" },
+    { username: "admin", password: "admin123", role: "admin", route: "/filter-dashboard" },
+    { username: "user", password: "user123", role: "user", route: "/filter" },
   ];
 
   const user = users.find(

@@ -7,9 +7,9 @@ public enum City {
     GENK,
     DIEPENBEEK,
     ZOLDER,
-    ANTWERP,
-    BRUSSELS,
-    GHENT;
+    ANTWERPEN,
+    BRUSSEL,
+    GENT;
 
 
     public static City fromString(String value) {

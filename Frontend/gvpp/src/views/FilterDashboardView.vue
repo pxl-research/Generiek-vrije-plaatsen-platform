@@ -5,8 +5,10 @@ import { ref, onMounted } from 'vue';
 import {useFilterStore} from "@/store/FilterStore.ts";
 import {FilterRequest} from "@/models/filterRequest.ts";
 import type {Filter} from "@/models/filter.ts";
+import {EscapeRoom} from "@/models/escapeRoom.ts";
 
 const filters = ref<Filter[]>([]);
+const filteredObjects = ref<EscapeRoom[]>([]);
 const filterStore = useFilterStore();
 
 onMounted(async () => {
@@ -17,6 +19,7 @@ onMounted(async () => {
     }
     const data = await response.json();
     filters.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    console.log(filters.value)
   } catch (error) {
     console.error(error)
   }
@@ -42,6 +45,11 @@ function switchInputType(event : Event, filter : Filter) {
   filterRequest.inputType = selected;
 
   filterStore.editFilterProperties(filter.id, filterRequest)
+
+}
+
+function applyFilters() {
+  const activeFilters = filters.value.filter(filter => filter.active);
 
 }
 
@@ -74,6 +82,7 @@ function switchInputType(event : Event, filter : Filter) {
             <option value="textbox">Textbox</option>
             <option value="dropdown">Dropdown</option>
             <option value="checkbox">Checkbox</option>
+            <option value="slider">Slider</option>
           </select>
         </td>
       </tr>

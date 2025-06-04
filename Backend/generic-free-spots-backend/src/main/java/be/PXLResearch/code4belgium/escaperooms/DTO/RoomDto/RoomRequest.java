@@ -17,5 +17,5 @@ public class RoomRequest {
     private int duration;
     private int minPlayers;
     private int maxPlayers;
-    private EscapeRoom escapeRoom;
+    private Long escapeRoomId;
 }

@@ -12,6 +12,8 @@ import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomSer
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,7 +80,11 @@ public class EscapeRoomService implements IEscapeRoomService {
     public EscapeRoom createEscapeRoom(EscapeRoomRequest request) throws IOException {
         List<Room> rooms = new ArrayList<>();
         EscapeRoomOrganization organization = escapeRoomOrganizationRepository.findById(request.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("No organization found with id " + request.getOrganizationId()));
-        JsonNode node = objectMapper.readTree(request.getFilterableProperties().traverse());
+        ObjectNode rootNode = objectMapper.createObjectNode();
+        ArrayNode appliedFilters = objectMapper.createArrayNode();
+
+        rootNode.set("appliedFilters", appliedFilters);
+
 
         EscapeRoom escapeRoom = EscapeRoom.builder()
                 .name(request.getName())
@@ -94,7 +100,7 @@ public class EscapeRoomService implements IEscapeRoomService {
                 .currentCapacity(0)
                 .maxCapacity(request.getMaxCapacity())
                 .rooms(rooms)
-                .filterableProperties(node)
+                .filterableProperties(rootNode)
                 .build();
 
         escapeRoomRepository.save(escapeRoom);

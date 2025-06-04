@@ -70,7 +70,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <button>Apply filters</button>
+        <button>Pas filters toe</button>
       </div>
     </div>
 

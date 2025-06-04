@@ -1,7 +1,6 @@
 //import { ref } from 'vue';
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
-
 
 
 export const useEscapeRoomStore = defineStore('filterStore', () => {
@@ -26,7 +25,22 @@ export const useEscapeRoomStore = defineStore('filterStore', () => {
     }
   }
 
+  async function getEscapeRooms() {
+    try {
+      const response = await fetch('http://localhost:8080/api/escaperooms', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error("Failed to getEscapeRooms: " + response.statusText);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Whoops! Something went wrong: " + error);
+    }
+  }
+
   return {
     addEscapeRoom,
+    getEscapeRooms
   }
 });

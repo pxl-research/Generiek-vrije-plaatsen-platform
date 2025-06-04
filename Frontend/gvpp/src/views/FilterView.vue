@@ -23,7 +23,7 @@ onMounted(async () => {
       throw new Error('Failed to fetch escaperooms');
     }
     const data = await response.json();
-    escapeRoomsData.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    escapeRoomsData.value = data.sort((a: Filter, b: Filter) => a.id - b.id);
     console.log(escapeRoomsData)
   } catch (error) {
     console.error(error)
@@ -35,7 +35,7 @@ onMounted(async () => {
       throw new Error('Failed to fetch filters');
     }
     const data = await response.json();
-    filters.value = data.sort((a : Filter, b : Filter) => a.id - b.id);
+    filters.value = data.sort((a: Filter, b: Filter) => a.id - b.id);
     console.log(filters.value)
   } catch (error) {
     console.error(error)
@@ -48,7 +48,7 @@ onMounted(async () => {
 
   <div class="bg-slate-200 min-h-screen flex flex-col px-6 pt-8">
     <h1 class="text-2xl font-bold w-full text-left mt-2">
-      Search for an Escape Room by location.
+      Zoek een Escape Room met locatie.
     </h1>
 
 
@@ -80,7 +80,7 @@ onMounted(async () => {
         <div class="flex justify-between items-start">
           <div>
             <h2 class="text-xl font-bold">{{ escaperoom.name }}</h2>
-            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalcode }} {{ escaperoom.city }}</p>
+            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalCode }} {{ escaperoom.city }}</p>
           </div>
           <a :href="escaperoom.website" target="_blank" class="text-blue-500 underline text-sm">
             Visit Website
@@ -88,9 +88,11 @@ onMounted(async () => {
         </div>
 
         <div v-if="expandedCards[escaperoom.name]" class="mt-4">
-          <div v-for="(game, index) in escaperoom['different-rooms'].filter(r => parseInt(r.price) <= maxPrice)"
-               :key="index"
-               class="flex justify-between items-center p-3 bg-blue-100 border-b">
+          <div
+            v-for="(game, index) in (escaperoom['different-rooms'] ?? []).filter(r => parseInt(r.price) <= maxPrice)"
+            :key="index"
+            class="flex justify-between items-center p-3 bg-blue-100 border-b"
+          >
             <div>
               <h3 class="font-bold">{{ game.name }}</h3>
               <p class="text-sm text-gray-600">Players: {{ game.players }}</p>
@@ -110,3 +112,4 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+

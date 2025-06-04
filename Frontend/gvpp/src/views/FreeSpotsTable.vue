@@ -137,6 +137,10 @@ onMounted(async () => {
   const filterRes = await fetch('/api/filters');
   const filterData: Filter[] = await filterRes.json();
   filters.value = filterData.sort((a : Filter, b : Filter) => a.id - b.id);
+
+  escapeRoomStore.getEscapeRooms().then(data => {
+    console.log("Fetched escape rooms: ", data);
+  })
 });
 
 function toggleEdit(roomId: number) {

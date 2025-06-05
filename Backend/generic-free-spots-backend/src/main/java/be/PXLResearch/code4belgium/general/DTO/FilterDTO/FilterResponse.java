@@ -1,4 +1,4 @@
-package be.PXLResearch.code4belgium.general.DTO.Filter;
+package be.PXLResearch.code4belgium.general.DTO.FilterDTO;
 
 import be.PXLResearch.code4belgium.enums.DataType;
 import be.PXLResearch.code4belgium.general.domain.Sector;

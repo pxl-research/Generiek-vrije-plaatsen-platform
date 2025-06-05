@@ -1,27 +1,18 @@
 package be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO;
 
+import be.PXLResearch.code4belgium.general.DTO.OrganizationDTO.OrganizationRequest;
 import be.PXLResearch.code4belgium.nurseries.domain.Nursery;
 import be.PXLResearch.code4belgium.nurseries.domain.NurseryOrganization;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class NurseryOrganizationRequest {
-    private Long parentOrganizationId;
-    private List<NurseryOrganization> childrenOrganizations;
-    private List<Nursery> schools;
-    private Long sectorId;
-    private String name;
-    private String type;
-    private String address;
-    private String city;
-    private int postalCode;
-
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class NurseryOrganizationRequest extends OrganizationRequest<NurseryOrganization, Nursery> {
+    public NurseryOrganizationRequest() {}
 }

@@ -39,18 +39,17 @@ public class NurseryService implements INurseryService {
         }
 
         return nurseries.stream()
-                .map(e -> new NurseryResponse(
-                        e.getId(),
-                        e.getName(),
-                        e.getAddress(),
-                        e.getPostalCode(),
-                        e.getCity(),
-                        e.getEmail(),
-                        e.getPhoneNumber(),
-                        e.getWebsite(),
-                        e.getCurrentCapacity(),
-                        e.getMaxCapacity()
-                        ))
+                .map(e -> NurseryResponse.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .address(e.getAddress())
+                        .postalCode(e.getPostalCode())
+                        .city(e.getCity())
+                        .email(e.getEmail())
+                        .phoneNumber(e.getPhoneNumber())
+                        .website(e.getWebsite())
+                        .rooms(e.getRooms())
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -67,15 +66,12 @@ public class NurseryService implements INurseryService {
                 .email(nursery.getEmail())
                 .phoneNumber(nursery.getPhoneNumber())
                 .website(nursery.getWebsite())
-                .currentCapacity(nursery.getCurrentCapacity())
-                .maxCapacity(nursery.getMaxCapacity())
                 .build();
     }
 
     @Override
     public Nursery createNursery(NurseryRequest request) throws IOException {
         NurseryOrganization organization = nurseryOrganizationRepository.findById(request.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("No organization found with id " + request.getOrganizationId()));
-        JsonNode node = objectMapper.readTree(request.getFilterableProperties().traverse());
 
         Nursery nursery = Nursery.builder()
                 .name(request.getName())
@@ -86,14 +82,11 @@ public class NurseryService implements INurseryService {
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .website(request.getWebsite())
-                .currentCapacity(0)
-                .maxCapacity(request.getMaxCapacity())
-                .filterableProperties(node)
                 .build();
 
         nurseryRepository.save(nursery);
 
-        organization.getFreeSpots().add(nursery);
+        organization.getBranches().add(nursery);
         nurseryOrganizationRepository.save(organization);
 
         return nursery;

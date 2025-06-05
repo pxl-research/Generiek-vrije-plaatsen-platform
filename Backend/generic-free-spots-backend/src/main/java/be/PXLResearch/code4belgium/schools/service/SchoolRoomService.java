@@ -39,7 +39,7 @@ public class SchoolRoomService implements ISchoolRoomService {
     public List<SchoolRoomResponse> getRoomsForSchool(Long schoolId) {
         School school = schoolRepository.findById(schoolId).orElseThrow(() -> new ResourceNotFoundException("School not found"));
 
-        return school.getSchoolRooms().stream()
+        return school.getRooms().stream()
                 .map(this::turnSchoolRoomIntoResponse)
                 .collect(Collectors.toList());
     }
@@ -53,15 +53,15 @@ public class SchoolRoomService implements ISchoolRoomService {
 
     @Override
     public SchoolRoom createSchoolRoom(SchoolRoomRequest request) {
-        School school = schoolRepository.findById(request.getSchoolId()).orElseThrow(() -> new ResourceNotFoundException("School not found"));
+        School school = schoolRepository.findById(request.getBranchId()).orElseThrow(() -> new ResourceNotFoundException("School not found"));
 
         SchoolRoom schoolRoom = SchoolRoom.builder()
                 .name(request.getName())
                 .minimumAge(request.getMinimumAge())
                 .duration(request.getDuration())
-                .minStudents(request.getMinStudents())
-                .maxStudents(request.getMaxStudents())
-                .school(school)
+                .currentCapacity(0)
+                .maxCapacity(request.getMaxCapacity())
+                .branch(school)
                 .build();
 
         return schoolRoomRepository.save(schoolRoom);
@@ -74,8 +74,8 @@ public class SchoolRoomService implements ISchoolRoomService {
         schoolRoom.setName(request.getName());
         schoolRoom.setMinimumAge(request.getMinimumAge());
         schoolRoom.setDuration(request.getDuration());
-        schoolRoom.setMinStudents(request.getMinStudents());
-        schoolRoom.setMaxStudents(request.getMaxStudents());
+        schoolRoom.setCurrentCapacity(request.getCurrentCapacity());
+        schoolRoom.setMaxCapacity(request.getMaxCapacity());
         schoolRoomRepository.save(schoolRoom);
     }
 
@@ -91,8 +91,8 @@ public class SchoolRoomService implements ISchoolRoomService {
                 .id(schoolRoom.getId())
                 .name(schoolRoom.getName())
                 .minimumAge(schoolRoom.getMinimumAge())
-                .minStudents(schoolRoom.getMinStudents())
-                .maxStudents(schoolRoom.getMaxStudents())
+                .currentCapacity(schoolRoom.getCurrentCapacity())
+                .maxCapacity(schoolRoom.getMaxCapacity())
                 .build();
     }
 }

@@ -1,11 +1,6 @@
 package be.PXLResearch.code4belgium.schools.service;
 
 import be.PXLResearch.code4belgium.enums.City;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
-import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
-import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomOrganization;
-import be.PXLResearch.code4belgium.escaperooms.domain.Room;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolRequest;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolDTO.SchoolResponse;
@@ -20,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SchoolService implements ISchoolService {
     private final SchoolRepository schoolRepository;
-    private final ObjectMapper objectMapper;
     private final SchoolOrganizationRepository schoolOrganizationRepository;
 
 
@@ -41,18 +34,17 @@ public class SchoolService implements ISchoolService {
         }
 
         return schools.stream()
-                .map(e -> new SchoolResponse(
-                        e.getId(),
-                        e.getName(),
-                        e.getAddress(),
-                        e.getPostalCode(),
-                        e.getCity(),
-                        e.getEmail(),
-                        e.getPhoneNumber(),
-                        e.getWebsite(),
-                        e.getCurrentCapacity(),
-                        e.getMaxCapacity()
-                        ))
+                .map(e -> SchoolResponse.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .address(e.getAddress())
+                        .postalCode(e.getPostalCode())
+                        .city(e.getCity())
+                        .email(e.getEmail())
+                        .phoneNumber(e.getPhoneNumber())
+                        .website(e.getWebsite())
+                        .rooms(e.getRooms())
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -69,15 +61,12 @@ public class SchoolService implements ISchoolService {
                 .email(school.getEmail())
                 .phoneNumber(school.getPhoneNumber())
                 .website(school.getWebsite())
-                .currentCapacity(school.getCurrentCapacity())
-                .maxCapacity(school.getMaxCapacity())
                 .build();
     }
 
     @Override
     public School createSchool(SchoolRequest request) throws IOException {
         SchoolOrganization organization = schoolOrganizationRepository.findById(request.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("No organization found with id " + request.getOrganizationId()));
-        JsonNode node = objectMapper.readTree(request.getFilterableProperties().traverse());
 
         School school = School.builder()
                 .name(request.getName())
@@ -88,14 +77,11 @@ public class SchoolService implements ISchoolService {
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .website(request.getWebsite())
-                .currentCapacity(0)
-                .maxCapacity(request.getMaxCapacity())
-                .filterableProperties(node)
                 .build();
 
         schoolRepository.save(school);
 
-        organization.getFreeSpots().add(school);
+        organization.getBranches().add(school);
         schoolOrganizationRepository.save(organization);
 
         return school;

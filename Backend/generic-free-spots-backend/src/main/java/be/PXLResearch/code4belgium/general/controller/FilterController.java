@@ -1,8 +1,8 @@
 package be.PXLResearch.code4belgium.general.controller;
 
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterRequest;
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterResponse;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterRequest;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterResponse;
 import be.PXLResearch.code4belgium.general.domain.Filter;
 import be.PXLResearch.code4belgium.general.service.interfaces.IFilterService;
 import jakarta.validation.Valid;

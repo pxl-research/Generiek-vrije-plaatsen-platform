@@ -1,4 +1,4 @@
-package be.PXLResearch.code4belgium.general.DTO.Sector;
+package be.PXLResearch.code4belgium.general.DTO.SectorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

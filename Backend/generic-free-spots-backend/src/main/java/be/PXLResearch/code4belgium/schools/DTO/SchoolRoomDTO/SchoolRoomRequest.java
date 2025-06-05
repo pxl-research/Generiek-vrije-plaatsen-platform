@@ -1,19 +1,14 @@
 package be.PXLResearch.code4belgium.schools.DTO.SchoolRoomDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import be.PXLResearch.code4belgium.general.DTO.RoomDTO.RoomRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SchoolRoomRequest {
-    private String name;
-    private int minimumAge;
-    private int duration;
-    private int minStudents;
-    private int maxStudents;
-    private Long schoolId;
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SchoolRoomRequest extends RoomRequest {
+    public SchoolRoomRequest() {}
 }

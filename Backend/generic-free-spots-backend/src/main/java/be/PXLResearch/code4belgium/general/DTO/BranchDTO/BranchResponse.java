@@ -1,19 +1,19 @@
-package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto;
+package be.PXLResearch.code4belgium.general.DTO.BranchDTO;
 
 import be.PXLResearch.code4belgium.enums.City;
-import be.PXLResearch.code4belgium.escaperooms.domain.Room;
+import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomRoom;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
 @Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EscapeRoomResponse {
+public abstract class BranchResponse<T> {
     private Long id;
     private String name;
     private String address;
@@ -22,7 +22,5 @@ public class EscapeRoomResponse {
     private String email;
     private String phoneNumber;
     private String website;
-    private int currentCapacity;
-    private int maxCapacity;
-    private List<Room> rooms;
+    private List<T> rooms;
 }

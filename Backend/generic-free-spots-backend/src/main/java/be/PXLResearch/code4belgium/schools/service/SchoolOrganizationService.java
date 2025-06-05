@@ -2,6 +2,7 @@ package be.PXLResearch.code4belgium.schools.service;
 
 import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import be.PXLResearch.code4belgium.general.domain.Organization;
 import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.SectorRepository;
 import be.PXLResearch.code4belgium.schools.DTO.SchoolOrganizationDTO.SchoolOrganizationRequest;
@@ -63,7 +64,7 @@ public class SchoolOrganizationService implements ISchoolOrganizationService {
                 .childOrganizations(request.getChildrenOrganizations().stream()
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
-                .freeSpots(schools)
+                .branches(schools)
                 .sector(sector)
                 .type(request.getType())
                 .address(request.getAddress())
@@ -88,16 +89,23 @@ public class SchoolOrganizationService implements ISchoolOrganizationService {
 
     // Turns SchoolOrganization object into SchoolOrganizationResponse object
     private SchoolOrganizationResponse turnSchoolOrganizationToResponse(SchoolOrganization organization) {
-        SchoolOrganization parent = new SchoolOrganization();
-        List<SchoolOrganization> childrenOrganizations = new ArrayList<>();
-        List<School> schools = new ArrayList<>();
+        List<Organization<School>> orgs = organization.getChildOrganizations();
+
+        List<SchoolOrganization> childOrgs = orgs.stream()
+                .filter(SchoolOrganization.class::isInstance) // ensures type safety
+                .map(SchoolOrganization.class::cast)
+                .collect(Collectors.toList());
 
         return SchoolOrganizationResponse.builder()
                 .id(organization.getId())
                 .name(organization.getName())
-                .parentOrganization(parent)
-                .childrenOrganizations(childrenOrganizations)
-                .schools(schools)
+                .parentOrganizationId(
+                        organization.getParentOrganization() != null
+                                ? organization.getParentOrganization().getId()
+                                : null)
+                .sectorId(organization.getSector().getId())
+                .childrenOrganizations(childOrgs)
+                .branches(organization.getBranches())
                 .type(organization.getType())
                 .address(organization.getAddress())
                 .city(organization.getCity())

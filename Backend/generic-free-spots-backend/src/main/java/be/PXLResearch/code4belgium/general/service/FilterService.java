@@ -2,8 +2,8 @@ package be.PXLResearch.code4belgium.general.service;
 
 import be.PXLResearch.code4belgium.enums.DataType;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterRequest;
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterResponse;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterRequest;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterResponse;
 import be.PXLResearch.code4belgium.general.domain.Filter;
 import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.FilterRepository;

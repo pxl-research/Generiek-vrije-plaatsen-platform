@@ -2,6 +2,7 @@ package be.PXLResearch.code4belgium.nurseries.service;
 
 import be.PXLResearch.code4belgium.enums.City;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import be.PXLResearch.code4belgium.general.domain.Organization;
 import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.SectorRepository;
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryOrganizationDTO.NurseryOrganizationRequest;
@@ -11,6 +12,8 @@ import be.PXLResearch.code4belgium.nurseries.domain.NurseryOrganization;
 import be.PXLResearch.code4belgium.nurseries.repository.NurseryOrganizationRepository;
 import be.PXLResearch.code4belgium.nurseries.repository.NurseryRepository;
 import be.PXLResearch.code4belgium.nurseries.service.interfaces.INurseryOrganizationService;
+import be.PXLResearch.code4belgium.schools.domain.School;
+import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +66,7 @@ public class NurseryOrganizationService implements INurseryOrganizationService {
                 .childOrganizations(request.getChildrenOrganizations().stream()
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
-                .freeSpots(nurseries)
+                .branches(nurseries)
                 .sector(sector)
                 .type(request.getType())
                 .address(request.getAddress())
@@ -88,16 +91,23 @@ public class NurseryOrganizationService implements INurseryOrganizationService {
 
     // Turns SchoolOrganization object into SchoolOrganizationResponse object
     private NurseryOrganizationResponse turnNurseryOrganizationToResponse(NurseryOrganization organization) {
-        NurseryOrganization parent = new NurseryOrganization();
-        List<NurseryOrganization> childrenOrganizations = new ArrayList<>();
-        List<Nursery> nurseries = new ArrayList<>();
+        List<Organization<Nursery>> orgs = organization.getChildOrganizations();
+
+        List<NurseryOrganization> childOrgs = orgs.stream()
+                .filter(NurseryOrganization.class::isInstance) // ensures type safety
+                .map(NurseryOrganization.class::cast)
+                .collect(Collectors.toList());
 
         return NurseryOrganizationResponse.builder()
                 .id(organization.getId())
                 .name(organization.getName())
-                .parentOrganization(parent)
-                .childrenOrganizations(childrenOrganizations)
-                .nurseries(nurseries)
+                .parentOrganizationId(
+                        organization.getParentOrganization() != null
+                                ? organization.getParentOrganization().getId()
+                                : null)
+                .sectorId(organization.getSector().getId())
+                .childrenOrganizations(childOrgs)
+                .branches(organization.getBranches())
                 .type(organization.getType())
                 .address(organization.getAddress())
                 .city(organization.getCity())

@@ -1,16 +1,18 @@
-package be.PXLResearch.code4belgium.nurseries.DTO.NurseryDTO;
+package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDTO;
 
 import be.PXLResearch.code4belgium.enums.City;
+import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomRoom;
 import be.PXLResearch.code4belgium.general.DTO.BranchDTO.BranchResponse;
-import be.PXLResearch.code4belgium.nurseries.domain.NurseryRoom;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NurseryResponse extends BranchResponse<NurseryRoom> {
-    public NurseryResponse() {}
+public class EscapeRoomResponse extends BranchResponse<EscapeRoomRoom> {
+    public EscapeRoomResponse() {}
 }

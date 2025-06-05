@@ -1,7 +1,7 @@
 package be.PXLResearch.code4belgium.general.service.interfaces;
 
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterRequest;
-import be.PXLResearch.code4belgium.general.DTO.Filter.FilterResponse;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterRequest;
+import be.PXLResearch.code4belgium.general.DTO.FilterDTO.FilterResponse;
 import be.PXLResearch.code4belgium.general.domain.Filter;
 
 import java.util.List;

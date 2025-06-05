@@ -1,17 +1,15 @@
-package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto;
+package be.PXLResearch.code4belgium.general.DTO.BranchDTO;
 
-import be.PXLResearch.code4belgium.enums.City;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EscapeRoomRequest {
+public abstract class BranchRequest {
     private String name;
     private String description;
     private Long organizationId;
@@ -21,6 +19,4 @@ public class EscapeRoomRequest {
     private String email;
     private String phoneNumber;
     private String website;
-    private int maxCapacity;
-    private JsonNode filterableProperties;
 }

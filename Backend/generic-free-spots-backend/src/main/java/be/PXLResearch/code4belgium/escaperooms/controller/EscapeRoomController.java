@@ -1,7 +1,7 @@
 package be.PXLResearch.code4belgium.escaperooms.controller;
 
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
+import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDTO.EscapeRoomRequest;
+import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDTO.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;

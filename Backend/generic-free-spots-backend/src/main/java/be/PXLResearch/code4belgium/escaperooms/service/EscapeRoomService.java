@@ -1,25 +1,24 @@
 package be.PXLResearch.code4belgium.escaperooms.service;
 
 import be.PXLResearch.code4belgium.enums.City;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomRequest;
-import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDto.EscapeRoomResponse;
+import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDTO.EscapeRoomRequest;
+import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomDTO.EscapeRoomResponse;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomOrganization;
-import be.PXLResearch.code4belgium.escaperooms.domain.Room;
+import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomRoom;
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomOrganizationRepository;
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import com.fasterxml.jackson.databind.JsonNode;
+import be.PXLResearch.code4belgium.nurseries.DTO.NurseryRoomDTO.NurseryRoomResponse;
+import be.PXLResearch.code4belgium.nurseries.domain.NurseryRoom;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,19 +40,17 @@ public class EscapeRoomService implements IEscapeRoomService {
         }
 
         return escapeRooms.stream()
-                .map(e -> new EscapeRoomResponse(
-                        e.getId(),
-                        e.getName(),
-                        e.getAddress(),
-                        e.getPostalCode(),
-                        e.getCity(),
-                        e.getEmail(),
-                        e.getPhoneNumber(),
-                        e.getWebsite(),
-                        e.getCurrentCapacity(),
-                        e.getMaxCapacity(),
-                        e.getRooms()
-                        ))
+                .map(e -> EscapeRoomResponse.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .address(e.getAddress())
+                        .postalCode(e.getPostalCode())
+                        .city(e.getCity())
+                        .email(e.getEmail())
+                        .phoneNumber(e.getPhoneNumber())
+                        .website(e.getWebsite())
+                        .rooms(e.getRooms())
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -70,20 +67,14 @@ public class EscapeRoomService implements IEscapeRoomService {
                 .email(escapeRoom.getEmail())
                 .phoneNumber(escapeRoom.getPhoneNumber())
                 .website(escapeRoom.getWebsite())
-                .currentCapacity(escapeRoom.getCurrentCapacity())
-                .maxCapacity(escapeRoom.getMaxCapacity())
                 .rooms(escapeRoom.getRooms())
                 .build();
     }
 
     @Override
     public EscapeRoom createEscapeRoom(EscapeRoomRequest request) throws IOException {
-        List<Room> rooms = new ArrayList<>();
+        List<EscapeRoomRoom> escapeRoomRooms = new ArrayList<>();
         EscapeRoomOrganization organization = escapeRoomOrganizationRepository.findById(request.getOrganizationId()).orElseThrow(() -> new ResourceNotFoundException("No organization found with id " + request.getOrganizationId()));
-        ObjectNode rootNode = objectMapper.createObjectNode();
-        ArrayNode appliedFilters = objectMapper.createArrayNode();
-
-        rootNode.set("appliedFilters", appliedFilters);
 
 
         EscapeRoom escapeRoom = EscapeRoom.builder()
@@ -95,15 +86,12 @@ public class EscapeRoomService implements IEscapeRoomService {
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .website(request.getWebsite())
-                .currentCapacity(0)
-                .maxCapacity(request.getMaxCapacity())
-                .rooms(rooms)
-                .filterableProperties(rootNode)
+                .rooms(escapeRoomRooms)
                 .build();
 
         escapeRoomRepository.save(escapeRoom);
 
-        organization.getFreeSpots().add(escapeRoom);
+        organization.getBranches().add(escapeRoom);
         escapeRoomOrganizationRepository.save(organization);
 
         return escapeRoom;
@@ -115,6 +103,7 @@ public class EscapeRoomService implements IEscapeRoomService {
                 .orElseThrow(() -> new ResourceNotFoundException("Escape room with id " + id + " not found"));
         escapeRoomRepository.delete(escapeRoom);
     }
+
 }
 
 

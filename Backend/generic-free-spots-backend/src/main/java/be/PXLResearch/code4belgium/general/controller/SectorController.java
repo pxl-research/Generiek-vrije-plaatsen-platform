@@ -1,8 +1,8 @@
 package be.PXLResearch.code4belgium.general.controller;
 
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
-import be.PXLResearch.code4belgium.general.DTO.Sector.SectorRequest;
-import be.PXLResearch.code4belgium.general.DTO.Sector.SectorResponse;
+import be.PXLResearch.code4belgium.general.DTO.SectorDTO.SectorRequest;
+import be.PXLResearch.code4belgium.general.DTO.SectorDTO.SectorResponse;
 import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.service.interfaces.ISectorService;
 import jakarta.validation.Valid;

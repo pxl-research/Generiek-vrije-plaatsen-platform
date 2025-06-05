@@ -1,6 +1,6 @@
 package be.PXLResearch.code4belgium.escaperooms.domain;
 
-import be.PXLResearch.code4belgium.general.Organization;
+import be.PXLResearch.code4belgium.general.domain.Organization;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;

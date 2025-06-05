@@ -1,29 +1,21 @@
 package be.PXLResearch.code4belgium.nurseries.domain;
 
-import be.PXLResearch.code4belgium.schools.domain.School;
+import be.PXLResearch.code4belgium.general.domain.Room;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "nursery_rooms")
-public class NurseryRoom {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private float price;
-    private int minimumAge;
-    private int duration;
-    private int minKids;
-    private int maxKids;
+public class NurseryRoom extends Room<Nursery> {
     @ManyToOne
-    @JoinColumn(name = "nursery_id", nullable = false)
-    private Nursery nursery;
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Nursery branch;
+
+    public NurseryRoom() {}
 }

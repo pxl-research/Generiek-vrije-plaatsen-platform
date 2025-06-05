@@ -1,6 +1,5 @@
 package be.PXLResearch.code4belgium.general.domain;
 
-import be.PXLResearch.code4belgium.general.Organization;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

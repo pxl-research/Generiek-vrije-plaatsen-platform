@@ -37,7 +37,7 @@ public class NurseryRoomService implements INurseryRoomService {
     public List<NurseryRoomResponse> getRoomsForNursery(Long nurseryId) {
         Nursery nursery = nurseryRepository.findById(nurseryId).orElseThrow(() -> new ResourceNotFoundException("Nursery not found"));
 
-        return nursery.getNurseryRooms().stream()
+        return nursery.getRooms().stream()
                 .map(this::turnNurseryRoomIntoResponse)
                 .collect(Collectors.toList());
     }
@@ -51,16 +51,16 @@ public class NurseryRoomService implements INurseryRoomService {
 
     @Override
     public NurseryRoom createNurseryRoom(NurseryRoomRequest request) {
-        Nursery nursery = nurseryRepository.findById(request.getNurseryId())
+        Nursery nursery = nurseryRepository.findById(request.getBranchId())
                 .orElseThrow(() -> new ResourceNotFoundException("Nursery not found"));
 
         NurseryRoom nurseryRoom = NurseryRoom.builder()
                 .name(request.getName())
                 .minimumAge(request.getMinimumAge())
                 .duration(request.getDuration())
-                .minKids(request.getMinKids())
-                .maxKids(request.getMaxKids())
-                .nursery(nursery)
+                .currentCapacity(0)
+                .maxCapacity(request.getMaxCapacity())
+                .branch(nursery)
                 .build();
 
         return nurseryRoomRepository.save(nurseryRoom);
@@ -74,8 +74,8 @@ public class NurseryRoomService implements INurseryRoomService {
         nurseryRoom.setName(request.getName());
         nurseryRoom.setMinimumAge(request.getMinimumAge());
         nurseryRoom.setDuration(request.getDuration());
-        nurseryRoom.setMinKids(request.getMinKids());
-        nurseryRoom.setMaxKids(request.getMaxKids());
+        nurseryRoom.setCurrentCapacity(request.getCurrentCapacity());
+        nurseryRoom.setMaxCapacity(request.getMaxCapacity());
 
         nurseryRoomRepository.save(nurseryRoom);
     }
@@ -93,8 +93,8 @@ public class NurseryRoomService implements INurseryRoomService {
                 .id(nurseryRoom.getId())
                 .name(nurseryRoom.getName())
                 .minimumAge(nurseryRoom.getMinimumAge())
-                .minKids(nurseryRoom.getMinKids())
-                .maxKids(nurseryRoom.getMaxKids())
+                .currentCapacity(nurseryRoom.getCurrentCapacity())
+                .maxCapacity(nurseryRoom.getMaxCapacity())
                 .build();
     }
 }

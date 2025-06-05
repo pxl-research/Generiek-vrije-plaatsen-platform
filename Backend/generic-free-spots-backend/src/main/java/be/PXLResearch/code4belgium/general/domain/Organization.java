@@ -1,7 +1,6 @@
-package be.PXLResearch.code4belgium.general;
+package be.PXLResearch.code4belgium.general.domain;
 
 import be.PXLResearch.code4belgium.enums.City;
-import be.PXLResearch.code4belgium.general.domain.Sector;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +28,7 @@ public abstract class Organization<T> {
     private List<Organization<T>> childOrganizations;
 
     @OneToMany(mappedBy = "organization")
-    private List<T> freeSpots;
+    private List<T> branches;
 
     @ManyToOne
     @JoinColumn(name = "sector_id")

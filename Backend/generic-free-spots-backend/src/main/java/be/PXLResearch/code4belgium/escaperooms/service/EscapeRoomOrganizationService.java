@@ -9,8 +9,11 @@ import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomOrganization
 import be.PXLResearch.code4belgium.escaperooms.repository.EscapeRoomRepository;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomOrganizationService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import be.PXLResearch.code4belgium.general.domain.Organization;
 import be.PXLResearch.code4belgium.general.domain.Sector;
 import be.PXLResearch.code4belgium.general.repository.SectorRepository;
+import be.PXLResearch.code4belgium.schools.domain.School;
+import be.PXLResearch.code4belgium.schools.domain.SchoolOrganization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +66,7 @@ public class EscapeRoomOrganizationService implements IEscapeRoomOrganizationSer
                 .childOrganizations(request.getChildrenOrganizations().stream()
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
-                .freeSpots(escapeRooms)
+                .branches(escapeRooms)
                 .sector(sector)
                 .type(request.getType())
                 .address(request.getAddress())
@@ -88,16 +91,23 @@ public class EscapeRoomOrganizationService implements IEscapeRoomOrganizationSer
 
     // Turns EscapeRoomOrganization object into EscapeRoomOrganizationResponse object
     private EscapeRoomOrganizationResponse turnEscapeRoomOrganizationToResponse(EscapeRoomOrganization organization) {
-        EscapeRoomOrganization parent = new EscapeRoomOrganization();
-        List<EscapeRoomOrganization> childrenOrganizations = new ArrayList<>();
-        List<EscapeRoom> escapeRooms = new ArrayList<>();
+        List<Organization<EscapeRoom>> orgs = organization.getChildOrganizations();
+
+        List<EscapeRoomOrganization> childOrgs = orgs.stream()
+                .filter(EscapeRoomOrganization.class::isInstance) // ensures type safety
+                .map(EscapeRoomOrganization.class::cast)
+                .collect(Collectors.toList());
 
         return EscapeRoomOrganizationResponse.builder()
                 .id(organization.getId())
                 .name(organization.getName())
-                .parentOrganization(parent)
-                .childrenOrganizations(childrenOrganizations)
-                .escapeRooms(escapeRooms)
+                .parentOrganizationId(
+                organization.getParentOrganization() != null
+                        ? organization.getParentOrganization().getId()
+                        : null)
+                .sectorId(organization.getSector().getId())
+                .childrenOrganizations(childOrgs)
+                .branches(organization.getBranches())
                 .type(organization.getType())
                 .address(organization.getAddress())
                 .city(organization.getCity())

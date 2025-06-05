@@ -1,7 +1,7 @@
-package be.PXLResearch.code4belgium.general.DTO.Sector;
+package be.PXLResearch.code4belgium.general.DTO.SectorDTO;
 
 import be.PXLResearch.code4belgium.general.domain.Filter;
-import be.PXLResearch.code4belgium.general.Organization;
+import be.PXLResearch.code4belgium.general.domain.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

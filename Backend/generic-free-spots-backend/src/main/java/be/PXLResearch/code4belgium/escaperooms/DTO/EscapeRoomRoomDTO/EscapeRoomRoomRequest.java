@@ -1,4 +1,4 @@
-package be.PXLResearch.code4belgium.nurseries.DTO.NurseryRoomDTO;
+package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomRoomDTO;
 
 import be.PXLResearch.code4belgium.general.DTO.RoomDTO.RoomRequest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NurseryRoomRequest extends RoomRequest {
-    public NurseryRoomRequest() {}
+public class EscapeRoomRoomRequest extends RoomRequest {
+    public EscapeRoomRoomRequest() {}
 }

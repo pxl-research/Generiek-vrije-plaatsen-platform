@@ -2,26 +2,17 @@ package be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomOrganizationDTO;
 
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoom;
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomOrganization;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import be.PXLResearch.code4belgium.general.DTO.OrganizationDTO.OrganizationRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EscapeRoomOrganizationRequest {
-    private Long parentOrganizationId;
-    private List<EscapeRoomOrganization> childrenOrganizations;
-    private List<EscapeRoom> escapeRooms;
-    private Long sectorId;
-    private String name;
-    private String type;
-    private String address;
-    private String city;
-    private int postalCode;
-
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class EscapeRoomOrganizationRequest extends OrganizationRequest<EscapeRoomOrganization, EscapeRoom> {
+    public EscapeRoomOrganizationRequest() {}
 }

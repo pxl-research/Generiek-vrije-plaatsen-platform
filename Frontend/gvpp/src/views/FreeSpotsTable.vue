@@ -1,259 +1,205 @@
 <script setup lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue';
 import { ref, onMounted } from 'vue';
-import HeaderComponent from "@/components/HeaderComponent.vue";
-import type {Filter} from "@/models/filter.ts";
-import {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
-import type {EscapeRoom} from "@/models/escapeRoom.ts";
-import {useEscapeRoomStore} from "@/store/EscapeRoomStore.ts";
+import type { Filter } from '@/models/filter.ts';
+import type { EscapeRoom } from '@/models/escapeRoom.ts';
+import { useFilterStore } from '@/store/FilterStore.ts';
+import { useEscapeRoomStore } from '@/store/EscapeRoomStore.ts';
+import type {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
+import {useEscapeRoomRoomStore} from "@/store/EscapeRoomRoomStore.ts";
+import {EscapeRoomRoomRequest} from "@/models/EscapeRoomRoomRequest.ts";
 
-const escapeRooms = ref<EscapeRoom[]>([]);
-const localCapacities = ref<Record<number, number>>({});
-const isEditing = ref<Record<number, boolean>>({});
-const showAddModal = ref(false);
-const filters = ref<Filter[]>([]);
-
+const filterStore = useFilterStore();
 const escapeRoomStore = useEscapeRoomStore();
+const roomStore = useEscapeRoomRoomStore();
 
-const newEscapeRoom = ref<EscapeRoom>();
+const escapeRoomsData = ref<EscapeRoom[]>([]);
+const filters = ref<Filter[]>([]);
+const showAddModal = ref(false);
+const newEscapeRoom = ref<EscapeRoomRequest>();
+const isEditing = ref<Record<number, boolean>>({});
+const localCapacities = ref<Record<number, number>>({});
 
-newEscapeRoom.value = {
-  name: '',
-  description: '',
-  address: "",
-  city: "",
-  currentCapacity: 0,
-  email: "",
-  id: 0,
-  organizationId: 0,
-  phoneNumber: "",
-  postalCode: 0,
-  website: "",
-  maxCapacity: 0
+const openAddModal = () => showAddModal.value = true;
+const closeAddModal = () => showAddModal.value = false;
+
+const expandedCards = ref<{ [key: string]: boolean }>({});
+
+const toggleExpand = (name: string) => {
+  expandedCards.value[name] = !expandedCards.value[name];
+
+  const room = escapeRoomsData.value.find(er => er.name === name);
+  if (room) {
+    room.rooms.forEach(r => {
+      localCapacities.value[r.id] = r.currentCapacity;
+    });
+  }
 };
 
-function openAddModal() {
-  showAddModal.value = true;
+
+
+async function getFiltersFromBackend() {
+  filters.value = await filterStore.getFilters();
+  filters.value = filters.value.sort((a, b) => a.id - b.id);
 }
 
-function closeAddModal() {
-  showAddModal.value = false;
+async function getEscapeRoomsFromBackend() {
+  escapeRoomsData.value = await escapeRoomStore.getEscapeRooms();
+  escapeRoomsData.value = escapeRoomsData.value.sort((a, b) => a.id - b.id);
 }
-
-async function addEscapeRoom(): Promise<void> {
-  if (!newEscapeRoom.value) {
-    alert("New room data is missing!");
-    return;
-  }
-
-  const roomToAdd: EscapeRoomRequest = {
-    name: newEscapeRoom.value.name,
-    description: newEscapeRoom.value.description,
-    organizationId: newEscapeRoom.value.organizationId,
-    address: newEscapeRoom.value.address,
-    postalCode: newEscapeRoom.value.postalCode,
-    city: newEscapeRoom.value.city,
-    email: newEscapeRoom.value.email,
-    phoneNumber: newEscapeRoom.value.phoneNumber,
-    website: newEscapeRoom.value.website,
-    maxCapacity: newEscapeRoom.value.maxCapacity,
-  };
-
-  try {
-    const res = await fetch('/api/escaperooms', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(roomToAdd),
-    });
-
-    if (!res.ok) {
-      throw new Error('Failed to add escape room');
-    }
-
-    const createdRoom: EscapeRoom = await res.json();
-
-    escapeRooms.value.push(createdRoom);
-    localCapacities.value[createdRoom.id] = createdRoom.currentCapacity ?? 0;
-    isEditing.value[createdRoom.id] = false;
-
-    closeAddModal();
-
-    // Reset form
-    newEscapeRoom.value = {
-      id: 0,
-      name: '',
-      description: '',
-      address: '',
-      city: '',
-      currentCapacity: 0,
-      email: '',
-      organizationId: 0,
-      phoneNumber: '',
-      postalCode: 0,
-      website: '',
-      maxCapacity: 0,
-    };
-  } catch (error: unknown) {
-    console.error("Add room error:", error);
-    alert("Could not add room. Please try again.");
-  }
-}
-
-
-
-async function deleteEscapeRoom(roomId: number): Promise<void> {
-  try {
-    const res = await fetch(`/api/escaperooms/${roomId}`, {
-      method: 'DELETE',
-    });
-
-    if (!res.ok) {
-      throw new Error(`Failed to delete room with id ${roomId}`);
-    }
-
-    // Update frontend state
-    escapeRooms.value = escapeRooms.value.filter(room => room.id !== roomId);
-    delete localCapacities.value[roomId];
-    delete isEditing.value[roomId];
-  } catch (error: unknown) {
-    console.error("Delete error:", error);
-    alert("Could not delete room. Please try again.");
-  }
-}
-
-
-
-
-onMounted(async () => {
-  const res = await fetch('/api/escaperooms');
-  const data: EscapeRoom[] = await res.json();
-  data.sort((a, b) => a.name.localeCompare(b.name));
-  escapeRooms.value = data;
-
-  data.forEach(room => {
-    localCapacities.value[room.id] = room.currentCapacity;
-    isEditing.value[room.id] = false;
-  });
-
-  const filterRes = await fetch('/api/filters');
-  const filterData: Filter[] = await filterRes.json();
-  filters.value = filterData.sort((a : Filter, b : Filter) => a.id - b.id);
-
-  escapeRoomStore.getEscapeRooms().then(data => {
-    console.log("Fetched escape rooms: ", data);
-  })
-});
 
 function toggleEdit(roomId: number) {
   isEditing.value[roomId] = !isEditing.value[roomId];
 }
 
-function saveCapacity(roomId: number) {
-  const room = escapeRooms.value.find(r => r.id === roomId);
-  if (!room) return;
+async function saveCapacity(roomId: number) {
 
-  const newCap = localCapacities.value[roomId];
-  if (newCap >= 0 && newCap <= room.maxCapacity) {
-    room.currentCapacity = newCap;
-    isEditing.value[roomId] = false;
+  const newCapacity = localCapacities.value[roomId];
+
+  if (newCapacity === undefined) return;
+
+  const request = new EscapeRoomRoomRequest(newCapacity);
+
+  try {
+    await roomStore.updateEscapeRoomRoom(roomId, request);
+    await getEscapeRoomsFromBackend(); // Refresh data
+    toggleEdit(roomId);
+  } catch (error) {
+    console.error("Update error:", error);
+    alert("Failed to update capacity.");
   }
 }
+
+async function deleteEscapeRoomRoom(roomId: number): Promise<void> {
+  await roomStore.deleteEscapeRoomRoom(roomId);
+}
+
+async function addEscapeRoom(): Promise<void> {
+  try {
+    if (newEscapeRoom.value) {
+      await escapeRoomStore.addEscapeRoom(newEscapeRoom.value);
+      await getEscapeRoomsFromBackend();
+      closeAddModal();
+    }
+  } catch (error) {
+    console.error("Add error:", error);
+    alert("Failed to add new room.");
+  }
+}
+
+onMounted(async () => {
+  await getFiltersFromBackend();
+  await getEscapeRoomsFromBackend();
+});
 </script>
 
 <template>
+  <HeaderComponent />
   <div class="bg-slate-200 min-h-screen p-4">
-    <HeaderComponent />
-
     <div class="w-full border border-gray-300 bg-white mt-10">
       <div class="px-4 py-2">
+        <h1 class="text-2xl font-bold w-full text-left mt-2">Admin</h1>
         <p>Filters</p>
         <div class="flex flex-wrap gap-4">
           <div v-for="filter in filters" :key="filter.id" class="flex flex-col">
-            <div v-if="filter.active === true" class="py-2">
+            <div v-if="filter.active" class="py-2">
               <label class="block text-sm font-medium mb-1">{{ filter.name }}</label>
               <select v-if="filter.inputType === 'dropdown'" class="border rounded px-3 py-2">
                 <option value="">Kies een optie</option>
-                <!-- Placeholder options - you can customize this per filter -->
                 <option>Optie 1</option>
                 <option>Optie 2</option>
               </select>
-              <input v-else-if="filter.inputType === 'textbox'" type="text" class="border-2"/>
-              <input v-else-if="filter.inputType === 'checkbox'" type="checkbox"/>
+              <input v-else-if="filter.inputType === 'textbox'" type="text" class="border-2" />
+              <input v-else-if="filter.inputType === 'checkbox'" type="checkbox" />
             </div>
           </div>
         </div>
-        <button>Apply filters</button>
+        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100">
+          Pas filters toe
+        </button>
       </div>
     </div>
 
-    <table class="w-full border border-gray-300 bg-white mt-10">
-      <thead class="bg-white">
-      <tr class="text-left border-b">
-        <th class="px-4 py-2">Naam ⬍</th>
-        <th class="px-4 py-2">Aantal ⬍</th>
-        <th class="px-4 py-2 text-center">Openzetten ⬍</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-        v-for="room in escapeRooms"
-        :key="room.id"
-        class="border-t border-gray-400"
-      >
-        <td class="px-4 py-2">{{ room.name }}</td>
-        <td class="px-4 py-2">
-          <div v-if="isEditing[room.id]" class="flex items-center gap-2">
-            <input
-              type="number"
-              class="w-20 border rounded px-2 py-1"
-              v-model.number="localCapacities[room.id]"
-              :min="0"
-              :max="room.maxCapacity"
-            />
-            <span class="text-sm text-gray-600">/ {{ room.maxCapacity }}</span>
+    <div class="w-full mt-10 mb-5 grid gap-6">
+      <div v-for="escaperoom in escapeRoomsData" :key="escaperoom.id"
+           class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
+        <div class="flex justify-between items-start">
+          <div>
+            <h2 class="text-xl font-bold">{{ escaperoom.name }}</h2>
+            <p class="pt-2">{{ escaperoom.address }}, {{ escaperoom.postalCode }} {{ escaperoom.city }}</p>
           </div>
-          <span
-            v-else
-            :class="{
+          <a :href="escaperoom.website" target="_blank" class="text-blue-500 underline text-sm">
+            Visit Website
+          </a>
+        </div>
+
+        <div v-if="expandedCards[escaperoom.name]" class="mt-4">
+          <div
+            v-for="room in escaperoom.rooms"
+            :key="room.id"
+            class="flex justify-between items-center p-3 bg-blue-100 border-b"
+          >
+            <div>
+              <h3 class="font-bold">{{ room.name }}</h3>
+              <p class="text-sm text-gray-600">Minimumleeftijd: {{ room.minimumAge }}</p>
+              <p class="text-sm text-gray-600">Duratie: {{ room.duration }} uur</p>
+            </div>
+            <div v-if="isEditing[room.id]" class="flex items-center gap-2">
+              <input
+                type="number"
+                class="w-20 border rounded px-2 py-1"
+                v-model.number="localCapacities[room.id]"
+                :min="0"
+                :max="room.maxCapacity"
+              />
+              <span class="text-sm text-gray-600">/ {{ room.maxCapacity }}</span>
+            </div>
+            <span
+              v-else
+              :class="{
                 'bg-green-400 text-white px-3 py-1 rounded-full text-sm': room.currentCapacity < room.maxCapacity,
                 'bg-red-400 text-white px-3 py-1 rounded-full text-sm': room.currentCapacity >= room.maxCapacity
               }"
-          >
+            >
               {{
-              room.currentCapacity < room.maxCapacity
-                ? room.maxCapacity - room.currentCapacity
-                : 'Gevuld'
-            }}
+                room.currentCapacity < room.maxCapacity
+                  ? room.maxCapacity - room.currentCapacity
+                  : 'Gevuld'
+              }}
             </span>
-        </td>
-        <td class="px-4 py-2 flex gap-2 justify-center">
-          <button
-            class="border rounded p-1 w-8 h-8 flex items-center justify-center"
-            v-if="isEditing[room.id]"
-            @click="saveCapacity(room.id)"
-            title="Opslaan"
-          >
-            ✔️
-          </button>
-          <button
-            class="border rounded p-1 w-8 h-8 flex items-center justify-center"
-            v-else
-            @click="toggleEdit(room.id)"
-            title="Bewerk"
-          >
-            ✏️
-          </button>
-          <button
-            class="border rounded p-1 w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-100"
-            @click="deleteEscapeRoom(room.id)"
-            title="Verwijder"
-          >
-            🗑️
-          </button>
-        </td>
+            <button
+              class="border rounded p-1 w-8 h-8 flex items-center justify-center"
+              v-if="isEditing[room.id]"
+              @click="saveCapacity(room.id)"
+              :disabled="localCapacities[room.id] === room.currentCapacity"
+              title="Opslaan"
+            >
+              ✔️
+            </button>
+            <button
+              class="border rounded p-1 w-8 h-8 flex items-center justify-center"
+              v-else
+              @click="toggleEdit(room.id)"
+              title="Bewerk"
+            >
+              ✏️
+            </button>
+            <button
+              class="border rounded p-1 w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-100"
+              @click="deleteEscapeRoomRoom(room.id)"
+              title="Verwijder"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
 
-      </tr>
-      </tbody>
-    </table>
+        <button @click="toggleExpand(escaperoom.name)"
+                class="bg-[#2473BA] text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4">
+          {{ expandedCards[escaperoom.name] ? "Less Info" : "More Info" }}
+        </button>
+      </div>
+    </div>
 
     <div class="mt-4">
       <button
@@ -264,124 +210,54 @@ function saveCapacity(roomId: number) {
       </button>
     </div>
 
-    <!-- Modal -->
     <div
       v-if="showAddModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto"
-    >
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
       <div class="bg-white rounded-lg p-6 w-full max-w-md my-10 max-h-[90vh] shadow-lg overflow-y-auto">
         <div class="flex justify-between items-start mb-7">
           <h2 class="text-lg font-bold">Nieuwe groep toevoegen</h2>
           <button
             @click="closeAddModal"
             class="text-red-600 hover:text-red-800 text-3xl font-bold leading-none"
-            aria-label="Sluit modal"
-          >
-            &times;
-          </button>
+            aria-label="Sluit modal">&times;</button>
         </div>
-
 
         <div class="mb-4">
           <label class="block font-semibold mb-1">Name</label>
-          <input
-            type="text"
-            v-model="newEscapeRoom!.name"
-            class="w-full border rounded px-3 py-2"
-          />
+          <input type="text" v-model="newEscapeRoom!.name" class="w-full border rounded px-3 py-2" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Description</label>
-          <textarea
-            type="text"
-            v-model="newEscapeRoom!.description"
-            class="w-full border rounded px-3 py-2 h-30"
-          />
+          <textarea v-model="newEscapeRoom!.description" class="w-full border rounded px-3 py-2 h-30" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Organisation-Id</label>
-          <input
-            type="number"
-            v-model.number="newEscapeRoom!.organizationId"
-            min="1"
-            class="w-20 border rounded px-3 py-2"
-          />
+          <input type="number" v-model.number="newEscapeRoom!.organizationId" min="1" class="w-20 border rounded px-3 py-2" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Address</label>
-          <textarea
-            type="text"
-            v-model="newEscapeRoom!.address"
-            class="w-full border rounded px-3 py-2 h-30"
-          />
+          <textarea v-model="newEscapeRoom!.address" class="w-full border rounded px-3 py-2 h-30" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Postal Code</label>
-          <input
-            type="number"
-            v-model.number="newEscapeRoom!.postalCode"
-            min="1"
-            class="w-20 border rounded px-3 py-2"
-          />
+          <input type="number" v-model.number="newEscapeRoom!.postalCode" min="1" class="w-20 border rounded px-3 py-2" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">City</label>
-          <textarea
-            type="text"
-            v-model="newEscapeRoom!.city"
-            class="w-full border rounded px-3 py-2 h-30"
-          />
+          <textarea v-model="newEscapeRoom!.city" class="w-full border rounded px-3 py-2 h-30" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Website</label>
-          <textarea
-            type="text"
-            v-model="newEscapeRoom!.website"
-            class="w-full border rounded px-3 py-2 h-30"
-          />
+          <textarea v-model="newEscapeRoom!.website" class="w-full border rounded px-3 py-2 h-30" />
         </div>
-
         <div class="mb-4">
           <label class="block font-semibold mb-1">Phone number</label>
-          <textarea
-            type="text"
-            v-model="newEscapeRoom!.phoneNumber"
-            class="w-full border rounded px-3 py-2 h-30"
-          />
+          <textarea v-model="newEscapeRoom!.phoneNumber" class="w-full border rounded px-3 py-2 h-30" />
         </div>
-
-        <div class="mb-4 flex gap-6 justify-between">
-          <div>
-            <label class="block font-semibold mb-1">Maximum capacity</label>
-            <input
-              type="number"
-              v-model.number="newEscapeRoom!.maxCapacity"
-              min="1"
-              class="w-20 border rounded px-3 py-2"
-            />
-          </div>
-        </div>
-
 
         <div class="flex justify-end gap-2">
-          <button
-            @click="closeAddModal"
-            class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-          >
-            Annuleer
-          </button>
-          <button
-            @click="addEscapeRoom"
-            class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-900"
-          >
-            Opslaan
-          </button>
+          <button @click="closeAddModal" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuleer</button>
+          <button @click="addEscapeRoom" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-900">Opslaan</button>
         </div>
       </div>
     </div>

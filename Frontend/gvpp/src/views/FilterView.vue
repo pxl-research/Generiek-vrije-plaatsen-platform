@@ -3,43 +3,33 @@ import HeaderComponent from '../components/HeaderComponent.vue';
 import { ref, onMounted, } from 'vue';
 import type {Filter} from "@/models/filter.ts";
 import {EscapeRoom} from "@/models/escapeRoom.ts";
+import {useFilterStore} from "@/store/FilterStore.ts";
+import {useEscapeRoomStore} from "@/store/EscapeRoomStore.ts";
+
+const filterStore = useFilterStore();
+const escapeRoomStore = useEscapeRoomStore();
 
 const escapeRoomsData = ref<EscapeRoom[]>([]);
 const filters = ref<Filter[]>([]);
-const maxPrice = ref<number>(200); // Single price slider value
-const filteredEscapeRooms = ref([...escapeRoomsData.value]);
 const expandedCards = ref<{ [key: string]: boolean }>({});
 
 const toggleExpand = (name: string) => {
   expandedCards.value[name] = !expandedCards.value[name];
 };
 
+async function getFiltersFromBackend() {
+  filters.value = await filterStore.getFilters();
+  filters.value = filters.value.sort((a, b) => a.id - b.id);
+}
+
+async function getEscapeRoomsFromBackend() {
+  escapeRoomsData.value = await escapeRoomStore.getEscapeRooms();
+  escapeRoomsData.value = escapeRoomsData.value.sort((a, b) => a.id - b.id);
+}
+
 onMounted(async () => {
-  filteredEscapeRooms.value = escapeRoomsData.value;
-
-  try {
-    const response = await fetch('http://localhost:8080/api/escaperooms');
-    if (!response.ok) {
-      throw new Error('Failed to fetch escaperooms');
-    }
-    const data = await response.json();
-    escapeRoomsData.value = data.sort((a: Filter, b: Filter) => a.id - b.id);
-    console.log(escapeRoomsData)
-  } catch (error) {
-    console.error(error)
-  }
-
-  try {
-    const response = await fetch('http://localhost:8080/api/filters');
-    if (!response.ok) {
-      throw new Error('Failed to fetch filters');
-    }
-    const data = await response.json();
-    filters.value = data.sort((a: Filter, b: Filter) => a.id - b.id);
-    console.log(filters.value)
-  } catch (error) {
-    console.error(error)
-  }
+  await getFiltersFromBackend();
+  await getEscapeRoomsFromBackend();
 });
 </script>
 
@@ -70,7 +60,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <button>Pas filters toe</button>
+        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100">Pas filters toe</button>
       </div>
     </div>
 
@@ -89,17 +79,17 @@ onMounted(async () => {
 
         <div v-if="expandedCards[escaperoom.name]" class="mt-4">
           <div
-            v-for="(game, index) in (escaperoom['different-rooms'] ?? []).filter(r => parseInt(r.price) <= maxPrice)"
-            :key="index"
+            v-for="room in escaperoom.rooms"
+            :key="room.id"
             class="flex justify-between items-center p-3 bg-blue-100 border-b"
           >
             <div>
-              <h3 class="font-bold">{{ game.name }}</h3>
-              <p class="text-sm text-gray-600">Players: {{ game.players }}</p>
-              <p class="text-sm text-gray-600">Duration: {{ game.duration }}</p>
+              <h3 class="font-bold">{{ room.name }}</h3>
+              <p class="text-sm text-gray-600">Minimumleeftijd: {{ room.minimumAge }}</p>
+              <p class="text-sm text-gray-600">Duratie: {{ room.duration }} uur</p>
             </div>
             <span class="bg-green-500 text-white px-4 py-2 rounded-md">
-              €{{ game.price }}
+              Capaciteit: {{ room.maxCapacity - room.currentCapacity }}/{{ room.maxCapacity }}
             </span>
           </div>
         </div>

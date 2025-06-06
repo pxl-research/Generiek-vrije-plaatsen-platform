@@ -28,17 +28,33 @@ const router = createRouter({
       },
     },
     {
-      path: '/filter',
-      name: 'zoek',
-      component: () => import('../views/FilterView.vue'),
+      path: '/escaperooms/filter',
+      name: 'zoek_escaperoom',
+      component: () => import('../views/SectorFilterViews/EscapeRoomFilterView.vue'),
       meta: {
         showInNav: "Zoek vrije plaatsen"
       },
     },
     {
-      path: '/filter-dashboard',
+      path: '/nurseries/filter',
+      name: 'zoek_nursery',
+      component: () => import('../views/SectorFilterViews/NurseryFilterView.vue'),
+      meta: {
+        showInNav: "Zoek vrije plaatsen"
+      },
+    },
+    {
+      path: '/schools/filter',
+      name: 'zoek_school',
+      component: () => import('../views/SectorFilterViews/SchoolFilterView.vue'),
+      meta: {
+        showInNav: "Zoek vrije plaatsen"
+      },
+    },
+    {
+      path: '/filterdashboard',
       name: 'filterdashboard',
-      component: () => import('../views/FilterDashboardView.vue'),
+      component: () => import('../views/Admin/FilterDashboardView.vue'),
       meta: {
         showInNav: "Filter dashboard"
       }
@@ -57,14 +73,19 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue'),
     },
     {
-      path: '/adminfilter',
-      name: 'adminfilter',
-      component: () => import('../views/AdminFilterView.vue'),
+      path: '/escaperooms/freespotsdashboard',
+      name: 'escaperooms_freespotsdashboard',
+      component: () => import('../views/Admin/EscapeRoomFreeSpots.vue'),
     },
     {
-      path: '/freespotsdashboard',
-      name: 'freespotsdashboard',
-      component: () => import('../views/FreeSpotsTable.vue'),
+      path: '/nurseries/freespotsdashboard',
+      name: 'nurseries_freespotsdashboard',
+      component: () => import('../views/Admin/EscapeRoomFreeSpots.vue'),
+    },
+    {
+      path: '/schools/freespotsdashboard',
+      name: 'schools_freespotsdashboard',
+      component: () => import('../views/Admin/SchoolFreeSpots.vue'),
     }
 
 

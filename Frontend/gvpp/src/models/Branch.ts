@@ -1,6 +1,6 @@
-import type {EscapeRoomRoom} from "@/models/escapeRoomRoom.ts";
+import type {Room} from "@/models/Room.ts";
 
-export class EscapeRoom {
+export class Branch {
   id: number;
   name: string;
   description: string;
@@ -10,7 +10,7 @@ export class EscapeRoom {
   email: string;
   phoneNumber: string;
   website: string;
-  rooms: EscapeRoomRoom[];
+  rooms: Room[];
 
 
   constructor(
@@ -23,7 +23,7 @@ export class EscapeRoom {
     email: string,
     phoneNumber: string,
     website: string,
-    rooms: EscapeRoomRoom[]
+    rooms: Room[]
   ) {
     this.id = id;
     this.name = name;

@@ -1,35 +1,71 @@
 <script setup lang="ts">
-import HeaderComponent from '../components/HeaderComponent.vue';
-import { ref, onMounted, } from 'vue';
+import HeaderComponent from '../../components/HeaderComponent.vue';
+import {ref, onMounted, computed,} from 'vue';
 import type {Filter} from "@/models/filter.ts";
-import {EscapeRoom} from "@/models/escapeRoom.ts";
+import {Branch} from "@/models/Branch.ts";
 import {useFilterStore} from "@/store/FilterStore.ts";
 import {useEscapeRoomStore} from "@/store/EscapeRoomStore.ts";
+import {useNurseryStore} from "@/store/NurseryStore.ts";
 
 const filterStore = useFilterStore();
-const escapeRoomStore = useEscapeRoomStore();
+const nurseryStore = useNurseryStore();
 
-const escapeRoomsData = ref<EscapeRoom[]>([]);
+const nurseriesData = ref<Branch[]>([]);
 const filters = ref<Filter[]>([]);
+const filteredNurseries = computed(() => nurseriesData.value);
 const expandedCards = ref<{ [key: string]: boolean }>({});
 
 const toggleExpand = (name: string) => {
   expandedCards.value[name] = !expandedCards.value[name];
 };
 
+async function applyFilters() {
+  await getNurseriesFromBackend();
+
+  nurseriesData.value = nurseriesData.value.filter((escaperoom) => {
+    return filters.value.every((filter) => {
+      if (filter.name === "City") {
+        return escaperoom.city.includes(filter.value);
+      }
+      // Add more escape room specific filters here
+      return true;
+    });
+  });
+
+  // Further filter rooms within each escape room
+  nurseriesData.value.forEach((escaperoom) => {
+    escaperoom.rooms = escaperoom.rooms.filter((room) => {
+      return filters.value.every((filter) => {
+        if (filter.name === "Minimum Age") {
+          return room.minimumAge >= Number(filter.value);
+        }
+        if (filter.name === "Duration") {
+          return room.duration >= Number(filter.value);
+        }
+        return true;
+      });
+    });
+  });
+
+  // Only keep escape rooms that still have rooms after filtering
+  nurseriesData.value = nurseriesData.value.filter((escaperoom) => escaperoom.rooms.length > 0);
+}
+
+
 async function getFiltersFromBackend() {
   filters.value = await filterStore.getFilters();
   filters.value = filters.value.sort((a, b) => a.id - b.id);
 }
 
-async function getEscapeRoomsFromBackend() {
-  escapeRoomsData.value = await escapeRoomStore.getEscapeRooms();
-  escapeRoomsData.value = escapeRoomsData.value.sort((a, b) => a.id - b.id);
+async function getNurseriesFromBackend() {
+  nurseriesData.value = await nurseryStore.getNurseries();
+  nurseriesData.value = nurseriesData.value.sort((a, b) => a.id - b.id);
 }
 
 onMounted(async () => {
+  filteredNurseries.value = nurseriesData.value;
   await getFiltersFromBackend();
-  await getEscapeRoomsFromBackend();
+  await getNurseriesFromBackend();
 });
 </script>
 
@@ -60,13 +96,13 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100">Pas filters toe</button>
+        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100" @click="applyFilters">Pas filters toe</button>
       </div>
     </div>
 
     <div class="w-full mt-10 mb-5 grid gap-6">
-      <div v-for="escaperoom in escapeRoomsData" :key="escaperoom.id"
-        class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
+      <div v-for="escaperoom in nurseriesData" :key="escaperoom.id"
+           class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
         <div class="flex justify-between items-start">
           <div>
             <h2 class="text-xl font-bold">{{ escaperoom.name }}</h2>
@@ -95,7 +131,7 @@ onMounted(async () => {
         </div>
 
         <button @click="toggleExpand(escaperoom.name)"
-          class="bg-[#2473BA] text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4">
+                class="bg-[#2473BA] text-white px-3 py-2 rounded-md hover:bg-blue-600 transition mt-4">
           {{ expandedCards[escaperoom.name] ? "Less Info" : "More Info" }}
         </button>
       </div>

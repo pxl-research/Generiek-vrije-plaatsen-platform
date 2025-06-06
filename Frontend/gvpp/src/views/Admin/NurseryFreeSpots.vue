@@ -2,21 +2,21 @@
 import HeaderComponent from '@/components/HeaderComponent.vue';
 import { ref, onMounted } from 'vue';
 import type { Filter } from '@/models/filter.ts';
-import type { EscapeRoom } from '@/models/escapeRoom.ts';
+import type { Branch } from '@/models/Branch.ts';
 import { useFilterStore } from '@/store/FilterStore.ts';
-import { useEscapeRoomStore } from '@/store/EscapeRoomStore.ts';
-import type {EscapeRoomRequest} from "@/models/escapeRoomRequest.ts";
-import {useEscapeRoomRoomStore} from "@/store/EscapeRoomRoomStore.ts";
-import {EscapeRoomRoomRequest} from "@/models/EscapeRoomRoomRequest.ts";
+import type {BranchRequest} from "@/models/BranchRequest.ts";
+import {RoomRequest} from "@/models/RoomRequest.ts";
+import {useNurseryStore} from "@/store/NurseryStore.ts";
+import {useNurseryRoomStore} from "@/store/NurseryRoomStore.ts";
 
 const filterStore = useFilterStore();
-const escapeRoomStore = useEscapeRoomStore();
-const roomStore = useEscapeRoomRoomStore();
+const nurseryStore = useNurseryStore();
+const roomStore = useNurseryRoomStore();
 
-const escapeRoomsData = ref<EscapeRoom[]>([]);
+const nurseriesData = ref<Branch[]>([]);
 const filters = ref<Filter[]>([]);
 const showAddModal = ref(false);
-const newEscapeRoom = ref<EscapeRoomRequest>();
+const newNursery = ref<BranchRequest>();
 const isEditing = ref<Record<number, boolean>>({});
 const localCapacities = ref<Record<number, number>>({});
 
@@ -28,7 +28,7 @@ const expandedCards = ref<{ [key: string]: boolean }>({});
 const toggleExpand = (name: string) => {
   expandedCards.value[name] = !expandedCards.value[name];
 
-  const room = escapeRoomsData.value.find(er => er.name === name);
+  const room = nurseriesData.value.find(er => er.name === name);
   if (room) {
     room.rooms.forEach(r => {
       localCapacities.value[r.id] = r.currentCapacity;
@@ -36,16 +36,46 @@ const toggleExpand = (name: string) => {
   }
 };
 
+async function applyFilters() {
+  await getNurseriesFromBackend();
 
+  nurseriesData.value = nurseriesData.value.filter((nursery) => {
+    return filters.value.every((filter) => {
+      if (filter.name === "City") {
+        return nursery.city.includes(filter.value);
+      }
+      // Add more escape room specific filters here
+      return true;
+    });
+  });
+
+  // Further filter rooms within each escape room
+  nurseriesData.value.forEach((nursery) => {
+    nursery.rooms = nursery.rooms.filter((room) => {
+      return filters.value.every((filter) => {
+        if (filter.name === "Minimum Age") {
+          return room.minimumAge >= Number(filter.value);
+        }
+        if (filter.name === "Duration") {
+          return room.duration >= Number(filter.value);
+        }
+        return true;
+      });
+    });
+  });
+
+  // Only keep escape rooms that still have rooms after filtering
+  nurseriesData.value = nurseriesData.value.filter((nursery) => nursery.rooms.length > 0);
+}
 
 async function getFiltersFromBackend() {
   filters.value = await filterStore.getFilters();
   filters.value = filters.value.sort((a, b) => a.id - b.id);
 }
 
-async function getEscapeRoomsFromBackend() {
-  escapeRoomsData.value = await escapeRoomStore.getEscapeRooms();
-  escapeRoomsData.value = escapeRoomsData.value.sort((a, b) => a.id - b.id);
+async function getNurseriesFromBackend() {
+  nurseriesData.value = await nurseryStore.getNurseries();
+  nurseriesData.value = nurseriesData.value.sort((a, b) => a.id - b.id);
 }
 
 function toggleEdit(roomId: number) {
@@ -58,11 +88,11 @@ async function saveCapacity(roomId: number) {
 
   if (newCapacity === undefined) return;
 
-  const request = new EscapeRoomRoomRequest(newCapacity);
+  const request = new RoomRequest(newCapacity);
 
   try {
-    await roomStore.updateEscapeRoomRoom(roomId, request);
-    await getEscapeRoomsFromBackend(); // Refresh data
+    await roomStore.updateNurseryRoom(roomId, request);
+    await getNurseriesFromBackend(); // Refresh data
     toggleEdit(roomId);
   } catch (error) {
     console.error("Update error:", error);
@@ -70,15 +100,15 @@ async function saveCapacity(roomId: number) {
   }
 }
 
-async function deleteEscapeRoomRoom(roomId: number): Promise<void> {
-  await roomStore.deleteEscapeRoomRoom(roomId);
+async function deleteNurseryRoom(roomId: number): Promise<void> {
+  await roomStore.deleteNurseryRoom(roomId);
 }
 
-async function addEscapeRoom(): Promise<void> {
+async function addNursery(): Promise<void> {
   try {
-    if (newEscapeRoom.value) {
-      await escapeRoomStore.addEscapeRoom(newEscapeRoom.value);
-      await getEscapeRoomsFromBackend();
+    if (newNursery.value) {
+      await nurseryStore.addNursery(newNursery.value);
+      await getNurseriesFromBackend();
       closeAddModal();
     }
   } catch (error) {
@@ -89,7 +119,7 @@ async function addEscapeRoom(): Promise<void> {
 
 onMounted(async () => {
   await getFiltersFromBackend();
-  await getEscapeRoomsFromBackend();
+  await getNurseriesFromBackend();
 });
 </script>
 
@@ -114,14 +144,14 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100">
+        <button class="mt-4 border border-gray-400 rounded px-4 py-2 bg-white hover:bg-gray-100" @click="applyFilters">
           Pas filters toe
         </button>
       </div>
     </div>
 
     <div class="w-full mt-10 mb-5 grid gap-6">
-      <div v-for="escaperoom in escapeRoomsData" :key="escaperoom.id"
+      <div v-for="escaperoom in nurseriesData" :key="escaperoom.id"
            class="bg-white p-5 rounded-lg shadow-md border-indigo-400 border">
         <div class="flex justify-between items-start">
           <div>
@@ -186,7 +216,7 @@ onMounted(async () => {
             </button>
             <button
               class="border rounded p-1 w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-100"
-              @click="deleteEscapeRoomRoom(room.id)"
+              @click="deleteNurseryRoom(room.id)"
               title="Verwijder"
             >
               🗑️
@@ -224,40 +254,40 @@ onMounted(async () => {
 
         <div class="mb-4">
           <label class="block font-semibold mb-1">Name</label>
-          <input type="text" v-model="newEscapeRoom!.name" class="w-full border rounded px-3 py-2" />
+          <input type="text" v-model="newNursery!.name" class="w-full border rounded px-3 py-2" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Description</label>
-          <textarea v-model="newEscapeRoom!.description" class="w-full border rounded px-3 py-2 h-30" />
+          <textarea v-model="newNursery!.description" class="w-full border rounded px-3 py-2 h-30" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Organisation-Id</label>
-          <input type="number" v-model.number="newEscapeRoom!.organizationId" min="1" class="w-20 border rounded px-3 py-2" />
+          <input type="number" v-model.number="newNursery!.organizationId" min="1" class="w-20 border rounded px-3 py-2" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Address</label>
-          <textarea v-model="newEscapeRoom!.address" class="w-full border rounded px-3 py-2 h-30" />
+          <textarea v-model="newNursery!.address" class="w-full border rounded px-3 py-2 h-30" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Postal Code</label>
-          <input type="number" v-model.number="newEscapeRoom!.postalCode" min="1" class="w-20 border rounded px-3 py-2" />
+          <input type="number" v-model.number="newNursery!.postalCode" min="1" class="w-20 border rounded px-3 py-2" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">City</label>
-          <textarea v-model="newEscapeRoom!.city" class="w-full border rounded px-3 py-2 h-30" />
+          <textarea v-model="newNursery!.city" class="w-full border rounded px-3 py-2 h-30" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Website</label>
-          <textarea v-model="newEscapeRoom!.website" class="w-full border rounded px-3 py-2 h-30" />
+          <textarea v-model="newNursery!.website" class="w-full border rounded px-3 py-2 h-30" />
         </div>
         <div class="mb-4">
           <label class="block font-semibold mb-1">Phone number</label>
-          <textarea v-model="newEscapeRoom!.phoneNumber" class="w-full border rounded px-3 py-2 h-30" />
+          <textarea v-model="newNursery!.phoneNumber" class="w-full border rounded px-3 py-2 h-30" />
         </div>
 
         <div class="flex justify-end gap-2">
           <button @click="closeAddModal" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Annuleer</button>
-          <button @click="addEscapeRoom" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-900">Opslaan</button>
+          <button @click="addNursery" class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-900">Opslaan</button>
         </div>
       </div>
     </div>

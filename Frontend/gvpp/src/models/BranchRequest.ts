@@ -1,4 +1,4 @@
-export class EscapeRoomRequest {
+export class BranchRequest {
   name: string;
   description: string;
   organizationId: number;

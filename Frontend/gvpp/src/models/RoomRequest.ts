@@ -1,4 +1,4 @@
-export class EscapeRoomRoomRequest {
+export class RoomRequest {
   currentCapacity: number;
 
   constructor(currentCapacity: number) {

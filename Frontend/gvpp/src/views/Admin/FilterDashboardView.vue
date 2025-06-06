@@ -5,10 +5,10 @@ import { ref, onMounted } from 'vue';
 import {useFilterStore} from "@/store/FilterStore.ts";
 import {FilterRequest} from "@/models/filterRequest.ts";
 import type {Filter} from "@/models/filter.ts";
-import {EscapeRoom} from "@/models/escapeRoom.ts";
+import {Branch} from "@/models/Branch.ts";
 
 const filters = ref<Filter[]>([]);
-const filteredObjects = ref<EscapeRoom[]>([]);
+const filteredObjects = ref<Branch[]>([]);
 const filterStore = useFilterStore();
 
 onMounted(async () => {

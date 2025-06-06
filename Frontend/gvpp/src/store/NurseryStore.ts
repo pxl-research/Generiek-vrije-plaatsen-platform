@@ -2,14 +2,14 @@
 import {defineStore} from 'pinia';
 import {BranchRequest} from "@/models/BranchRequest.ts";
 
-const urlBase = 'http://localhost:8080/api/escaperooms'
+const urlBase = 'http://localhost:8080/api/nurseries'
 
-export const useEscapeRoomStore = defineStore('escapeRoomStore', {
+export const useNurseryStore = defineStore('nurseryStore', {
   state: () => ({
 
   }),
   actions: {
-    async addEscapeRoom(request: BranchRequest) {
+    async addNursery(request: BranchRequest) {
       try {
         const response = await fetch(urlBase, {
           method: 'POST',
@@ -20,16 +20,16 @@ export const useEscapeRoomStore = defineStore('escapeRoomStore', {
         });
 
         if (!response.ok) {
-          console.log("Failed to add Escape room: " + response.statusText);
+          console.log("Failed to add nursery: " + response.statusText);
         }
 
-        console.log("Escape room added");
+        console.log("Nursery added");
       } catch (error) {
         console.error("Whoops! Something went wrong: " + error);
       }
     },
 
-    async getEscapeRooms() {
+    async getNurseries() {
       try {
         const response = await fetch(urlBase, {
           method: 'GET',
@@ -38,7 +38,7 @@ export const useEscapeRoomStore = defineStore('escapeRoomStore', {
           }
         });
         if (!response.ok) {
-          throw new Error("Failed to get EscapeRooms: " + response.statusText);
+          throw new Error("Failed to get nurseries: " + response.statusText);
         }
         const data = await response.json();
         console.log(data);
@@ -48,20 +48,20 @@ export const useEscapeRoomStore = defineStore('escapeRoomStore', {
       }
     },
 
-    async deleteEscapeRoom(roomId: number) {
+    async deleteSchool(nurseryId: number) {
       try {
-        const response = await fetch(urlBase + `/${roomId}`, {
+        const response = await fetch(urlBase + `/${nurseryId}`, {
           method: 'DELETE',
         });
 
         if (!response.ok) {
-          console.log(`Failed to delete room with id ${roomId}`);
+          console.log(`Failed to delete nursery with id ${nurseryId}`);
         }
 
 
       } catch (error: unknown) {
         console.error("Delete error:", error);
-        alert("Could not delete room. Please try again.");
+        alert("Could not delete nursery. Please try again.");
       }
     }
   }

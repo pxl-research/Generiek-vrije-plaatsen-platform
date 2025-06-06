@@ -1,4 +1,4 @@
-export class EscapeRoomRoom {
+export class Room {
   id: number;
   name: string;
   minimumAge: number;

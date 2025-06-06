@@ -1,14 +1,14 @@
 import {defineStore} from 'pinia';
 import type {RoomRequest} from "@/models/RoomRequest.ts";
 
-const urlBase = 'http://localhost:8080/api/escaperooms/rooms'
+const urlBase = 'http://localhost:8080/api/schools/rooms'
 
-export const useEscapeRoomRoomStore = defineStore('EscapeRoomRoomStore', {
+export const useSchoolRoomStore = defineStore('schoolRoomStore', {
   state: () => ({
 
   }),
   actions: {
-    async deleteEscapeRoomRoom(roomId: number) {
+    async deleteSchoolRoom(roomId: number) {
       try {
         const response = await fetch(urlBase + `/${roomId}`, {
           method: 'DELETE',
@@ -25,7 +25,7 @@ export const useEscapeRoomRoomStore = defineStore('EscapeRoomRoomStore', {
       }
     },
 
-    async updateEscapeRoomRoom(roomId: number, request: RoomRequest) {
+    async updateSchoolRoom(roomId: number, request: RoomRequest) {
       try {
         const response = await fetch(urlBase + `/${roomId}`, {
           method: 'PUT',
@@ -36,13 +36,13 @@ export const useEscapeRoomRoomStore = defineStore('EscapeRoomRoomStore', {
         });
 
         if (!response.ok) {
-          console.log(`Failed to delete room with id ${roomId}`);
+          console.log(`Failed to update room with id ${roomId}`);
         }
 
 
       } catch (error: unknown) {
-        console.error("Delete error:", error);
-        alert("Could not delete room. Please try again.");
+        console.error("Update error:", error);
+        alert("Could not update room. Please try again.");
       }
 
     }

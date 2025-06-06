@@ -10,6 +10,7 @@ import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomRoo
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
 import be.PXLResearch.code4belgium.nurseries.DTO.NurseryRoomDTO.NurseryRoomResponse;
 import be.PXLResearch.code4belgium.nurseries.domain.NurseryRoom;
+import be.PXLResearch.code4belgium.schools.domain.SchoolRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,21 @@ public class EscapeRoomRoomService implements IEscapeRoomRoomService {
                 .build();
 
         return escapeRoomRoomRepository.save(escapeRoomRoom);
+    }
+
+    @Override
+    public void deleteEscapeRoomRoom(Long id) {
+        EscapeRoomRoom escapeRoomRoom = escapeRoomRoomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Escape room with id " + id + " not found"));
+        escapeRoomRoomRepository.delete(escapeRoomRoom);
+    }
+
+    @Override
+    public void updateEscapeRoomRoom(Long id, EscapeRoomRoomRequest request) {
+        EscapeRoomRoom escapeRoomRoom = escapeRoomRoomRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("escapeRoomRoom not found"));
+        escapeRoomRoom.setCurrentCapacity(request.getCurrentCapacity());
+        escapeRoomRoomRepository.save(escapeRoomRoom);
     }
 
     private EscapeRoomRoomResponse turnEscapeRoomRoomIntoResponse(EscapeRoomRoom escapeRoomRoom) {

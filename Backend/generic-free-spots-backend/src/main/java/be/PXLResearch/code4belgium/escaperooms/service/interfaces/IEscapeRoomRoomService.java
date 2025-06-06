@@ -12,4 +12,6 @@ public interface IEscapeRoomRoomService {
     List<EscapeRoomRoomResponse> getRoomsForEscapeRoom(Long escapeRoomId);
     EscapeRoomRoomResponse getRoomById(Long roomId);
     EscapeRoomRoom createRoom(EscapeRoomRoomRequest request);
+    void deleteEscapeRoomRoom(Long id);
+    void updateEscapeRoomRoom(Long id, EscapeRoomRoomRequest request);
 }

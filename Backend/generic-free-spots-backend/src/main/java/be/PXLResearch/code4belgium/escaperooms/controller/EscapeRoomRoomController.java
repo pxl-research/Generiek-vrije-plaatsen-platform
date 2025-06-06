@@ -5,6 +5,8 @@ import be.PXLResearch.code4belgium.escaperooms.DTO.EscapeRoomRoomDTO.EscapeRoomR
 import be.PXLResearch.code4belgium.escaperooms.domain.EscapeRoomRoom;
 import be.PXLResearch.code4belgium.escaperooms.service.interfaces.IEscapeRoomRoomService;
 import be.PXLResearch.code4belgium.exceptions.ResourceNotFoundException;
+import be.PXLResearch.code4belgium.nurseries.DTO.NurseryRoomDTO.NurseryRoomRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,34 @@ public class EscapeRoomRoomController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Void> updateRoom(@PathVariable Long id, @RequestBody @Valid EscapeRoomRoomRequest roomRequest) {
+        try {
+            roomService.updateEscapeRoomRoom(id, roomRequest);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+        try {
+            roomService.deleteEscapeRoomRoom(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

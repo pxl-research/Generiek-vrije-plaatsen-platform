@@ -1,6 +1,8 @@
 package be.PXLResearch.code4belgium.general.domain;
 
 import be.PXLResearch.code4belgium.enums.City;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +38,7 @@ public abstract class Branch<T, U> {
     private T organization;
 
     @OneToMany(mappedBy = "branch")
+    @JsonManagedReference
     private List<U> rooms;
 
 }

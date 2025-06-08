@@ -80,7 +80,7 @@ const router = createRouter({
     {
       path: '/nurseries/freespotsdashboard',
       name: 'nurseries_freespotsdashboard',
-      component: () => import('../views/Admin/EscapeRoomFreeSpots.vue'),
+      component: () => import('../views/Admin/NurseryFreeSpots.vue'),
     },
     {
       path: '/schools/freespotsdashboard',
